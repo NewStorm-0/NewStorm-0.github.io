@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>NewStorm</title>
-  <icon>https://newstorm-0.github.io/NewStorm-0/icon.png</icon>
+  <icon>https://newstorm-0.github.io/icon.png</icon>
   <subtitle>一个有趣的垃圾</subtitle>
-  <link href="https://newstorm-0.github.io/NewStorm-0/atom.xml" rel="self"/>
+  <link href="https://newstorm-0.github.io/atom.xml" rel="self"/>
   
-  <link href="https://newstorm-0.github.io/NewStorm-0/"/>
+  <link href="https://newstorm-0.github.io/"/>
   <updated>2022-04-27T12:36:48.120Z</updated>
-  <id>https://newstorm-0.github.io/NewStorm-0/</id>
+  <id>https://newstorm-0.github.io/</id>
   
   <author>
     <name>NewStorm</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Hello</title>
-    <link href="https://newstorm-0.github.io/NewStorm-0/2022/04/27/Hello/"/>
-    <id>https://newstorm-0.github.io/NewStorm-0/2022/04/27/Hello/</id>
+    <link href="https://newstorm-0.github.io/2022/04/27/Hello/"/>
+    <id>https://newstorm-0.github.io/2022/04/27/Hello/</id>
     <published>2022-04-26T17:07:55.000Z</published>
     <updated>2022-04-27T12:36:48.120Z</updated>
     
@@ -36,14 +36,14 @@
     
     
     
-    <category term="垃圾" scheme="https://newstorm-0.github.io/NewStorm-0/tags/%E5%9E%83%E5%9C%BE/"/>
+    <category term="垃圾" scheme="https://newstorm-0.github.io/tags/%E5%9E%83%E5%9C%BE/"/>
     
   </entry>
   
   <entry>
     <title>Hello World</title>
-    <link href="https://newstorm-0.github.io/NewStorm-0/2022/04/26/hello-world/"/>
-    <id>https://newstorm-0.github.io/NewStorm-0/2022/04/26/hello-world/</id>
+    <link href="https://newstorm-0.github.io/2022/04/26/hello-world/"/>
+    <id>https://newstorm-0.github.io/2022/04/26/hello-world/</id>
     <published>2022-04-26T02:40:46.674Z</published>
     <updated>2022-04-26T02:40:46.674Z</updated>
     
