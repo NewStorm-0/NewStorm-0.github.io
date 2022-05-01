@@ -1,0 +1,274 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>C艹3.30 | NewStorm</title><meta name="keywords" content="c++"><meta name="author" content="NewStorm"><meta name="copyright" content="NewStorm"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="内容： 1、 static静态变量，局部可见，只赋一次初值 2、对于全局变量的利害（尽量克制使用） 3、全局变量与局部变量重名时，局部变量优先，可以使用域作用符::区分两者 12345678910#include &lt;iostream.h&gt;int i &#x3D; 100;void main(void)&amp;#123;	int i, j &#x3D; 50;	i &#x3D; 18;&#x2F;&#x2F;访问局部变量	::i &#x3D; ::i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C艹3.30">
+<meta property="og:url" content="https://newstorm-0.github.io/2022/05/02/C%E8%89%B93.30/index.html">
+<meta property="og:site_name" content="NewStorm">
+<meta property="og:description" content="内容： 1、 static静态变量，局部可见，只赋一次初值 2、对于全局变量的利害（尽量克制使用） 3、全局变量与局部变量重名时，局部变量优先，可以使用域作用符::区分两者 12345678910#include &lt;iostream.h&gt;int i &#x3D; 100;void main(void)&amp;#123;	int i, j &#x3D; 50;	i &#x3D; 18;&#x2F;&#x2F;访问局部变量	::i &#x3D; ::i">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg">
+<meta property="article:published_time" content="2022-05-01T17:13:37.000Z">
+<meta property="article:modified_time" content="2022-05-01T09:15:38.030Z">
+<meta property="article:author" content="NewStorm">
+<meta property="article:tag" content="c++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg"><link rel="shortcut icon" href="/img/favicon-32x32-next.png"><link rel="canonical" href="https://newstorm-0.github.io/2022/05/02/C%E8%89%B93.30/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.clarity.ms"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "bnz9wx40db");</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'C艹3.30',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2022-05-01 09:15:38'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="NewStorm" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/jiamo.jfif" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">NewStorm</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">C艹3.30</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-05-01T17:13:37.000Z" title="发表于 2022-05-01 17:13:37">2022-05-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-05-01T09:15:38.030Z" title="更新于 2022-05-01 09:15:38">2022-05-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/yxt/">yxt</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="C艹3.30"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>内容：<br>
+1、 static静态变量，局部可见，只赋一次初值<br>
+2、对于全局变量的利害（尽量克制使用）<br>
+3、全局变量与局部变量重名时，局部变量优先，可以使用域作用符<code>::</code>区分两者</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> i = <span class="number">100</span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> i, j = <span class="number">50</span>;</span><br><span class="line">	i = <span class="number">18</span>;<span class="comment">//访问局部变量</span></span><br><span class="line">	::i = ::i + <span class="number">4</span>;<span class="comment">//访问全局变量</span></span><br><span class="line">	j = ::i + <span class="number">1</span>;<span class="comment">//访问全局变量i和局部变量j</span></span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;::i=&quot;</span> &lt;&lt; ::i &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;i=&quot;</span> &lt;&lt; i &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;j=&quot;</span> &lt;&lt; j &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+<p>4、 extern做提前引用声明，后面的全局变量在前面使用时要用extern。注意使用extern是不可以extern double bb = 1.0的，否则相当于定义，extern失去作用，编译错误</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">(</span></span><br><span class="line"><span class="params">&#123;</span></span><br><span class="line"><span class="params">	<span class="keyword">extern</span> <span class="type">int</span> a, b;</span></span><br><span class="line"><span class="params">	...</span></span><br><span class="line"><span class="params">	<span class="keyword">return</span> <span class="number">0</span>;</span></span><br><span class="line"><span class="params">&#125;</span></span><br><span class="line"><span class="params"><span class="type">int</span> a = <span class="number">15</span>, b = <span class="number">-7</span>;</span></span><br><span class="line"><span class="params"><span class="type">int</span> max(<span class="type">int</span> x, <span class="type">int</span> y)&#123;</span></span><br><span class="line"><span class="params">	<span class="type">int</span> z;</span></span><br><span class="line"><span class="params">	 z = x &gt; y ? x : y</span></span><br><span class="line"><span class="params">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>5、如果函数要访问另一个文件中定义的全局变量，需要添加extern声明。注意编译正确未必能链接成功<br>
+6、<br>
+· static全局变量：存储在静态存储区，在函数外部定义，只在本文件中使用<br>
+· static局部变量：存储在静态存储区，在函数内部定义，只限在函数内部使用<br>
+· extern全局变量：存储在静态存储区，在其他文件中定义，在本文件中可以使用<br>
+7、 static也可以修饰函数（static描述其为内部函数）。extern同。<br>
+8、 程序的多文件组织🌈</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;mathx.h&quot;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="comment">//可以直接使用max， pi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">double</span> PI = <span class="number">3.14</span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">max</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="type">double</span> <span class="title">pow</span><span class="params">(<span class="type">double</span>, <span class="type">double</span>)</span></span>;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;mathx.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">max</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> z;</span><br><span class="line">	z = x &gt; y ? x : y;</span><br><span class="line">	<span class="keyword">return</span> z;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>C/C++标准：<br>
+头文件：实现者与使用者之间的桥梁，包括函数声明，常量定义<br>
+函数库：包含头文件，提供函数的实现/定义，发布头文件源代码以及库函数的二进制代码<br>
+使用者：通过#include包含头文件，知道如何使用，不关心具体实现</p>
+</blockquote>
+<blockquote>
+<p>头文件（.h/.hpp header）一般包括以下几类内容：<br>
+1.对类型的声明<br>
+2.函数声明<br>
+3.内置（inline）函数的定义<br>
+4.宏定义。用#define定义的符号常量和用const声明的常变量<br>
+5.外部变量声明，如extern int a；<br>
+6.根据需要包含其他头文件<br>
+（注意不能有double dd = 1.0之类的；不然会认为重定义）</p>
+</blockquote>
+<ol>
+<li>通常#include头文件，很少#include源文件</li>
+<li>对于系统提供的头文件用尖括号形式，如果要包含的是用户自己编写的文件，用双撇号形式（先到当前cpp所在目录定位， 再到系统目录中定位XX.h）</li>
+<li>找不到会发生编译错误，找多了更糟糕，如果好多地方都有xx.h，你需要搞清楚到底是谁被找到了</li>
+<li>文件名可以包含目录名，例如#include&lt;GL/GL.h&gt;，到系统include目录的GL目录中找GL.h</li>
+<li>C++标准库中一般不再包括.h，保留的兼容C的头文件有，尽量用符合C++标准的形式</li>
+<li>用户自己编写的头文件，一般用.h做后缀</li>
+</ol>
+<p>9、函数</p>
+<ul>
+<li>链接问题： <code>&gt;</code>依赖于<br>
+- A &gt; B, A &gt; C<br>
+- B &gt; D, C &gt; D</li>
+<li>静态链接：得到A.exe包括A(B(D))(C(D))<br>
+- 运行速度快，不需要运行时加载定位<br>
+- 缺点：会生成多个副本（如果多个文件对同一个目标文件目标都有依赖），浪费空间，</li>
+<li>动态链接（是主流）（跟上一个优缺点基本反着）</li>
+<li>#include是一种预处理编译</li>
+<li>预处理编译：（源代码到目标代码的编译之前的编译，对源代码的处理）（预处理，编译，链接）（功能包括：文件包含#include，宏定义#define，条件编译#ifdef）</li>
+<li><img src="https://img-blog.csdnimg.cn/20210330203708996.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></li>
+<li>宏定义函数要注意对每一个变量都加上（）以防止调用时有奇怪的行为</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> S(r) PI * r * r<span class="comment">//最好是PI*(r)*(r)</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> a = <span class="number">1</span>, b = <span class="number">2</span>;</span><br><span class="line">	<span class="built_in">S</span>(a + b);</span><br><span class="line">	<span class="comment">//会按照PI*a + b*a + b来算</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20210330205110476.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_52414727">yxt</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_52414727/article/details/115333442?spm=1001.2014.3001.5502">https://blog.csdn.net/m0_52414727/article/details/115333442?spm=1001.2014.3001.5502</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://newstorm-0.github.io" target="_blank">NewStorm</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/c/">c++</a></div><div class="post_share"><div class="social-share" data-image="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/05/02/C++%E6%8C%87%E9%92%88%202021.4.13/"><img class="prev-cover" src="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">c++指针 2021.4.13</div></div></a></div><div class="next-post pull-right"><a href="/2022/05/02/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%88Improving%20neural%20networks%20by%20preventing%20co-adaptation%20of%20feature%20detectors%20%EF%BC%89/"><img class="next-cover" src="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">论文阅读（Improving neural networks by preventing co-adaptation of feature detectors ）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/05/02/C++%E6%8C%87%E9%92%88%202021.4.13/" title="c++指针 2021.4.13"><img class="cover" src="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-01</div><div class="title">c++指针 2021.4.13</div></div></a></div><div><a href="/2022/05/02/C++%E6%8C%87%E9%92%88%202021.4.20/" title="C++指针 2021.4.20"><img class="cover" src="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-01</div><div class="title">C++指针 2021.4.20</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/jiamo.jfif" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">NewStorm</div><div class="author-info__description">自己看用的</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/NewStorm-0"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/NewStorm-0" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://qm.qq.com/cgi-bin/qm/qr?k=UChUQjcciCq5CMz0rD7y-_r0Zg_iG9fn&amp;noverify=0" target="_blank" title="QQ"><i class="fa-brands fa-qq"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS链接"><i class="fa fa-rss"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/05/02/%E5%85%B3%E4%BA%8E%E4%B8%BB%E9%A2%98%E6%A8%A1%E5%9E%8B%EF%BC%88%E4%BB%8ELDA%E5%88%B0PLSA%EF%BC%89/" title="关于主题模型（从LDA到PLSA）"><img src="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="关于主题模型（从LDA到PLSA）"/></a><div class="content"><a class="title" href="/2022/05/02/%E5%85%B3%E4%BA%8E%E4%B8%BB%E9%A2%98%E6%A8%A1%E5%9E%8B%EF%BC%88%E4%BB%8ELDA%E5%88%B0PLSA%EF%BC%89/" title="关于主题模型（从LDA到PLSA）">关于主题模型（从LDA到PLSA）</a><time datetime="2022-05-01T17:33:46.000Z" title="发表于 2022-05-01 17:33:46">2022-05-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/02/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%94%BB%E5%9B%BE%E8%BF%99%E4%BB%B6%E4%BA%8B/" title="关于深度学习画图这件事"><img src="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="关于深度学习画图这件事"/></a><div class="content"><a class="title" href="/2022/05/02/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%94%BB%E5%9B%BE%E8%BF%99%E4%BB%B6%E4%BA%8B/" title="关于深度学习画图这件事">关于深度学习画图这件事</a><time datetime="2022-05-01T17:32:25.000Z" title="发表于 2022-05-01 17:32:25">2022-05-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/02/%E5%85%B3%E4%BA%8E%E5%86%99DMF%E6%97%B6%E5%8F%91%E7%94%9F%E7%9A%84%E5%B0%8F%E4%BA%8B%E6%83%85/" title="关于写DMF时发生的小事情"><img src="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="关于写DMF时发生的小事情"/></a><div class="content"><a class="title" href="/2022/05/02/%E5%85%B3%E4%BA%8E%E5%86%99DMF%E6%97%B6%E5%8F%91%E7%94%9F%E7%9A%84%E5%B0%8F%E4%BA%8B%E6%83%85/" title="关于写DMF时发生的小事情">关于写DMF时发生的小事情</a><time datetime="2022-05-01T17:30:04.000Z" title="发表于 2022-05-01 17:30:04">2022-05-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/02/%E5%85%B3%E4%BA%8Ejupyter%E8%BE%93%E5%85%A5%E9%95%BF%E5%BA%A6%E9%99%90%E5%88%B6/" title="关于jupyter输入长度限制"><img src="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="关于jupyter输入长度限制"/></a><div class="content"><a class="title" href="/2022/05/02/%E5%85%B3%E4%BA%8Ejupyter%E8%BE%93%E5%85%A5%E9%95%BF%E5%BA%A6%E9%99%90%E5%88%B6/" title="关于jupyter输入长度限制">关于jupyter输入长度限制</a><time datetime="2022-05-01T17:28:34.000Z" title="发表于 2022-05-01 17:28:34">2022-05-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/02/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0transformer%E9%82%A3%E4%BA%9B%E4%BA%8B/" title="关于学习transformer那些事"><img src="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="关于学习transformer那些事"/></a><div class="content"><a class="title" href="/2022/05/02/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0transformer%E9%82%A3%E4%BA%9B%E4%BA%8B/" title="关于学习transformer那些事">关于学习transformer那些事</a><time datetime="2022-05-01T17:26:44.000Z" title="发表于 2022-05-01 17:26:44">2022-05-01</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By NewStorm</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>function loadGiscus () {
+  let nowTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+
+  const config = Object.assign({
+    src: 'https://giscus.app/client.js',
+    'data-repo': 'NewStorm-0/blogger-message',
+    'data-repo-id': 'R_kgDOHP5jKA',
+    'data-category-id': 'DIC_kwDOHP5jKM4CO0mG',
+    'data-mapping': 'pathname',
+    'data-theme': nowTheme,
+    'data-reactions-enabled': '1',
+    crossorigin: 'anonymous',
+    async: true
+  },null)
+
+  let ele = document.createElement('script')
+  for (let key in config) {
+    ele.setAttribute(key, config[key])
+  }
+  document.getElementById('giscus-wrap').insertAdjacentElement('afterbegin',ele)
+}
+
+function changeGiscusTheme () {
+  const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+
+  function sendMessage(message) {
+    const iframe = document.querySelector('iframe.giscus-frame');
+    if (!iframe) return;
+    iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+  }
+
+  sendMessage({
+    setConfig: {
+      theme: theme
+    }
+  });
+}
+
+if ('Giscus' === 'Giscus' || !true) {
+  if (true) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+  else loadGiscus()
+} else {
+  function loadOtherComment () {
+    loadGiscus()
+  }
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

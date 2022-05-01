@@ -6,22 +6,436 @@
   <link href="https://newstorm-0.github.io/atom.xml" rel="self"/>
   
   <link href="https://newstorm-0.github.io/"/>
-  <updated>2022-05-01T07:50:07.824Z</updated>
+  <updated>2022-05-01T09:59:49.067Z</updated>
   <id>https://newstorm-0.github.io/</id>
   
   <author>
-    <name>NewStorms</name>
+    <name>NewStorm</name>
     
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>关于主题模型（从LDA到PLSA）</title>
+    <link href="https://newstorm-0.github.io/2022/05/02/%E5%85%B3%E4%BA%8E%E4%B8%BB%E9%A2%98%E6%A8%A1%E5%9E%8B%EF%BC%88%E4%BB%8ELDA%E5%88%B0PLSA%EF%BC%89/"/>
+    <id>https://newstorm-0.github.io/2022/05/02/%E5%85%B3%E4%BA%8E%E4%B8%BB%E9%A2%98%E6%A8%A1%E5%9E%8B%EF%BC%88%E4%BB%8ELDA%E5%88%B0PLSA%EF%BC%89/</id>
+    <published>2022-05-01T17:33:46.000Z</published>
+    <updated>2022-05-01T09:59:49.067Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;以下内容有部分源于课件，主要是上课推导太快了没听明白所以这里又来整理了一遍。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1&gt;LDA&lt;/h1&gt;
+&lt;p&gt;首先是从LSA入手。他对于一篇文章的初始标识和向量空间模型相似，使用词表维度的向量来表示，但是向量内的</summary>
+        
+      
+    
+    
+    
+    <category term="yxt" scheme="https://newstorm-0.github.io/categories/yxt/"/>
+    
+    
+    <category term="深度学习课程笔记" scheme="https://newstorm-0.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关于深度学习画图这件事</title>
+    <link href="https://newstorm-0.github.io/2022/05/02/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%94%BB%E5%9B%BE%E8%BF%99%E4%BB%B6%E4%BA%8B/"/>
+    <id>https://newstorm-0.github.io/2022/05/02/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%94%BB%E5%9B%BE%E8%BF%99%E4%BB%B6%E4%BA%8B/</id>
+    <published>2022-05-01T17:32:25.000Z</published>
+    <updated>2022-05-01T09:33:16.995Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;以下是在搜集过程中看到的几个画模型图可能需要的便捷网站：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="yxt" scheme="https://newstorm-0.github.io/categories/yxt/"/>
+    
+    
+    <category term="Paper" scheme="https://newstorm-0.github.io/tags/Paper/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关于写DMF时发生的小事情</title>
+    <link href="https://newstorm-0.github.io/2022/05/02/%E5%85%B3%E4%BA%8E%E5%86%99DMF%E6%97%B6%E5%8F%91%E7%94%9F%E7%9A%84%E5%B0%8F%E4%BA%8B%E6%83%85/"/>
+    <id>https://newstorm-0.github.io/2022/05/02/%E5%85%B3%E4%BA%8E%E5%86%99DMF%E6%97%B6%E5%8F%91%E7%94%9F%E7%9A%84%E5%B0%8F%E4%BA%8B%E6%83%85/</id>
+    <published>2022-05-01T17:30:04.000Z</published>
+    <updated>2022-05-01T09:31:56.185Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;事实上，以下内容都是我中途才开始考虑的&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;报错反应模型nn.linear参数不匹配无法matmaul，瞅了半天模型参数没问题，一看取出传入参数时传错了。&lt;/li&gt;
+&lt;li&gt;tensor索引说是只能为byte,long,bool，然后一开始改成fl</summary>
+        
+      
+    
+    
+    
+    <category term="yxt" scheme="https://newstorm-0.github.io/categories/yxt/"/>
+    
+    
+    <category term="推荐系统" scheme="https://newstorm-0.github.io/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关于jupyter输入长度限制</title>
+    <link href="https://newstorm-0.github.io/2022/05/02/%E5%85%B3%E4%BA%8Ejupyter%E8%BE%93%E5%85%A5%E9%95%BF%E5%BA%A6%E9%99%90%E5%88%B6/"/>
+    <id>https://newstorm-0.github.io/2022/05/02/%E5%85%B3%E4%BA%8Ejupyter%E8%BE%93%E5%85%A5%E9%95%BF%E5%BA%A6%E9%99%90%E5%88%B6/</id>
+    <published>2022-05-01T17:28:34.000Z</published>
+    <updated>2022-05-01T09:29:37.888Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;通过下图方式打开jupyter notebookm&lt;img</summary>
+        
+      
+    
+    
+    
+    <category term="yxt" scheme="https://newstorm-0.github.io/categories/yxt/"/>
+    
+    
+    <category term="Python" scheme="https://newstorm-0.github.io/tags/Python/"/>
+    
+    <category term="整治电脑" scheme="https://newstorm-0.github.io/tags/%E6%95%B4%E6%B2%BB%E7%94%B5%E8%84%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关于学习transformer那些事</title>
+    <link href="https://newstorm-0.github.io/2022/05/02/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0transformer%E9%82%A3%E4%BA%9B%E4%BA%8B/"/>
+    <id>https://newstorm-0.github.io/2022/05/02/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0transformer%E9%82%A3%E4%BA%9B%E4%BA%8B/</id>
+    <published>2022-05-01T17:26:44.000Z</published>
+    <updated>2022-05-01T09:27:42.517Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;论文阅读：&lt;/h1&gt;
+&lt;p&gt;（有些自己忘记的知识就顺便回忆了一遍）&lt;br&gt;
+&lt;img</summary>
+        
+      
+    
+    
+    
+    <category term="yxt" scheme="https://newstorm-0.github.io/categories/yxt/"/>
+    
+    
+    <category term="阅读" scheme="https://newstorm-0.github.io/tags/%E9%98%85%E8%AF%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>PCA及其实战学习</title>
+    <link href="https://newstorm-0.github.io/2022/05/02/PCA%E5%8F%8A%E5%85%B6%E5%AE%9E%E6%88%98%E5%AD%A6%E4%B9%A0/"/>
+    <id>https://newstorm-0.github.io/2022/05/02/PCA%E5%8F%8A%E5%85%B6%E5%AE%9E%E6%88%98%E5%AD%A6%E4%B9%A0/</id>
+    <published>2022-05-01T17:25:06.000Z</published>
+    <updated>2022-05-01T09:26:16.787Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;知识学习&lt;/h1&gt;
+&lt;p&gt;整体思想就是根据重要特征（为主）附加其他特征（为辅）生成新的维度的特征&lt;br&gt;
+&lt;img</summary>
+        
+      
+    
+    
+    
+    <category term="yxt" scheme="https://newstorm-0.github.io/categories/yxt/"/>
+    
+    
+    <category term="Python" scheme="https://newstorm-0.github.io/tags/Python/"/>
+    
+    <category term="数据处理" scheme="https://newstorm-0.github.io/tags/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>细数近日犯的错误</title>
+    <link href="https://newstorm-0.github.io/2022/05/02/%E7%BB%86%E6%95%B0%E8%BF%91%E6%97%A5%E7%8A%AF%E7%9A%84%E9%94%99%E8%AF%AF/"/>
+    <id>https://newstorm-0.github.io/2022/05/02/%E7%BB%86%E6%95%B0%E8%BF%91%E6%97%A5%E7%8A%AF%E7%9A%84%E9%94%99%E8%AF%AF/</id>
+    <published>2022-05-01T17:23:50.000Z</published>
+    <updated>2022-05-01T09:24:47.756Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;关于第七次数据结构实验&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;注意数组在函数内部和外部定义的区别，虽然我现在依然不知道原理为什么拿出去就不行了可能和另一个错误相关&lt;/li&gt;
+&lt;li&gt;注意数组分配对象是new int []而不是new</summary>
+        
+      
+    
+    
+    
+    <category term="yxt" scheme="https://newstorm-0.github.io/categories/yxt/"/>
+    
+    
+    <category term="笔记" scheme="https://newstorm-0.github.io/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C++指针 2021.4.20</title>
+    <link href="https://newstorm-0.github.io/2022/05/02/C++%E6%8C%87%E9%92%88%202021.4.20/"/>
+    <id>https://newstorm-0.github.io/2022/05/02/C++%E6%8C%87%E9%92%88%202021.4.20/</id>
+    <published>2022-05-01T17:19:54.000Z</published>
+    <updated>2022-05-01T09:23:14.235Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;指针变量里面存储了一个地址，可以是常量、全局变量、局部变量、堆变量（new）的地址，还可以是函数（代码）的地址&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4</summary>
+        
+      
+    
+    
+    
+    <category term="yxt" scheme="https://newstorm-0.github.io/categories/yxt/"/>
+    
+    
+    <category term="c++" scheme="https://newstorm-0.github.io/tags/c/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>c++指针 2021.4.13</title>
+    <link href="https://newstorm-0.github.io/2022/05/02/C++%E6%8C%87%E9%92%88%202021.4.13/"/>
+    <id>https://newstorm-0.github.io/2022/05/02/C++%E6%8C%87%E9%92%88%202021.4.13/</id>
+    <published>2022-05-01T17:16:25.000Z</published>
+    <updated>2022-05-01T09:19:27.511Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;· 指针的概念&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;我愿称之为</summary>
+        
+      
+    
+    
+    
+    <category term="yxt" scheme="https://newstorm-0.github.io/categories/yxt/"/>
+    
+    
+    <category term="c++" scheme="https://newstorm-0.github.io/tags/c/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C艹3.30</title>
+    <link href="https://newstorm-0.github.io/2022/05/02/C%E8%89%B93.30/"/>
+    <id>https://newstorm-0.github.io/2022/05/02/C%E8%89%B93.30/</id>
+    <published>2022-05-01T17:13:37.000Z</published>
+    <updated>2022-05-01T09:15:38.030Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;内容：&lt;br&gt;
+1、 static静态变量，局部可见，只赋一次初值&lt;br&gt;
+2、对于全局变量的利害（尽量克制使用）&lt;br&gt;
+3、全局变量与局部变量重名时，局部变量优先，可以使用域作用符&lt;code&gt;::&lt;/code&gt;区分两者&lt;/p&gt;
+&lt;figure</summary>
+        
+      
+    
+    
+    
+    <category term="yxt" scheme="https://newstorm-0.github.io/categories/yxt/"/>
+    
+    
+    <category term="c++" scheme="https://newstorm-0.github.io/tags/c/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>论文阅读（Improving neural networks by preventing co-adaptation of feature detectors ）</title>
+    <link href="https://newstorm-0.github.io/2022/05/02/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%88Improving%20neural%20networks%20by%20preventing%20co-adaptation%20of%20feature%20detectors%20%EF%BC%89/"/>
+    <id>https://newstorm-0.github.io/2022/05/02/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%88Improving%20neural%20networks%20by%20preventing%20co-adaptation%20of%20feature%20detectors%20%EF%BC%89/</id>
+    <published>2022-05-01T17:09:18.000Z</published>
+    <updated>2022-05-01T09:10:29.757Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;&lt;s&gt;显然看不懂英文然后出于各种原因最终被迫搜索了翻译版本，如有错误欢迎指出&lt;/s&gt;&lt;/p&gt;
+&lt;h3 id=&quot;介绍主体：&quot;&gt;介绍主体：&lt;/h3&gt;
+&lt;p&gt;DropOut&lt;/p&gt;
+&lt;h3</summary>
+        
+      
+    
+    
+    
+    <category term="yxt" scheme="https://newstorm-0.github.io/categories/yxt/"/>
+    
+    
+    <category term="阅读" scheme="https://newstorm-0.github.io/tags/%E9%98%85%E8%AF%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关于更改默认安装路径这件事</title>
+    <link href="https://newstorm-0.github.io/2022/05/02/%E5%85%B3%E4%BA%8E%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AE%89%E8%A3%85%E8%B7%AF%E5%BE%84%E8%BF%99%E4%BB%B6%E4%BA%8B/"/>
+    <id>https://newstorm-0.github.io/2022/05/02/%E5%85%B3%E4%BA%8E%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AE%89%E8%A3%85%E8%B7%AF%E5%BE%84%E8%BF%99%E4%BB%B6%E4%BA%8B/</id>
+    <published>2022-05-01T17:05:07.000Z</published>
+    <updated>2022-05-01T09:06:29.978Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;&lt;img</summary>
+        
+      
+    
+    
+    
+    <category term="yxt" scheme="https://newstorm-0.github.io/categories/yxt/"/>
+    
+    
+    <category term="整治电脑" scheme="https://newstorm-0.github.io/tags/%E6%95%B4%E6%B2%BB%E7%94%B5%E8%84%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>补充re</title>
+    <link href="https://newstorm-0.github.io/2022/05/02/%E8%A1%A5%E5%85%85re/"/>
+    <id>https://newstorm-0.github.io/2022/05/02/%E8%A1%A5%E5%85%85re/</id>
+    <published>2022-05-01T17:00:37.000Z</published>
+    <updated>2022-05-01T09:04:32.463Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h3 id=&quot;关于正则表达式&quot;&gt;关于正则表达式&lt;/h3&gt;
+&lt;p&gt;算了我决定看别人的博客：&lt;a href=&quot;https://www.cnblogs.com/fozero/p/7868687.html&quot;&gt;史上最全常用正则表达式大全&lt;/a&gt;&lt;br&gt;
+&lt;img</summary>
+        
+      
+    
+    
+    
+    <category term="yxt" scheme="https://newstorm-0.github.io/categories/yxt/"/>
+    
+    
+    <category term="Python" scheme="https://newstorm-0.github.io/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>补充beautifulSoup</title>
+    <link href="https://newstorm-0.github.io/2022/05/02/%E8%A1%A5%E5%85%85beautifulSoup/"/>
+    <id>https://newstorm-0.github.io/2022/05/02/%E8%A1%A5%E5%85%85beautifulSoup/</id>
+    <published>2022-05-01T16:57:52.000Z</published>
+    <updated>2022-05-01T08:59:59.012Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;学习视频链接：&lt;a href=&quot;https://www.bilibili.com/video/BV12E411A7ZQ?p=20&amp;amp;spm_id_from=pageDriver&quot;&gt;Python爬虫基础5天速成&lt;/a&gt;&lt;/p&gt;
+&lt;h3</summary>
+        
+      
+    
+    
+    
+    <category term="yxt" scheme="https://newstorm-0.github.io/categories/yxt/"/>
+    
+    
+    <category term="Python" scheme="https://newstorm-0.github.io/tags/Python/"/>
+    
+    <category term="爬虫" scheme="https://newstorm-0.github.io/tags/%E7%88%AC%E8%99%AB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>补充urllib</title>
+    <link href="https://newstorm-0.github.io/2022/05/02/%E8%A1%A5%E5%85%85urllib/"/>
+    <id>https://newstorm-0.github.io/2022/05/02/%E8%A1%A5%E5%85%85urllib/</id>
+    <published>2022-05-01T16:47:53.000Z</published>
+    <updated>2022-05-01T08:58:24.292Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;视频学习链接：&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="yxt" scheme="https://newstorm-0.github.io/categories/yxt/"/>
+    
+    
+    <category term="Python" scheme="https://newstorm-0.github.io/tags/Python/"/>
+    
+    <category term="爬虫" scheme="https://newstorm-0.github.io/tags/%E7%88%AC%E8%99%AB/"/>
+    
+  </entry>
+  
+  <entry>
     <title>给爷爬!</title>
     <link href="https://newstorm-0.github.io/2022/05/01/%E7%BB%99%E7%88%B7%E7%88%AC/"/>
     <id>https://newstorm-0.github.io/2022/05/01/%E7%BB%99%E7%88%B7%E7%88%AC/</id>
     <published>2022-05-01T15:41:18.000Z</published>
-    <updated>2022-05-01T07:50:07.824Z</updated>
+    <updated>2022-05-01T08:45:37.748Z</updated>
     
     
       
@@ -51,7 +465,7 @@
     <link href="https://newstorm-0.github.io/2022/05/01/ccf-csp2013-12/"/>
     <id>https://newstorm-0.github.io/2022/05/01/ccf-csp2013-12/</id>
     <published>2022-05-01T15:18:21.000Z</published>
-    <updated>2022-05-01T07:50:19.480Z</updated>
+    <updated>2022-05-01T08:47:01.900Z</updated>
     
     
       
@@ -77,7 +491,7 @@
     <link href="https://newstorm-0.github.io/2022/05/01/%E7%94%B5%E8%84%91%E5%8D%A1%E9%A1%BF%E6%B2%BB%E7%96%97%E6%96%B9%E6%A1%88/"/>
     <id>https://newstorm-0.github.io/2022/05/01/%E7%94%B5%E8%84%91%E5%8D%A1%E9%A1%BF%E6%B2%BB%E7%96%97%E6%96%B9%E6%A1%88/</id>
     <published>2022-05-01T11:31:07.000Z</published>
-    <updated>2022-05-01T03:38:46.653Z</updated>
+    <updated>2022-05-01T08:46:15.951Z</updated>
     
     
       
@@ -151,27 +565,6 @@
     
     
     <category term="垃圾" scheme="https://newstorm-0.github.io/tags/%E5%9E%83%E5%9C%BE/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="https://newstorm-0.github.io/2022/04/26/hello-world/"/>
-    <id>https://newstorm-0.github.io/2022/04/26/hello-world/</id>
-    <published>2022-04-26T02:40:46.674Z</published>
-    <updated>2022-04-26T02:40:46.674Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt;</summary>
-        
-      
-    
-    
-    
     
   </entry>
   
