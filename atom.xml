@@ -6,7 +6,7 @@
   <link href="https://newstorm-0.github.io/atom.xml" rel="self"/>
   
   <link href="https://newstorm-0.github.io/"/>
-  <updated>2022-04-29T14:28:34.153Z</updated>
+  <updated>2022-05-01T07:50:07.824Z</updated>
   <id>https://newstorm-0.github.io/</id>
   
   <author>
@@ -15,6 +15,92 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>给爷爬!</title>
+    <link href="https://newstorm-0.github.io/2022/05/01/%E7%BB%99%E7%88%B7%E7%88%AC/"/>
+    <id>https://newstorm-0.github.io/2022/05/01/%E7%BB%99%E7%88%B7%E7%88%AC/</id>
+    <published>2022-05-01T15:41:18.000Z</published>
+    <updated>2022-05-01T07:50:07.824Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;芜湖，我来学习爬虫啦。希望能够永远不吃牢饭并且顺利完成学长的任务呢！&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;学习入口：&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="yxt" scheme="https://newstorm-0.github.io/categories/yxt/"/>
+    
+    
+    <category term="Python" scheme="https://newstorm-0.github.io/tags/Python/"/>
+    
+    <category term="爬虫" scheme="https://newstorm-0.github.io/tags/%E7%88%AC%E8%99%AB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ccf-csp2013.12</title>
+    <link href="https://newstorm-0.github.io/2022/05/01/ccf-csp2013-12/"/>
+    <id>https://newstorm-0.github.io/2022/05/01/ccf-csp2013-12/</id>
+    <published>2022-05-01T15:18:21.000Z</published>
+    <updated>2022-05-01T07:50:19.480Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;&lt;em&gt;我终于想起这个&lt;s&gt;被我咕了将近半个月的&lt;/s&gt; 任务了。。。从头开始做吧&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&quot;T1-（简单的循环模拟&quot;&gt;T1</summary>
+        
+      
+    
+    
+    
+    <category term="yxt" scheme="https://newstorm-0.github.io/categories/yxt/"/>
+    
+    
+    <category term="csp ccf 模拟练习" scheme="https://newstorm-0.github.io/tags/csp-ccf-%E6%A8%A1%E6%8B%9F%E7%BB%83%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>电脑卡顿治疗方案</title>
+    <link href="https://newstorm-0.github.io/2022/05/01/%E7%94%B5%E8%84%91%E5%8D%A1%E9%A1%BF%E6%B2%BB%E7%96%97%E6%96%B9%E6%A1%88/"/>
+    <id>https://newstorm-0.github.io/2022/05/01/%E7%94%B5%E8%84%91%E5%8D%A1%E9%A1%BF%E6%B2%BB%E7%96%97%E6%96%B9%E6%A1%88/</id>
+    <published>2022-05-01T11:31:07.000Z</published>
+    <updated>2022-05-01T03:38:46.653Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;原本，这是一个美好的上午，yxt打开了她的B站和python准备学习RNN，然后，打开了好久好久好久，，，，&lt;br&gt;
+迫不得已开始整顿卡机过分的电脑&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;操作&quot;&gt;操作&lt;/h2&gt;
+&lt;h3</summary>
+        
+      
+    
+    
+    
+    <category term="yxt" scheme="https://newstorm-0.github.io/categories/yxt/"/>
+    
+    
+    <category term="整治电脑" scheme="https://newstorm-0.github.io/tags/%E6%95%B4%E6%B2%BB%E7%94%B5%E8%84%91/"/>
+    
+  </entry>
   
   <entry>
     <title>在学习和使用SQL中遇到的一些知识</title>

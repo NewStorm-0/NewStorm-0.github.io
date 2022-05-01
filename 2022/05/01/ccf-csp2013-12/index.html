@@ -1,0 +1,335 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>ccf-csp2013.12 | NewStorm</title><meta name="keywords" content="csp ccf 模拟练习"><meta name="author" content="NewStorms"><meta name="copyright" content="NewStorms"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="我终于想起这个被我咕了将近半个月的 任务了。。。从头开始做吧 T1 （简单的循环模拟  问题描述 　　给定n个正整数，找出它们中出现次数最多的数。如果这样的数有多个，请输出其中最小的一个。 输入格式 　　输入的第一行只有一个正整数n(1 ≤ n ≤ 1000)，表示数字的个数。 　　输入的第二行有n个整数s1, s2, …, sn (1 ≤ si ≤ 10000, 1 ≤ i ≤ n)。相邻的数用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ccf-csp2013.12">
+<meta property="og:url" content="https://newstorm-0.github.io/2022/05/01/ccf-csp2013-12/index.html">
+<meta property="og:site_name" content="NewStorm">
+<meta property="og:description" content="我终于想起这个被我咕了将近半个月的 任务了。。。从头开始做吧 T1 （简单的循环模拟  问题描述 　　给定n个正整数，找出它们中出现次数最多的数。如果这样的数有多个，请输出其中最小的一个。 输入格式 　　输入的第一行只有一个正整数n(1 ≤ n ≤ 1000)，表示数字的个数。 　　输入的第二行有n个整数s1, s2, …, sn (1 ≤ si ≤ 10000, 1 ≤ i ≤ n)。相邻的数用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg">
+<meta property="article:published_time" content="2022-05-01T15:18:21.000Z">
+<meta property="article:modified_time" content="2022-05-01T07:50:19.480Z">
+<meta property="article:author" content="NewStorms">
+<meta property="article:tag" content="csp ccf 模拟练习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg"><link rel="shortcut icon" href="/img/favicon-32x32-next.png"><link rel="canonical" href="https://newstorm-0.github.io/2022/05/01/ccf-csp2013-12/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.clarity.ms"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "bnz9wx40db");</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'ccf-csp2013.12',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-05-01 07:50:19'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const now = new Date()
+          const hour = now.getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="NewStorm" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/jiamo.jfif" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">NewStorm</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">ccf-csp2013.12</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-05-01T15:18:21.000Z" title="发表于 2022-05-01 15:18:21">2022-05-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-05-01T07:50:19.480Z" title="更新于 2022-05-01 07:50:19">2022-05-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/yxt/">yxt</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>12分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="ccf-csp2013.12"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><em>我终于想起这个<s>被我咕了将近半个月的</s> 任务了。。。从头开始做吧</em></p>
+<h2 id="T1-（简单的循环模拟">T1 （简单的循环模拟</h2>
+<blockquote>
+<p>问题描述<br>
+　　给定n个正整数，找出它们中出现次数最多的数。如果这样的数有多个，请输出其中最小的一个。<br>
+输入格式<br>
+　　输入的第一行只有一个正整数n(1 ≤ n ≤ 1000)，表示数字的个数。<br>
+　　输入的第二行有n个整数s1, s2, …, sn (1 ≤ si ≤ 10000, 1 ≤ i ≤ n)。相邻的数用空格分隔。<br>
+输出格式<br>
+　　输出这n个次数中出现次数最多的数。如果这样的数有多个，输出其中最小的一个。<br>
+样例输入<br>
+6<br>
+10 1 10 20 30 20<br>
+样例输出<br>
+10</p>
+</blockquote>
+<p>要注意的是当从大到小查结果时，将<code>a[i] &gt; ma </code> 改为<code>a[i] &gt;= ma</code>，还有别忘了更新<code>ma</code>…</p>
+<p>满分代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> n, a[<span class="number">10002</span>], tmp, ma = <span class="number">0</span>, ans;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">10000</span>; i++) a[i] = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)	&#123;<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;tmp);a[tmp]++;&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">10000</span>; i++)</span><br><span class="line">		<span class="keyword">if</span>(a[i] &gt; ma)	ans = i, ma = a[i];</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, ans);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="T2-另一个简单的模拟">T2 (另一个简单的模拟</h2>
+<blockquote>
+<p>问题描述<br>
+　　每一本正式出版的图书都有一个ISBN号码与之对应，ISBN码包括9位数字、1位识别码和3位分隔符，其规定格式如“x-xxx-xxxxx-x”，其中符号“-”是分隔符（键盘上的减号），最后一位是识别码，例如0-670-82162-4就是一个标准的ISBN码。ISBN码的首位数字表示书籍的出版语言，例如0代表英语；第一个分隔符“-”之后的三位数字代表出版社，例如670代表维京出版社；第二个分隔之后的五位数字代表该书在出版社的编号；最后一位为识别码。<br>
+　　识别码的计算方法如下：<br>
+　　首位数字乘以1加上次位数字乘以2……以此类推，用所得的结果mod 11，所得的余数即为识别码，如果余数为10，则识别码为大写字母X。例如ISBN号码0-670-82162-4中的识别码4是这样得到的：对067082162这9个数字，从左至右，分别乘以1，2，…，9，再求和，即0×1+6×2+……+2×9=158，然后取158 mod 11的结果4作为识别码。<br>
+　　编写程序判断输入的ISBN号码中识别码是否正确，如果正确，则仅输出“Right”；如果错误，则输出是正确的ISBN号码。<br>
+输入格式<br>
+　　输入只有一行，是一个字符序列，表示一本书的ISBN号码（保证输入符合ISBN号码的格式要求）。<br>
+输出格式<br>
+　　输出一行，假如输入的ISBN号码的识别码正确，那么输出“Right”，否则，按照规定的格式，输出正确的ISBN号码（包括分隔符“-”）。<br>
+样例输入<br>
+0-670-82162-4<br>
+样例输出<br>
+Right<br>
+样例输入<br>
+0-670-82162-0<br>
+样例输出<br>
+0-670-82162-4</p>
+</blockquote>
+<p>注意最后一位是0~9或者X，所以对于%11后为10的情况要特殊处理</p>
+<p>满分代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	string str;</span><br><span class="line">	cin &gt;&gt; str;</span><br><span class="line">	<span class="type">char</span> end;</span><br><span class="line">	<span class="type">int</span> standard = <span class="number">0</span>, count = <span class="number">1</span>, len = str.<span class="built_in">length</span>();</span><br><span class="line">	<span class="comment">//0-670-82162-4</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; len - <span class="number">1</span>; i++)</span><br><span class="line">		<span class="keyword">if</span>(str[i] &gt;= <span class="string">&#x27;0&#x27;</span> &amp;&amp; str[i] &lt;= <span class="string">&#x27;9&#x27;</span>)</span><br><span class="line">			standard += (str[i] - <span class="string">&#x27;0&#x27;</span>) * (count++);</span><br><span class="line">	standard %= <span class="number">11</span>;</span><br><span class="line">	<span class="keyword">if</span>(standard == <span class="number">10</span>)</span><br><span class="line">		end = <span class="string">&#x27;X&#x27;</span>;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		end = standard + <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">	<span class="keyword">if</span>(end == str[len - <span class="number">1</span>])</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;Right&quot;</span>);</span><br><span class="line">	<span class="keyword">else</span>&#123;</span><br><span class="line">		str[len - <span class="number">1</span>] = end;</span><br><span class="line">		cout &lt;&lt; str;</span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意下面两个都是错误的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	string str;</span><br><span class="line">	cin &gt;&gt; str;</span><br><span class="line"><span class="comment">//	char end;</span></span><br><span class="line">	<span class="type">int</span> standard = <span class="number">0</span>, count = <span class="number">1</span>, len = str.<span class="built_in">length</span>();</span><br><span class="line">	<span class="comment">//0-670-82162-4</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; len - <span class="number">1</span>; i++)</span><br><span class="line">		<span class="keyword">if</span>(str[i] &gt;= <span class="string">&#x27;0&#x27;</span> &amp;&amp; str[i] &lt;= <span class="string">&#x27;9&#x27;</span>)</span><br><span class="line">			standard += (str[i] - <span class="string">&#x27;0&#x27;</span>) * (count++);</span><br><span class="line">	standard %= <span class="number">11</span>;</span><br><span class="line"><span class="comment">//	if(standard == 10)</span></span><br><span class="line"><span class="comment">//		end = &#x27;X&#x27;;</span></span><br><span class="line"><span class="comment">//	else</span></span><br><span class="line"><span class="comment">//		end = standard + &#x27;0&#x27;;</span></span><br><span class="line">	<span class="keyword">if</span>(standard == (str[len - <span class="number">1</span>] - <span class="string">&#x27;0&#x27;</span>))</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;Right&quot;</span>);</span><br><span class="line">	<span class="keyword">else</span>&#123;</span><br><span class="line">		str[len - <span class="number">1</span>] = standard + <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">		cout &lt;&lt; str;</span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">这个是因为完全忘掉了有X这回事</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	string str;</span><br><span class="line">	cin &gt;&gt; str;</span><br><span class="line"><span class="comment">//	char end;</span></span><br><span class="line">	<span class="type">int</span> standard = <span class="number">0</span>, count = <span class="number">1</span>, len = str.<span class="built_in">length</span>();</span><br><span class="line">	<span class="comment">//0-670-82162-4</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; len - <span class="number">1</span>; i++)</span><br><span class="line">		<span class="keyword">if</span>(str[i] &gt;= <span class="string">&#x27;0&#x27;</span> &amp;&amp; str[i] &lt;= <span class="string">&#x27;9&#x27;</span>)</span><br><span class="line">			standard += (str[i] - <span class="string">&#x27;0&#x27;</span>) * (count++);</span><br><span class="line">	standard %= <span class="number">11</span>;</span><br><span class="line"><span class="comment">//	if(standard == 10)</span></span><br><span class="line"><span class="comment">//		end = &#x27;X&#x27;;</span></span><br><span class="line"><span class="comment">//	else</span></span><br><span class="line"><span class="comment">//		end = standard + &#x27;0&#x27;;</span></span><br><span class="line">	<span class="keyword">if</span>(standard == (str[len - <span class="number">1</span>] - <span class="string">&#x27;0&#x27;</span>))</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;Right&quot;</span>);</span><br><span class="line">	<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(standard == <span class="number">10</span>)</span><br><span class="line">			str[len - <span class="number">1</span>] = <span class="string">&#x27;X&#x27;</span>;</span><br><span class="line">		<span class="keyword">else</span> </span><br><span class="line">			str[len - <span class="number">1</span>] = standard + <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">		cout &lt;&lt; str;</span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">这个是因为更改和X有关情况时值更改了else部分，上面的if判断会出错</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h2 id="T3-（单调不上升子序列">T3 （单调不上升子序列</h2>
+<blockquote>
+<p>问题描述<br>
+　　在横轴上放了n个相邻的矩形，每个矩形的宽度是1，而第i（1 ≤ i ≤ n）个矩形的高度是hi。这n个矩形构成了一个直方图。例如，下图中六个矩形的高度就分别是3, 1, 6, 5, 2, 3。<br>
+　　请找出能放在给定直方图里面积最大的矩形，它的边要与坐标轴平行。对于上面给出的例子，最大矩形如下图所示的阴影部分，面积是10。<br>
+输入格式<br>
+　　第一行包含一个整数n，即矩形的数量(1 ≤ n ≤ 1000)。<br>
+　　第二行包含n 个整数h1, h2, … , hn，相邻的数之间由空格分隔。(1 ≤ hi ≤ 10000)。hi是第i个矩形的高度。<br>
+输出格式<br>
+　　输出一行，包含一个整数，即给定直方图内的最大矩形的面积。<br>
+样例输入<br>
+6<br>
+3 1 6 5 2 3<br>
+样例输出<br>
+10</p>
+</blockquote>
+<p>显然，对于这个问题，每个矩形必然受最矮的柱形限制，所以我们可以对于每个柱形，向左右同时寻找单调不下降的柱形（指两端），保证这个柱形就是那个限制点</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> n, cnt, ans = <span class="number">0</span>;</span><br><span class="line">	<span class="type">int</span> h[<span class="number">10002</span>];</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;h[i]);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">		cnt = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j = i - <span class="number">1</span>; j &gt;= <span class="number">1</span>; j--)&#123;</span><br><span class="line">			<span class="keyword">if</span>(h[j] &lt; h[i])</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			cnt ++;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j = i; j&lt;= n; j++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(h[j] &lt; h[i])</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			cnt ++;</span><br><span class="line">		&#125;</span><br><span class="line">		ans = <span class="built_in">max</span>(ans, cnt * h[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, ans);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">感动</span></span><br><span class="line"><span class="comment">这是好久以来重新打代码之后的第一次一遍过</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h2 id="T4（又名：一个人可以有多么善变">T4（又名：一个人可以有多么善变</h2>
+<blockquote>
+<p>问题描述<br>
+我们把一个数称为有趣的，当且仅当：<br>
+1. 它的数字只包含0, 1, 2, 3，且这四个数字都出现过至少一次。<br>
+2. 所有的0都出现在所有的1之前，而所有的2都出现在所有的3之前。<br>
+3. 最高位数字不为0。<br>
+因此，符合我们定义的最小的有趣的数是2013。除此以外，4位的有趣的数还有两个：2031和2301。<br>
+请计算恰好有n位的有趣的数的个数。由于答案可能非常大，只需要输出答案除以1000000007的余数。<br>
+输入格式<br>
+输入只有一行，包括恰好一个正整数n (4 ≤ n ≤ 1000)。<br>
+输出格式<br>
+输出只有一行，包括恰好n 位的整数中有趣的数的个数除以1000000007的余数。<br>
+样例输入<br>
+4<br>
+样例输出<br>
+3</p>
+</blockquote>
+<h4 id="还没写，大致思路：">还没写，大致思路：</h4>
+<ol>
+<li>对于已经出现了<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn></mrow><annotation encoding="application/x-tex">3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span>的情况，对后面直接取<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>A</mi><mtext>剩余位数</mtext><mn>3</mn></msubsup></mrow><annotation encoding="application/x-tex">A_{剩余位数}^{3}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0894em;vertical-align:-0.2753em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-2.4247em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">剩余位数</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2753em;"><span></span></span></span></span></span></span></span></span></span></li>
+<li>对于还没有出现<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn></mrow><annotation encoding="application/x-tex">3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span>的情况，后面分为取<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn></mrow><annotation encoding="application/x-tex">3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span>和不取<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn></mrow><annotation encoding="application/x-tex">3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span>两种情况</li>
+<li>对于<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>和<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>也是如此</li>
+</ol>
+<h4 id="我在干啥呢？？？？">我在干啥呢？？？？</h4>
+<ol>
+<li>大概是直接进行递归，终点是当前位为4，每一次返回<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>种类数</mtext><mi mathvariant="normal">%</mi><mn>1000000007</mn></mrow><annotation encoding="application/x-tex">种类数\%1000000007</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8056em;vertical-align:-0.0556em;"></span><span class="mord cjk_fallback">种类数</span><span class="mord">%1000000007</span></span></span></span></li>
+<li>中间要注意“出现1之后不能再次出现0”和“出现3之后不能再次出现2”的限制</li>
+</ol>
+<h4 id="我又改主意了。。。">我又改主意了。。。</h4>
+<ol>
+<li>这个题终点为位数达到n比较好吧</li>
+<li>每一位加一次种类数，，似乎简单又可行</li>
+<li>怎么回事我的数字这么大，哦原来是忘记了 <em>它的数字只包含0, 1, 2, 3，且这四个数字都出现过至少一次</em> 里面的 <em>且这四个数字都出现过至少一次</em>的要求</li>
+<li>呀不简单，怎样才能保证每一个数都出现过呢</li>
+<li>实现不了啊下一个</li>
+</ol>
+<h4 id="我，，绝望">我，，绝望</h4>
+<p>我十分认真地怀疑，我又要用我蹩脚的dp来做这道题了，可是上一次的第三步还是做不到啊啊啊啊啊，搜答案去了<br>
+呜呜呜为什么用dp这么简单</p>
+<h5 id="把状态分类然后最终答案取使用过全部数字的状态类就可以了呀！！！！">把状态分类然后最终答案取使用过全部数字的状态类就可以了呀！！！！</h5>
+<ol>
+<li>显然第一位只能取2（0不让首位，1的话0就出现不了，3的话2就出现不了）由此类推，第二位只能取0，2，3，一直到出现了0之后才能取1，哦对了我们只需要知道第一位取啥就可以了，有了开头就行，后面的由上方加粗字体解决</li>
+<li>状态分类可分为以下几种：（根据依赖关系可以得知有下面几种）</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">第0种  使用过2，剩余0 1 3</span><br><span class="line"></span><br><span class="line">第1种 使用过0 2，剩余1 3</span><br><span class="line"></span><br><span class="line">第2种 使用过0 1 2，剩余3</span><br><span class="line"></span><br><span class="line">第3种 使用过0 2 3，剩余1</span><br><span class="line"></span><br><span class="line">第4种 使用过2 3，剩余0 1</span><br><span class="line"></span><br><span class="line">第5种 全部使用过</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>根据状态之间的转化进行递推</li>
+<li>需要注意的是，不光<code>int</code>会爆，<code>long</code>也会，，只能用<code>long long</code></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> mod = <span class="number">1000000007</span>; </span><br><span class="line"><span class="type">long</span> <span class="type">long</span> a[<span class="number">1002</span>][<span class="number">6</span>];</span><br><span class="line"><span class="comment">/*        used      </span></span><br><span class="line"><span class="comment">a[][0]    2</span></span><br><span class="line"><span class="comment">a[][1]    2, 3       comfrom(2) or(2, 3)</span></span><br><span class="line"><span class="comment">a[][2]    0, 2       comfrom(2) or(0, 2)</span></span><br><span class="line"><span class="comment">a[][3]    0, 2, 3    comefrom( 0, 2) or ( 2, 3) or (0, 2 ,3)</span></span><br><span class="line"><span class="comment">a[][4]    0, 1, 2    comefrom(0,2) or (0, 1, 2) </span></span><br><span class="line"><span class="comment">a[][5]    0, 1, 2, 3 comefrom(0, 2, 3) or (0, 1, 2) or (0, 1, 2, 3)</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">	<span class="built_in">memset</span>(a, <span class="number">0</span>, <span class="built_in">sizeof</span>(a));</span><br><span class="line"><span class="comment">//	a[1][0] = 1;// the start</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)&#123;</span><br><span class="line">		a[i][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">		a[i][<span class="number">1</span>] = (a[i - <span class="number">1</span>][<span class="number">0</span>] + a[i - <span class="number">1</span>][<span class="number">1</span>]) % mod;</span><br><span class="line">		a[i][<span class="number">2</span>] = (a[i - <span class="number">1</span>][<span class="number">0</span>] + a[i - <span class="number">1</span>][<span class="number">2</span>] * <span class="number">2</span>) % mod;</span><br><span class="line">		a[i][<span class="number">3</span>] = (a[i - <span class="number">1</span>][<span class="number">2</span>] + a[i - <span class="number">1</span>][<span class="number">1</span>] + a[i - <span class="number">1</span>][<span class="number">3</span>] * <span class="number">2</span>) % mod;</span><br><span class="line">		a[i][<span class="number">4</span>] = (a[i - <span class="number">1</span>][<span class="number">2</span>] + a[i - <span class="number">1</span>][<span class="number">4</span>] * <span class="number">2</span>) % mod;</span><br><span class="line">		a[i][<span class="number">5</span>] = (a[i - <span class="number">1</span>][<span class="number">3</span>] + a[i - <span class="number">1</span>][<span class="number">4</span>]  + a[i - <span class="number">1</span>][<span class="number">5</span>] * <span class="number">2</span>) % mod;</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; a[n][<span class="number">5</span>] % mod;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此处纪念一下错误代码3号：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">#include &lt;cstdio&gt;</span></span><br><span class="line"><span class="comment">#include &lt;algorithm&gt;</span></span><br><span class="line"><span class="comment">#include &lt;cstring&gt;</span></span><br><span class="line"><span class="comment">#include &lt;string&gt;</span></span><br><span class="line"><span class="comment">#include &lt;iostream&gt;</span></span><br><span class="line"><span class="comment">using namespace std;</span></span><br><span class="line"><span class="comment">int n;</span></span><br><span class="line"><span class="comment">long ans = 0;</span></span><br><span class="line"><span class="comment">const int mod = 1000000007;</span></span><br><span class="line"><span class="comment">void dfs(int add, bool haveone, bool havethree, int tot)&#123;</span></span><br><span class="line"><span class="comment">	if(tot == n) return;</span></span><br><span class="line"><span class="comment">	ans = (ans + add % mod) % mod;</span></span><br><span class="line"><span class="comment">	cout &lt;&lt;&quot;tot = &quot; &lt;&lt; tot &lt;&lt; &quot;   add:&quot; &lt;&lt; add &lt;&lt; endl;</span></span><br><span class="line"><span class="comment">	if(!haveone &amp;&amp; !havethree)&#123;// no limit</span></span><br><span class="line"><span class="comment">		dfs(2, false, false, tot + 1);//0 2</span></span><br><span class="line"><span class="comment">		dfs(1, false, true, tot + 1);//3</span></span><br><span class="line"><span class="comment">		dfs(1, true, false, tot + 1);//1</span></span><br><span class="line"><span class="comment">	&#125;</span></span><br><span class="line"><span class="comment">	else if(haveone &amp;&amp; !havethree)&#123;//no 0 but can 2</span></span><br><span class="line"><span class="comment">		dfs(2, true, false, tot + 1);//1 2</span></span><br><span class="line"><span class="comment">		dfs(1, true, true, tot + 1);//3</span></span><br><span class="line"><span class="comment">	&#125;</span></span><br><span class="line"><span class="comment">	else if(!haveone &amp;&amp; havethree)&#123;//no 2 but can 0</span></span><br><span class="line"><span class="comment">		dfs(2, false, true, tot + 1);//0 3</span></span><br><span class="line"><span class="comment">		dfs(1, true, true, tot + 1);//1</span></span><br><span class="line"><span class="comment">	&#125;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">int main()&#123;</span></span><br><span class="line"><span class="comment">	scanf(&quot;%d&quot;, &amp;n);</span></span><br><span class="line"><span class="comment">//	if(n == 4) &#123;</span></span><br><span class="line"><span class="comment">//		printf(&quot;3\n&quot;);</span></span><br><span class="line"><span class="comment">//		return 0;	</span></span><br><span class="line"><span class="comment">//	&#125;</span></span><br><span class="line"><span class="comment">	dfs(1, false, false, 0);//2 </span></span><br><span class="line"><span class="comment">	cout &lt;&lt; endl &lt;&lt; endl;</span></span><br><span class="line"><span class="comment">	dfs(1, false, true, 0);// 3</span></span><br><span class="line"><span class="comment">	cout &lt;&lt; endl &lt;&lt; endl;</span></span><br><span class="line"><span class="comment">	dfs(1, true, false, 0);// 1</span></span><br><span class="line"><span class="comment">	cout &lt;&lt; endl &lt;&lt; endl;</span></span><br><span class="line"><span class="comment">	cout &lt;&lt; ans &lt;&lt; endl;</span></span><br><span class="line"><span class="comment">	return 0;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h4 id="T5-就是简单的搜索问题">T5  就是简单的搜索问题</h4>
+<p>不行写了一点太困了明天写。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">NewStorms</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://newstorm-0.github.io/2022/05/01/ccf-csp2013-12/">https://newstorm-0.github.io/2022/05/01/ccf-csp2013-12/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://newstorm-0.github.io" target="_blank">NewStorm</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/csp-ccf-%E6%A8%A1%E6%8B%9F%E7%BB%83%E4%B9%A0/">csp ccf 模拟练习</a></div><div class="post_share"><div class="social-share" data-image="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/05/01/%E7%BB%99%E7%88%B7%E7%88%AC/"><img class="prev-cover" src="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">给爷爬!</div></div></a></div><div class="next-post pull-right"><a href="/2022/05/01/%E7%94%B5%E8%84%91%E5%8D%A1%E9%A1%BF%E6%B2%BB%E7%96%97%E6%96%B9%E6%A1%88/"><img class="next-cover" src="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">电脑卡顿治疗方案</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/jiamo.jfif" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">NewStorms</div><div class="author-info__description">自己看用的</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">6</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/NewStorm-0"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/NewStorm-0" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="https://qm.qq.com/cgi-bin/qm/qr?k=UChUQjcciCq5CMz0rD7y-_r0Zg_iG9fn&amp;noverify=0" target="_blank" title="QQ"><i class="fa-brands fa-qq"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS链接"><i class="fa fa-rss"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#T1-%EF%BC%88%E7%AE%80%E5%8D%95%E7%9A%84%E5%BE%AA%E7%8E%AF%E6%A8%A1%E6%8B%9F"><span class="toc-number">1.</span> <span class="toc-text">T1 （简单的循环模拟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#T2-%E5%8F%A6%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E6%A8%A1%E6%8B%9F"><span class="toc-number">2.</span> <span class="toc-text">T2 (另一个简单的模拟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#T3-%EF%BC%88%E5%8D%95%E8%B0%83%E4%B8%8D%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97"><span class="toc-number">3.</span> <span class="toc-text">T3 （单调不上升子序列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#T4%EF%BC%88%E5%8F%88%E5%90%8D%EF%BC%9A%E4%B8%80%E4%B8%AA%E4%BA%BA%E5%8F%AF%E4%BB%A5%E6%9C%89%E5%A4%9A%E4%B9%88%E5%96%84%E5%8F%98"><span class="toc-number">4.</span> <span class="toc-text">T4（又名：一个人可以有多么善变</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%98%E6%B2%A1%E5%86%99%EF%BC%8C%E5%A4%A7%E8%87%B4%E6%80%9D%E8%B7%AF%EF%BC%9A"><span class="toc-number">4.0.1.</span> <span class="toc-text">还没写，大致思路：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%88%91%E5%9C%A8%E5%B9%B2%E5%95%A5%E5%91%A2%EF%BC%9F%EF%BC%9F%EF%BC%9F%EF%BC%9F"><span class="toc-number">4.0.2.</span> <span class="toc-text">我在干啥呢？？？？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%88%91%E5%8F%88%E6%94%B9%E4%B8%BB%E6%84%8F%E4%BA%86%E3%80%82%E3%80%82%E3%80%82"><span class="toc-number">4.0.3.</span> <span class="toc-text">我又改主意了。。。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%88%91%EF%BC%8C%EF%BC%8C%E7%BB%9D%E6%9C%9B"><span class="toc-number">4.0.4.</span> <span class="toc-text">我，，绝望</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8A%8A%E7%8A%B6%E6%80%81%E5%88%86%E7%B1%BB%E7%84%B6%E5%90%8E%E6%9C%80%E7%BB%88%E7%AD%94%E6%A1%88%E5%8F%96%E4%BD%BF%E7%94%A8%E8%BF%87%E5%85%A8%E9%83%A8%E6%95%B0%E5%AD%97%E7%9A%84%E7%8A%B6%E6%80%81%E7%B1%BB%E5%B0%B1%E5%8F%AF%E4%BB%A5%E4%BA%86%E5%91%80%EF%BC%81%EF%BC%81%EF%BC%81%EF%BC%81"><span class="toc-number">4.0.4.1.</span> <span class="toc-text">把状态分类然后最终答案取使用过全部数字的状态类就可以了呀！！！！</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#T5-%E5%B0%B1%E6%98%AF%E7%AE%80%E5%8D%95%E7%9A%84%E6%90%9C%E7%B4%A2%E9%97%AE%E9%A2%98"><span class="toc-number">4.0.5.</span> <span class="toc-text">T5  就是简单的搜索问题</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/05/01/%E7%BB%99%E7%88%B7%E7%88%AC/" title="给爷爬!"><img src="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="给爷爬!"/></a><div class="content"><a class="title" href="/2022/05/01/%E7%BB%99%E7%88%B7%E7%88%AC/" title="给爷爬!">给爷爬!</a><time datetime="2022-05-01T15:41:18.000Z" title="发表于 2022-05-01 15:41:18">2022-05-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/01/ccf-csp2013-12/" title="ccf-csp2013.12"><img src="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ccf-csp2013.12"/></a><div class="content"><a class="title" href="/2022/05/01/ccf-csp2013-12/" title="ccf-csp2013.12">ccf-csp2013.12</a><time datetime="2022-05-01T15:18:21.000Z" title="发表于 2022-05-01 15:18:21">2022-05-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/01/%E7%94%B5%E8%84%91%E5%8D%A1%E9%A1%BF%E6%B2%BB%E7%96%97%E6%96%B9%E6%A1%88/" title="电脑卡顿治疗方案"><img src="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="电脑卡顿治疗方案"/></a><div class="content"><a class="title" href="/2022/05/01/%E7%94%B5%E8%84%91%E5%8D%A1%E9%A1%BF%E6%B2%BB%E7%96%97%E6%96%B9%E6%A1%88/" title="电脑卡顿治疗方案">电脑卡顿治疗方案</a><time datetime="2022-05-01T11:31:07.000Z" title="发表于 2022-05-01 11:31:07">2022-05-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/04/29/%E5%9C%A8%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8SQL%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86/" title="在学习和使用SQL中遇到的一些知识"><img src="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/oracle_logo.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="在学习和使用SQL中遇到的一些知识"/></a><div class="content"><a class="title" href="/2022/04/29/%E5%9C%A8%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8SQL%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86/" title="在学习和使用SQL中遇到的一些知识">在学习和使用SQL中遇到的一些知识</a><time datetime="2022-04-28T19:45:31.000Z" title="发表于 2022-04-28 19:45:31">2022-04-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/04/27/Hello/" title="Hello"><img src="/img/top_img.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello"/></a><div class="content"><a class="title" href="/2022/04/27/Hello/" title="Hello">Hello</a><time datetime="2022-04-26T17:07:55.000Z" title="发表于 2022-04-26 17:07:55">2022-04-26</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/yxt.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By NewStorms</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>function loadGiscus () {
+  let nowTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+
+  const config = Object.assign({
+    src: 'https://giscus.app/client.js',
+    'data-repo': 'NewStorm-0/blogger-message',
+    'data-repo-id': 'R_kgDOHP5jKA',
+    'data-category-id': 'DIC_kwDOHP5jKM4CO0mG',
+    'data-mapping': 'pathname',
+    'data-theme': nowTheme,
+    'data-reactions-enabled': '1',
+    crossorigin: 'anonymous',
+    async: true
+  },null)
+
+  let ele = document.createElement('script')
+  for (let key in config) {
+    ele.setAttribute(key, config[key])
+  }
+  document.getElementById('giscus-wrap').insertAdjacentElement('afterbegin',ele)
+}
+
+function changeGiscusTheme () {
+  const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'
+
+  function sendMessage(message) {
+    const iframe = document.querySelector('iframe.giscus-frame');
+    if (!iframe) return;
+    iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+  }
+
+  sendMessage({
+    setConfig: {
+      theme: theme
+    }
+  });
+}
+
+if ('Giscus' === 'Giscus' || !true) {
+  if (true) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+  else loadGiscus()
+} else {
+  function loadOtherComment () {
+    loadGiscus()
+  }
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
