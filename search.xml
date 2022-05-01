@@ -121,6 +121,74 @@ b=*++p;等价于p=p+1;b=*p;</li>
       </tags>
   </entry>
   <entry>
+    <title>C艹3.30</title>
+    <url>/2022/05/02/C%E8%89%B93.30/</url>
+    <content><![CDATA[<p>内容：<br>
+1、 static静态变量，局部可见，只赋一次初值<br>
+2、对于全局变量的利害（尽量克制使用）<br>
+3、全局变量与局部变量重名时，局部变量优先，可以使用域作用符<code>::</code>区分两者</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> i = <span class="number">100</span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> i, j = <span class="number">50</span>;</span><br><span class="line">	i = <span class="number">18</span>;<span class="comment">//访问局部变量</span></span><br><span class="line">	::i = ::i + <span class="number">4</span>;<span class="comment">//访问全局变量</span></span><br><span class="line">	j = ::i + <span class="number">1</span>;<span class="comment">//访问全局变量i和局部变量j</span></span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;::i=&quot;</span> &lt;&lt; ::i &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;i=&quot;</span> &lt;&lt; i &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;j=&quot;</span> &lt;&lt; j &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+<p>4、 extern做提前引用声明，后面的全局变量在前面使用时要用extern。注意使用extern是不可以extern double bb = 1.0的，否则相当于定义，extern失去作用，编译错误</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">(</span></span><br><span class="line"><span class="params">&#123;</span></span><br><span class="line"><span class="params">	<span class="keyword">extern</span> <span class="type">int</span> a, b;</span></span><br><span class="line"><span class="params">	...</span></span><br><span class="line"><span class="params">	<span class="keyword">return</span> <span class="number">0</span>;</span></span><br><span class="line"><span class="params">&#125;</span></span><br><span class="line"><span class="params"><span class="type">int</span> a = <span class="number">15</span>, b = <span class="number">-7</span>;</span></span><br><span class="line"><span class="params"><span class="type">int</span> max(<span class="type">int</span> x, <span class="type">int</span> y)&#123;</span></span><br><span class="line"><span class="params">	<span class="type">int</span> z;</span></span><br><span class="line"><span class="params">	 z = x &gt; y ? x : y</span></span><br><span class="line"><span class="params">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>5、如果函数要访问另一个文件中定义的全局变量，需要添加extern声明。注意编译正确未必能链接成功<br>
+6、<br>
+· static全局变量：存储在静态存储区，在函数外部定义，只在本文件中使用<br>
+· static局部变量：存储在静态存储区，在函数内部定义，只限在函数内部使用<br>
+· extern全局变量：存储在静态存储区，在其他文件中定义，在本文件中可以使用<br>
+7、 static也可以修饰函数（static描述其为内部函数）。extern同。<br>
+8、 程序的多文件组织🌈</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;mathx.h&quot;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="comment">//可以直接使用max， pi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">double</span> PI = <span class="number">3.14</span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">max</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="type">double</span> <span class="title">pow</span><span class="params">(<span class="type">double</span>, <span class="type">double</span>)</span></span>;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;mathx.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">max</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> z;</span><br><span class="line">	z = x &gt; y ? x : y;</span><br><span class="line">	<span class="keyword">return</span> z;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>C/C++标准：<br>
+头文件：实现者与使用者之间的桥梁，包括函数声明，常量定义<br>
+函数库：包含头文件，提供函数的实现/定义，发布头文件源代码以及库函数的二进制代码<br>
+使用者：通过#include包含头文件，知道如何使用，不关心具体实现</p>
+</blockquote>
+<blockquote>
+<p>头文件（.h/.hpp header）一般包括以下几类内容：<br>
+1.对类型的声明<br>
+2.函数声明<br>
+3.内置（inline）函数的定义<br>
+4.宏定义。用#define定义的符号常量和用const声明的常变量<br>
+5.外部变量声明，如extern int a；<br>
+6.根据需要包含其他头文件<br>
+（注意不能有double dd = 1.0之类的；不然会认为重定义）</p>
+</blockquote>
+<ol>
+<li>通常#include头文件，很少#include源文件</li>
+<li>对于系统提供的头文件用尖括号形式，如果要包含的是用户自己编写的文件，用双撇号形式（先到当前cpp所在目录定位， 再到系统目录中定位XX.h）</li>
+<li>找不到会发生编译错误，找多了更糟糕，如果好多地方都有xx.h，你需要搞清楚到底是谁被找到了</li>
+<li>文件名可以包含目录名，例如#include&lt;GL/GL.h&gt;，到系统include目录的GL目录中找GL.h</li>
+<li>C++标准库中一般不再包括.h，保留的兼容C的头文件有，尽量用符合C++标准的形式</li>
+<li>用户自己编写的头文件，一般用.h做后缀</li>
+</ol>
+<p>9、函数</p>
+<ul>
+<li>链接问题： <code>&gt;</code>依赖于<br>
+- A &gt; B, A &gt; C<br>
+- B &gt; D, C &gt; D</li>
+<li>静态链接：得到A.exe包括A(B(D))(C(D))<br>
+- 运行速度快，不需要运行时加载定位<br>
+- 缺点：会生成多个副本（如果多个文件对同一个目标文件目标都有依赖），浪费空间，</li>
+<li>动态链接（是主流）（跟上一个优缺点基本反着）</li>
+<li>#include是一种预处理编译</li>
+<li>预处理编译：（源代码到目标代码的编译之前的编译，对源代码的处理）（预处理，编译，链接）（功能包括：文件包含#include，宏定义#define，条件编译#ifdef）</li>
+<li><img src="https://img-blog.csdnimg.cn/20210330203708996.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></li>
+<li>宏定义函数要注意对每一个变量都加上（）以防止调用时有奇怪的行为</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> S(r) PI * r * r<span class="comment">//最好是PI*(r)*(r)</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> a = <span class="number">1</span>, b = <span class="number">2</span>;</span><br><span class="line">	<span class="built_in">S</span>(a + b);</span><br><span class="line">	<span class="comment">//会按照PI*a + b*a + b来算</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20210330205110476.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+]]></content>
+      <categories>
+        <category>yxt</category>
+      </categories>
+      <tags>
+        <tag>c++</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>C++指针 2021.4.20</title>
     <url>/2022/05/02/C++%E6%8C%87%E9%92%88%202021.4.20/</url>
     <content><![CDATA[<ul>
@@ -235,84 +303,6 @@ char str[80]； str = “qwq”；是错的</p>
       </tags>
   </entry>
   <entry>
-    <title>C艹3.30</title>
-    <url>/2022/05/02/C%E8%89%B93.30/</url>
-    <content><![CDATA[<p>内容：<br>
-1、 static静态变量，局部可见，只赋一次初值<br>
-2、对于全局变量的利害（尽量克制使用）<br>
-3、全局变量与局部变量重名时，局部变量优先，可以使用域作用符<code>::</code>区分两者</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> i = <span class="number">100</span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> i, j = <span class="number">50</span>;</span><br><span class="line">	i = <span class="number">18</span>;<span class="comment">//访问局部变量</span></span><br><span class="line">	::i = ::i + <span class="number">4</span>;<span class="comment">//访问全局变量</span></span><br><span class="line">	j = ::i + <span class="number">1</span>;<span class="comment">//访问全局变量i和局部变量j</span></span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;::i=&quot;</span> &lt;&lt; ::i &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;i=&quot;</span> &lt;&lt; i &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;j=&quot;</span> &lt;&lt; j &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
-<p>4、 extern做提前引用声明，后面的全局变量在前面使用时要用extern。注意使用extern是不可以extern double bb = 1.0的，否则相当于定义，extern失去作用，编译错误</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">(</span></span><br><span class="line"><span class="params">&#123;</span></span><br><span class="line"><span class="params">	<span class="keyword">extern</span> <span class="type">int</span> a, b;</span></span><br><span class="line"><span class="params">	...</span></span><br><span class="line"><span class="params">	<span class="keyword">return</span> <span class="number">0</span>;</span></span><br><span class="line"><span class="params">&#125;</span></span><br><span class="line"><span class="params"><span class="type">int</span> a = <span class="number">15</span>, b = <span class="number">-7</span>;</span></span><br><span class="line"><span class="params"><span class="type">int</span> max(<span class="type">int</span> x, <span class="type">int</span> y)&#123;</span></span><br><span class="line"><span class="params">	<span class="type">int</span> z;</span></span><br><span class="line"><span class="params">	 z = x &gt; y ? x : y</span></span><br><span class="line"><span class="params">&#125;</span></span><br></pre></td></tr></table></figure>
-<p>5、如果函数要访问另一个文件中定义的全局变量，需要添加extern声明。注意编译正确未必能链接成功<br>
-6、<br>
-· static全局变量：存储在静态存储区，在函数外部定义，只在本文件中使用<br>
-· static局部变量：存储在静态存储区，在函数内部定义，只限在函数内部使用<br>
-· extern全局变量：存储在静态存储区，在其他文件中定义，在本文件中可以使用<br>
-7、 static也可以修饰函数（static描述其为内部函数）。extern同。<br>
-8、 程序的多文件组织🌈</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;mathx.h&quot;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="comment">//可以直接使用max， pi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">double</span> PI = <span class="number">3.14</span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">max</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="type">double</span> <span class="title">pow</span><span class="params">(<span class="type">double</span>, <span class="type">double</span>)</span></span>;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;mathx.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">max</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> z;</span><br><span class="line">	z = x &gt; y ? x : y;</span><br><span class="line">	<span class="keyword">return</span> z;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>C/C++标准：<br>
-头文件：实现者与使用者之间的桥梁，包括函数声明，常量定义<br>
-函数库：包含头文件，提供函数的实现/定义，发布头文件源代码以及库函数的二进制代码<br>
-使用者：通过#include包含头文件，知道如何使用，不关心具体实现</p>
-</blockquote>
-<blockquote>
-<p>头文件（.h/.hpp header）一般包括以下几类内容：<br>
-1.对类型的声明<br>
-2.函数声明<br>
-3.内置（inline）函数的定义<br>
-4.宏定义。用#define定义的符号常量和用const声明的常变量<br>
-5.外部变量声明，如extern int a；<br>
-6.根据需要包含其他头文件<br>
-（注意不能有double dd = 1.0之类的；不然会认为重定义）</p>
-</blockquote>
-<ol>
-<li>通常#include头文件，很少#include源文件</li>
-<li>对于系统提供的头文件用尖括号形式，如果要包含的是用户自己编写的文件，用双撇号形式（先到当前cpp所在目录定位， 再到系统目录中定位XX.h）</li>
-<li>找不到会发生编译错误，找多了更糟糕，如果好多地方都有xx.h，你需要搞清楚到底是谁被找到了</li>
-<li>文件名可以包含目录名，例如#include&lt;GL/GL.h&gt;，到系统include目录的GL目录中找GL.h</li>
-<li>C++标准库中一般不再包括.h，保留的兼容C的头文件有，尽量用符合C++标准的形式</li>
-<li>用户自己编写的头文件，一般用.h做后缀</li>
-</ol>
-<p>9、函数</p>
-<ul>
-<li>链接问题： <code>&gt;</code>依赖于<br>
-- A &gt; B, A &gt; C<br>
-- B &gt; D, C &gt; D</li>
-<li>静态链接：得到A.exe包括A(B(D))(C(D))<br>
-- 运行速度快，不需要运行时加载定位<br>
-- 缺点：会生成多个副本（如果多个文件对同一个目标文件目标都有依赖），浪费空间，</li>
-<li>动态链接（是主流）（跟上一个优缺点基本反着）</li>
-<li>#include是一种预处理编译</li>
-<li>预处理编译：（源代码到目标代码的编译之前的编译，对源代码的处理）（预处理，编译，链接）（功能包括：文件包含#include，宏定义#define，条件编译#ifdef）</li>
-<li><img src="https://img-blog.csdnimg.cn/20210330203708996.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></li>
-<li>宏定义函数要注意对每一个变量都加上（）以防止调用时有奇怪的行为</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> S(r) PI * r * r<span class="comment">//最好是PI*(r)*(r)</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> a = <span class="number">1</span>, b = <span class="number">2</span>;</span><br><span class="line">	<span class="built_in">S</span>(a + b);</span><br><span class="line">	<span class="comment">//会按照PI*a + b*a + b来算</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20210330205110476.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-]]></content>
-      <categories>
-        <category>yxt</category>
-      </categories>
-      <tags>
-        <tag>c++</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello</title>
-    <url>/2022/04/27/Hello/</url>
-    <content><![CDATA[<p>大家都围过来啊，都围过来啊。我宣布个事：我是个有趣的垃圾！</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Hello</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">//1</span></span><br><span class="line">        <span class="comment">//2</span></span><br><span class="line">        <span class="comment">//3</span></span><br><span class="line">        <span class="comment">//4</span></span><br><span class="line">        <span class="comment">//5</span></span><br><span class="line">        <span class="comment">//6</span></span><br><span class="line">        <span class="comment">//7</span></span><br><span class="line">        <span class="comment">//8</span></span><br><span class="line">        <span class="comment">//9</span></span><br><span class="line">        <span class="comment">//10</span></span><br><span class="line">        <span class="comment">//11</span></span><br><span class="line">        <span class="comment">//12</span></span><br><span class="line">        <span class="comment">//13</span></span><br><span class="line">        <span class="comment">//14</span></span><br><span class="line">        <span class="comment">//15</span></span><br><span class="line">        <span class="comment">//16</span></span><br><span class="line">        <span class="comment">//17</span></span><br><span class="line">        <span class="comment">//18</span></span><br><span class="line">        <span class="comment">//19</span></span><br><span class="line">        <span class="comment">//20</span></span><br><span class="line">        System.out.println(<span class="string">&quot;我是个垃圾，呜呜呜!&quot;</span>);</span><br><span class="line">        <span class="comment">//21</span></span><br><span class="line">        <span class="comment">//22</span></span><br><span class="line">        <span class="comment">//23</span></span><br><span class="line">        <span class="comment">//24</span></span><br><span class="line">        <span class="comment">//25</span></span><br><span class="line">        <span class="comment">//26</span></span><br><span class="line">        <span class="comment">//27</span></span><br><span class="line">        <span class="comment">//28</span></span><br><span class="line">        <span class="comment">//29</span></span><br><span class="line">        <span class="comment">//30</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//嗯嗯，这只是占位用的，测试用的</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>垃圾</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>PCA及其实战学习</title>
     <url>/2022/05/02/PCA%E5%8F%8A%E5%85%B6%E5%AE%9E%E6%88%98%E5%AD%A6%E4%B9%A0/</url>
     <content><![CDATA[<h1>知识学习</h1>
@@ -334,7 +324,7 @@ char str[80]； str = “qwq”；是错的</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">data = pd.read_csv(<span class="string">r&#x27;C:\Users\Administrator\Desktop\data_pca.csv&#x27;</span>)</span><br><span class="line">data.describe()</span><br><span class="line"><span class="comment">#可以看出量纲差别还是比较大的。</span></span><br></pre></td></tr></table></figure>
 <h3 id="对x去均值、标准化">对x去均值、标准化</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">norm_</span>(<span class="params">x</span>):<span class="comment">#做normalization标准化</span></span><br><span class="line">    xmean = np.mean(x, <span class="number">0</span>)</span><br><span class="line">    std = np.std(x,<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> (x - xmean)/std</span><br><span class="line">data_ = norm_(data)</span><br><span class="line">data_.describe()</span><br><span class="line"><span class="comment">#这里能够看出明显区别。标准化了嘛，均值变成0，量纲差异也没有了</span></span><br></pre></td></tr></table></figure>
-<h3 id="求X-TX或Cov-X-T-的特征值-ew-和特征向量-ev-，其中维度：ew-1-n-，ev-n-n">求<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mi>T</mi></msup><mi>X</mi></mrow><annotation encoding="application/x-tex">X^TX</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8413em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span></span></span></span>或<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>o</mi><mi>v</mi><mo stretchy="false">(</mo><msup><mi>X</mi><mi>T</mi></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Cov(X^T)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0913em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>的特征值<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>e</mi><mi>w</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(ew)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mclose">)</span></span></span></span>和特征向量<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>e</mi><mi>v</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(ev)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">)</span></span></span></span>，其中维度：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>w</mi><mo stretchy="false">(</mo><mn>1</mn><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo><mtext>，</mtext><mi>e</mi><mi>v</mi><mo stretchy="false">(</mo><mi>n</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">ew(1,n)，ev(n,n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mopen">(</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mord cjk_fallback">，</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></h3>
+<h3 id="求-X-TX-或-Cov-X-T-的特征值-ew-和特征向量-ev-，其中维度：ew-1-n-，ev-n-n">求 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mi>T</mi></msup><mi>X</mi></mrow><annotation encoding="application/x-tex">X^TX</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8413em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span></span></span></span> 或 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>o</mi><mi>v</mi><mo stretchy="false">(</mo><msup><mi>X</mi><mi>T</mi></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Cov(X^T)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0913em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> 的特征值 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>e</mi><mi>w</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(ew)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mclose">)</span></span></span></span> 和特征向量 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>e</mi><mi>v</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(ev)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">)</span></span></span></span>，其中维度：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>w</mi><mo stretchy="false">(</mo><mn>1</mn><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo><mtext>，</mtext><mi>e</mi><mi>v</mi><mo stretchy="false">(</mo><mi>n</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">ew(1,n)，ev(n,n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mopen">(</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mord cjk_fallback">，</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></h3>
 <p>借助numpy工具提取特征值</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#提取特征值</span></span><br><span class="line"><span class="comment">#第一种方式Xt*X(agin value是下面的m-1倍)</span></span><br><span class="line">ew, ev = np.linalg.eig(data_.T.dot(data_))<span class="comment">#原始数据的格式不合适</span></span><br><span class="line"><span class="built_in">print</span>(ew)</span><br><span class="line"><span class="built_in">print</span>(ev)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"><span class="comment">#第二种方式，方便起见采用了这一种</span></span><br><span class="line">ew, ev = np.linalg.eig(np.cov(data_.T))</span><br><span class="line"><span class="built_in">print</span>(ew)</span><br><span class="line"><span class="built_in">print</span>(ev)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <h3 id="按照ew从大到小的顺序，取ev的对应的列。ev取前k列得到矩阵V，维度-n-k">按照<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>w</mi></mrow><annotation encoding="application/x-tex">ew</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span></span></span></span>从大到小的顺序，取<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>v</mi></mrow><annotation encoding="application/x-tex">ev</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span>的对应的列。<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>v</mi></mrow><annotation encoding="application/x-tex">ev</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span>取前k列得到矩阵<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span>，维度<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>n</mi><mo separator="true">,</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(n,k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></h3>
@@ -361,6 +351,16 @@ char str[80]； str = “qwq”；是错的</p>
       <tags>
         <tag>Python</tag>
         <tag>数据处理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello</title>
+    <url>/2022/04/27/Hello/</url>
+    <content><![CDATA[<p>大家都围过来啊，都围过来啊。我宣布个事：我是个有趣的垃圾！</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Hello</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">//1</span></span><br><span class="line">        <span class="comment">//2</span></span><br><span class="line">        <span class="comment">//3</span></span><br><span class="line">        <span class="comment">//4</span></span><br><span class="line">        <span class="comment">//5</span></span><br><span class="line">        <span class="comment">//6</span></span><br><span class="line">        <span class="comment">//7</span></span><br><span class="line">        <span class="comment">//8</span></span><br><span class="line">        <span class="comment">//9</span></span><br><span class="line">        <span class="comment">//10</span></span><br><span class="line">        <span class="comment">//11</span></span><br><span class="line">        <span class="comment">//12</span></span><br><span class="line">        <span class="comment">//13</span></span><br><span class="line">        <span class="comment">//14</span></span><br><span class="line">        <span class="comment">//15</span></span><br><span class="line">        <span class="comment">//16</span></span><br><span class="line">        <span class="comment">//17</span></span><br><span class="line">        <span class="comment">//18</span></span><br><span class="line">        <span class="comment">//19</span></span><br><span class="line">        <span class="comment">//20</span></span><br><span class="line">        System.out.println(<span class="string">&quot;我是个垃圾，呜呜呜!&quot;</span>);</span><br><span class="line">        <span class="comment">//21</span></span><br><span class="line">        <span class="comment">//22</span></span><br><span class="line">        <span class="comment">//23</span></span><br><span class="line">        <span class="comment">//24</span></span><br><span class="line">        <span class="comment">//25</span></span><br><span class="line">        <span class="comment">//26</span></span><br><span class="line">        <span class="comment">//27</span></span><br><span class="line">        <span class="comment">//28</span></span><br><span class="line">        <span class="comment">//29</span></span><br><span class="line">        <span class="comment">//30</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//嗯嗯，这只是占位用的，测试用的</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>垃圾</tag>
       </tags>
   </entry>
   <entry>
@@ -1187,24 +1187,6 @@ p(\overrightarrow{w}|d_m)=\prod_{i=1}^n\sum_{z=1}^Kp(w_i|z)p(z|d_m)=\prod_{i=1}^
       </tags>
   </entry>
   <entry>
-    <title>关于深度学习画图这件事</title>
-    <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%94%BB%E5%9B%BE%E8%BF%99%E4%BB%B6%E4%BA%8B/</url>
-    <content><![CDATA[<p>以下是在搜集过程中看到的几个画模型图可能需要的便捷网站：</p>
-<ul>
-<li><a href="https://blog.csdn.net/weixin_42802447/article/details/117033275">CSDN指路0</a></li>
-<li><a href="https://guoleida.blog.csdn.net/article/details/88769405?spm=1001.2101.3001.6650.2&amp;utm_medium=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-2.pc_relevant_default&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-2.pc_relevant_default&amp;utm_relevant_index=5">CSDN指路1</a></li>
-<li><a href="https://blog.csdn.net/weixin_42137700/article/details/107538350?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-4.pc_relevant_default&amp;spm=1001.2101.3001.4242.3&amp;utm_relevant_index=7">CSDN指路2（这个是ppt素材库）</a></li>
-</ul>
-<p>当然还是PPT yyds</p>
-]]></content>
-      <categories>
-        <category>yxt</category>
-      </categories>
-      <tags>
-        <tag>Paper</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>关于学习transformer那些事</title>
     <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0transformer%E9%82%A3%E4%BA%9B%E4%BA%8B/</url>
     <content><![CDATA[<h1>论文阅读：</h1>
@@ -1235,6 +1217,24 @@ A：<a href="https://www.zhihu.com/question/325839123">知乎传送门。</a><br
       </categories>
       <tags>
         <tag>阅读</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于深度学习画图这件事</title>
+    <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%94%BB%E5%9B%BE%E8%BF%99%E4%BB%B6%E4%BA%8B/</url>
+    <content><![CDATA[<p>以下是在搜集过程中看到的几个画模型图可能需要的便捷网站：</p>
+<ul>
+<li><a href="https://blog.csdn.net/weixin_42802447/article/details/117033275">CSDN指路0</a></li>
+<li><a href="https://guoleida.blog.csdn.net/article/details/88769405?spm=1001.2101.3001.6650.2&amp;utm_medium=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-2.pc_relevant_default&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-2.pc_relevant_default&amp;utm_relevant_index=5">CSDN指路1</a></li>
+<li><a href="https://blog.csdn.net/weixin_42137700/article/details/107538350?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-4.pc_relevant_default&amp;spm=1001.2101.3001.4242.3&amp;utm_relevant_index=7">CSDN指路2（这个是ppt素材库）</a></li>
+</ul>
+<p>当然还是PPT yyds</p>
+]]></content>
+      <categories>
+        <category>yxt</category>
+      </categories>
+      <tags>
+        <tag>Paper</tag>
       </tags>
   </entry>
   <entry>
@@ -1332,6 +1332,27 @@ Dism++（小管家）</p>
       </tags>
   </entry>
   <entry>
+    <title>细数近日犯的错误</title>
+    <url>/2022/05/02/%E7%BB%86%E6%95%B0%E8%BF%91%E6%97%A5%E7%8A%AF%E7%9A%84%E9%94%99%E8%AF%AF/</url>
+    <content><![CDATA[<p>关于第七次数据结构实验</p>
+<ul>
+<li>注意数组在函数内部和外部定义的区别，虽然我现在依然不知道原理为什么拿出去就不行了可能和另一个错误相关</li>
+<li>注意数组分配对象是new int []而不是new int（），第二个是分配一个单int对象</li>
+<li>注意分配范围与自己使用，数组在使用过程中是否发生变化，下一次是用变化过的还是没变换的ap</li>
+</ul>
+<p>关于第八次数据结构实验</p>
+<ul>
+<li>注意初始化，可能改了数组名之后又忘记初始化啦！</li>
+</ul>
+]]></content>
+      <categories>
+        <category>yxt</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>给爷爬!</title>
     <url>/2022/05/01/%E7%BB%99%E7%88%B7%E7%88%AC/</url>
     <content><![CDATA[<blockquote>
@@ -1395,27 +1416,6 @@ pip XX（XX指要安装的包）【中途断开得重安】<br>
       <tags>
         <tag>Python</tag>
         <tag>爬虫</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>细数近日犯的错误</title>
-    <url>/2022/05/02/%E7%BB%86%E6%95%B0%E8%BF%91%E6%97%A5%E7%8A%AF%E7%9A%84%E9%94%99%E8%AF%AF/</url>
-    <content><![CDATA[<p>关于第七次数据结构实验</p>
-<ul>
-<li>注意数组在函数内部和外部定义的区别，虽然我现在依然不知道原理为什么拿出去就不行了可能和另一个错误相关</li>
-<li>注意数组分配对象是new int []而不是new int（），第二个是分配一个单int对象</li>
-<li>注意分配范围与自己使用，数组在使用过程中是否发生变化，下一次是用变化过的还是没变换的ap</li>
-</ul>
-<p>关于第八次数据结构实验</p>
-<ul>
-<li>注意初始化，可能改了数组名之后又忘记初始化啦！</li>
-</ul>
-]]></content>
-      <categories>
-        <category>yxt</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -1489,6 +1489,33 @@ pip XX（XX指要安装的包）【中途断开得重安】<br>
       </categories>
       <tags>
         <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>论文阅读（Improving neural networks by preventing co-adaptation of feature detectors ）</title>
+    <url>/2022/05/02/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%88Improving%20neural%20networks%20by%20preventing%20co-adaptation%20of%20feature%20detectors%20%EF%BC%89/</url>
+    <content><![CDATA[<p><s>显然看不懂英文然后出于各种原因最终被迫搜索了翻译版本，如有错误欢迎指出</s></p>
+<h3 id="介绍主体：">介绍主体：</h3>
+<p>DropOut</p>
+<h3 id="目的：">目的：</h3>
+<p>对战过拟合的基础上提升速度和学习能力（力速双A✔）</p>
+<h3 id="思路：">思路：</h3>
+<p>通过在每个训练案例上随机省略一般的特征检测器而减小过拟合率。每一个神经元去学习如何检测特征更有助于得出正确答案。</p>
+<h3 id="具体实现：">具体实现：</h3>
+<ol>
+<li>每个训练案例的每个呈现上，每个隐藏单元被随机地从网络中以0.5的概率省略。</li>
+<li>在测试过程中，每一个隐藏层的神经元都能保持激活，但是，必须将输出值乘以0.5，这是因为在测试的过程中，相比于训练过程，增加了一倍的神经元数目，因此，需要将神经元的输出乘以0.5作为补偿。</li>
+</ol>
+<h3 id="神奇的地方：">神奇的地方：</h3>
+<p>让一个非常大的，且在学习过程中会衰减的学习率作为训练的开始成为可能</p>
+<hr>
+<p>短小的原因当然是因为一时看不明白。。</p>
+]]></content>
+      <categories>
+        <category>yxt</category>
+      </categories>
+      <tags>
+        <tag>阅读</tag>
       </tags>
   </entry>
   <entry>
@@ -1671,33 +1698,6 @@ Download<br>
       <tags>
         <tag>Python</tag>
         <tag>爬虫</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>论文阅读（Improving neural networks by preventing co-adaptation of feature detectors ）</title>
-    <url>/2022/05/02/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%EF%BC%88Improving%20neural%20networks%20by%20preventing%20co-adaptation%20of%20feature%20detectors%20%EF%BC%89/</url>
-    <content><![CDATA[<p><s>显然看不懂英文然后出于各种原因最终被迫搜索了翻译版本，如有错误欢迎指出</s></p>
-<h3 id="介绍主体：">介绍主体：</h3>
-<p>DropOut</p>
-<h3 id="目的：">目的：</h3>
-<p>对战过拟合的基础上提升速度和学习能力（力速双A✔）</p>
-<h3 id="思路：">思路：</h3>
-<p>通过在每个训练案例上随机省略一般的特征检测器而减小过拟合率。每一个神经元去学习如何检测特征更有助于得出正确答案。</p>
-<h3 id="具体实现：">具体实现：</h3>
-<ol>
-<li>每个训练案例的每个呈现上，每个隐藏单元被随机地从网络中以0.5的概率省略。</li>
-<li>在测试过程中，每一个隐藏层的神经元都能保持激活，但是，必须将输出值乘以0.5，这是因为在测试的过程中，相比于训练过程，增加了一倍的神经元数目，因此，需要将神经元的输出乘以0.5作为补偿。</li>
-</ol>
-<h3 id="神奇的地方：">神奇的地方：</h3>
-<p>让一个非常大的，且在学习过程中会衰减的学习率作为训练的开始成为可能</p>
-<hr>
-<p>短小的原因当然是因为一时看不明白。。</p>
-]]></content>
-      <categories>
-        <category>yxt</category>
-      </categories>
-      <tags>
-        <tag>阅读</tag>
       </tags>
   </entry>
 </search>
