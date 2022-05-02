@@ -1,120 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>C++指针 2021.4.20</title>
-    <url>/2022/05/02/C++%E6%8C%87%E9%92%88%202021.4.20/</url>
-    <content><![CDATA[<ul>
-<li>指针变量里面存储了一个地址，可以是常量、全局变量、局部变量、堆变量（new）的地址，还可以是函数（代码）的地址</li>
-</ul>
-<h4 id="空指针">空指针</h4>
-<p>空指针又称万能指针，可以指向任何带类型的指针（地址）<br>
-p=&amp;x; x可以是基本数据类型，也可是对象/结构体类型。<br>
-p=&amp;table;<br>
-p=&amp;book;</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">3</span>;</span><br><span class="line"><span class="type">void</span> *p1;</span><br><span class="line">p1 = &amp;a;<span class="comment">//p1指向a的纯地址，但并不理解成int</span></span><br><span class="line"><span class="type">int</span> *pi = (<span class="type">int</span>*)p1;</span><br><span class="line"><span class="comment">//强制类型转换，将p1理解成pi，语法逻辑都正确</span></span><br><span class="line"><span class="type">float</span> *pf = (<span class="type">float</span>*)p1;</span><br><span class="line"><span class="comment">//强制类型转换，将p1理解成pf，语法正确，逻辑错误</span></span><br></pre></td></tr></table></figure>
-<p>eg.C语言库函数qsort，快速排序，可以对任意类型的数组数据进行排序</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">qsort</span><span class="params">(<span class="type">void</span> *base, <span class="type">int</span> nelem, unigned <span class="type">int</span> width, <span class="type">int</span>(*pfCompare)(<span class="type">const</span> <span class="type">void</span>*, <span class="type">const</span> <span class="type">void</span>*))</span></span></span><br><span class="line"><span class="function">   <span class="comment">//数组起始地址，数组元素的个数，每个元素的大小（字节为单位）</span></span></span><br></pre></td></tr></table></figure>
-<p><code>int函数名(const void *d1, const void *d2);</code>比较元素大小的指针函数，实参是程序员自定义的函数<br>
-<a href="https://blog.csdn.net/yapingxin/article/details/22990579">虽然这个也没写具体原理，，，但是从此我知道了会用就行</a></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">cmp1</span><span class="params">(<span class="type">const</span> <span class="type">void</span> *a, <span class="type">const</span> <span class="type">void</span> *b)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> *(<span class="type">unsigned</span> <span class="type">int</span> *)a - *(<span class="type">unsigned</span> <span class="type">int</span> *)b;<span class="comment">//从小到大排序</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">cmp2</span><span class="params">(<span class="type">const</span> <span class="type">void</span> *a, <span class="type">const</span> <span class="type">void</span> *b)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> *(<span class="type">unsigned</span> <span class="type">int</span> *)b - *(<span class="type">unsigned</span> <span class="type">int</span> *)a;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">cmp3</span><span class="params">(<span class="type">const</span> <span class="type">void</span> *a, <span class="type">const</span> <span class="type">void</span> *b)</span></span>&#123;</span><br><span class="line">	<span class="type">const</span> <span class="type">unsigned</span> <span class="type">int</span> *p1, *p2;</span><br><span class="line">	p1 = (<span class="type">const</span> <span class="type">unsigned</span> <span class="type">int</span>*)a;<span class="comment">//把void*转化成int* </span></span><br><span class="line">	p2 = (<span class="type">const</span> <span class="type">unsigned</span> <span class="type">int</span>*)b;<span class="comment">//把void*转化成int* </span></span><br><span class="line">	<span class="keyword">return</span> (*p1%<span class="number">10</span>)-(*p2%<span class="number">10</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="返回指针值的函数">返回指针值的函数</h4>
-<p>被调函数的返回结果是一个地址，函数的类型是指针类型</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> *<span class="title">max</span><span class="params">(<span class="type">int</span> *x, <span class="type">int</span> *y)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> *pt;</span><br><span class="line">	<span class="keyword">if</span>(*x &gt; *y)</span><br><span class="line">		px = x;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		pt = y;</span><br><span class="line">	<span class="keyword">return</span> pt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>不要试图返回局部变量的地址。。。它被释放了<br>
-下面为错误示例：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> *<span class="title">max</span><span class="params">(<span class="type">int</span> *x, <span class="type">int</span> *y)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> *pt;</span><br><span class="line">	<span class="keyword">if</span>(*x &gt; *y)</span><br><span class="line">		px = x;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		pt = y;</span><br><span class="line">	<span class="keyword">return</span> &amp;pt;</span><br><span class="line">&#125;</span><br><span class="line">局部变量地址</span><br></pre></td></tr></table></figure>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> *<span class="title">max</span><span class="params">(<span class="type">int</span> *x, <span class="type">int</span> *y)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> *pt;</span><br><span class="line">	<span class="keyword">if</span>(*x &gt; *y)</span><br><span class="line">		px = x;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		pt = &amp;y;</span><br><span class="line">	<span class="keyword">return</span> pt;</span><br><span class="line">&#125;</span><br><span class="line">局部变量（形参）的地址</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20210420193133188.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h4 id="指针数组">指针数组</h4>
-<p>每一个元素可以存放地址<br>
-<code>int *p[4];</code></p>
-<ul>
-<li><code>[]</code>比<code>*</code>优先级高，所以等价于<code>int *(p[4])</code></li>
-<li><code>p[]</code>是数组，<code>p[4]</code>存放四个元素</li>
-<li>每个元素<code>p[i]</code>是一个<code>int*</code>，即整数数据的地址，或者一个int数组的首地址<br>
-<img src="https://img-blog.csdnimg.cn/20210420193729667.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>
-直观上，每个指针都可以指向一段内存空间，可以理解为二维数组，说是任意维度更恰当。</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> a[<span class="number">12</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,...,<span class="number">11</span>,<span class="number">12</span>&#125;;</span><br><span class="line">	<span class="type">int</span> *p[<span class="number">4</span>]；<span class="comment">//指向四段内存</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++)</span><br><span class="line">		p[i] = &amp;a[i * <span class="number">3</span>];</span><br><span class="line">	cout &lt;&lt; p[<span class="number">3</span>][<span class="number">2</span>] &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>p[3][2] = *(p[3] + 2) = *(*(p + 3) + 2);</code></p>
-<ul>
-<li>指针数组与二维数组的比较<br>
-<img src="https://img-blog.csdnimg.cn/20210420194656656.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>
-//要注意最后一个不是<code>*(p+3+2)</code>而是<code>*(*(p + 3) + 2)</code></li>
-<li>常见应用场景：实现字符串数组，数组中的每个字符串长度不一</li>
-<li><code>char *str[] = &#123;&quot;China&quot;, &quot;Japan&quot;, &quot;America&quot;&#125;;</code></li>
-</ul>
-<h4 id="指向指针的指针">指向指针的指针</h4>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> i, *p;</span><br><span class="line">p = &amp;i;</span><br><span class="line"><span class="type">int</span> **pp;</span><br><span class="line">pp = &amp;p;</span><br></pre></td></tr></table></figure>
-<p><s>pp=&amp;&amp;i;</s>//不能连续取地址，第一次取出来的那个地址其实是个值，无法据此取到第二个地址<br>
-<s>pp = &amp; i;</s>  //一看就不对，pp为只想指针的指针变量，其基类型是指向整型数据的指针变量，而非整形数据</p>
-<ul>
-<li>经典用途：字符串数组（<s>好像不能直接赋值全部，只能分开单独赋值。</s> 能 ）<br>
-<img src="https://img-blog.csdnimg.cn/20210420201545700.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
-</ul>
-<h4 id="其他说明：">其他说明：</h4>
-<ol>
-<li>指针变量可以有空值，不指向任何地址。（虽然有#define NULL 0）（p=NULL相当于p=0但不建议写p=0)</li>
-<li>两指针可以相减，不可以相加。若要进行相减运算，则两指针必须指向同一数组，结果为相距的数组元素个数</li>
-<li>指向同一数组的两个指针可以比较大小：p2&gt;p1指p2在p1的后面</li>
-</ol>
-<h4 id="动态分配内存">动态分配内存</h4>
-<p>静态开辟的内存（栈）会存在不足或者浪费。一i那次在程序中要根据实际需要动态开辟空间——<br>
-利用new运算符开辟空间，空间的地址必须用个指针保存下来，才不会丢失<br>
-ps1. 当内存中没有足够的内存给予分配时，new运算符返回空值NULL；<br>
-ps2. new出来的空间，不能在分配空间时进行初始化，且除非重新开机，要手动用delete收回（二者配套，delete无其他使用）</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> *p;</span><br><span class="line">p = <span class="keyword">new</span> <span class="type">int</span>;</span><br><span class="line">p = <span class="keyword">new</span> <span class="built_in">int</span>(<span class="number">6</span>);<span class="comment">//赋初值6</span></span><br><span class="line">p = <span class="keyword">new</span> <span class="type">int</span>[<span class="number">6</span>];<span class="comment">//申请一个数组，首地址送给p</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//开辟一个数组，每个元素都是一个int*</span></span><br><span class="line"><span class="type">int</span> **pp;</span><br><span class="line">pp = <span class="keyword">new</span> <span class="type">int</span>*[<span class="number">100</span>];<span class="comment">//int*[rows]</span></span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++)</span><br><span class="line">	pp[i] = <span class="keyword">new</span> <span class="type">int</span>[<span class="number">5</span>];</span><br></pre></td></tr></table></figure>
-<p>关于delete：<br>
-<img src="https://img-blog.csdnimg.cn/20210420203043501.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>
-这一个示例是为了表示不要重复删除一块内存空间</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> *q = <span class="keyword">new</span> <span class="built_in">int</span>(<span class="number">5</span>);</span><br><span class="line">p = q;</span><br><span class="line"><span class="keyword">delete</span> p;</span><br><span class="line">cout &lt;&lt; *q &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
-<p>这一个示例是为了避免野指针出现，保证删除后这个成为空指针</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> *p = <span class="keyword">new</span> <span class="type">int</span>;</span><br><span class="line">*p = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">if</span>(p)&#123;</span><br><span class="line">	<span class="keyword">delete</span> p;</span><br><span class="line">	p = <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="指针数组和指向指针的指针">指针数组和指向指针的指针</h4>
-<ul>
-<li><code>int a[3][4];</code>连续存放3行4列整数，自动分配空间</li>
-<li><code>int(*p)[4];</code>连续存放未知（n）行4列整数的第一行，可以<code>p=a;</code> ,<code>p = &amp;a[i]</code>p是a上按行游走的指针<br>
-（ <code>int(*p)[4]</code>相当于指向有四个元素的一维数组，比如说<code>a[1]</code>）</li>
-<li><code>int **a</code> 等价于 <code>int *a[]</code></li>
-</ul>
-<p><code>int *p[3];</code>3行整数，可以不连续，每行整数个数未知<br>
-<code>int **p;</code>n行整数，可以不连续，每行整数个数未知</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">p = <span class="keyword">new</span> <span class="type">int</span>*[<span class="number">3</span>];</span><br><span class="line">p[<span class="number">0</span>] = <span class="keyword">new</span> <span class="type">int</span> [<span class="number">4</span>];</span><br><span class="line">p[<span class="number">1</span>] = <span class="keyword">new</span> <span class="type">int</span> [<span class="number">4</span>];</span><br><span class="line">以上都是合法的</span><br><span class="line">下面非法：(因为连续性不同）</span><br><span class="line">p = a;</span><br><span class="line">a = p;</span><br></pre></td></tr></table></figure>
-<h4 id="const指针">const指针</h4>
-<p>记得const要在定义同时必须赋值</p>
-<ul>
-<li>
-<p>const 修饰指针：1-常指针<br>
-<code>int r = 6; </code><br>
-<code>int * const pr = &amp;r;</code><br>
-<code>数据类型 * const 指针变量名</code><br>
-<strong>这样仅仅表明指向这个地址不变，不能再访问其他的内存单元了，但是仍然可以更改这个内存单元的值</strong><br>
-用途：1. <strong>数组名</strong>为常指针（禁写指针），int a[10]，不能a++;   2.考试</p>
-</li>
-<li>
-<p>const型指针2-指向常量的指针变量（<strong>不允许通过指针间接更改单元内容，但是可以直接更改</strong>）<br>
-<code>const 数据类型 * 指针变量名</code><br>
-用途：日常常用</p>
-</li>
-<li>
-<p>const型指针3-指向常量的常指针变量<br>
-<code>const 数据类型 * const 指针变量名</code><br>
-定义后没不允许通过指针变量改变所指向的对象的值，也不允许改变指针变量的值，特少见</p>
-</li>
-</ul>
-<p>const char *str3; str3 = “qwq”;是正确的，因为“qwq”是一个常量，是不能修改的，必须要有const，这玩意儿不是拷贝的，是把变量地址送给指针。<br>
-char str[80] = {“qaq”};这才是拷贝的<br>
-char str[80]； str = “qwq”；是错的</p>
-]]></content>
-      <categories>
-        <category>yxt</category>
-      </categories>
-      <tags>
-        <tag>c++</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>c++指针 2021.4.13</title>
     <url>/2022/05/02/C++%E6%8C%87%E9%92%88%202021.4.13/</url>
     <content><![CDATA[<p>· 指针的概念</p>
@@ -235,13 +121,117 @@ b=*++p;等价于p=p+1;b=*p;</li>
       </tags>
   </entry>
   <entry>
-    <title>Hello</title>
-    <url>/2022/04/27/Hello/</url>
-    <content><![CDATA[<p>大家都围过来啊，都围过来啊。我宣布个事：我是个有趣的垃圾！</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Hello</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">//1</span></span><br><span class="line">        <span class="comment">//2</span></span><br><span class="line">        <span class="comment">//3</span></span><br><span class="line">        <span class="comment">//4</span></span><br><span class="line">        <span class="comment">//5</span></span><br><span class="line">        <span class="comment">//6</span></span><br><span class="line">        <span class="comment">//7</span></span><br><span class="line">        <span class="comment">//8</span></span><br><span class="line">        <span class="comment">//9</span></span><br><span class="line">        <span class="comment">//10</span></span><br><span class="line">        <span class="comment">//11</span></span><br><span class="line">        <span class="comment">//12</span></span><br><span class="line">        <span class="comment">//13</span></span><br><span class="line">        <span class="comment">//14</span></span><br><span class="line">        <span class="comment">//15</span></span><br><span class="line">        <span class="comment">//16</span></span><br><span class="line">        <span class="comment">//17</span></span><br><span class="line">        <span class="comment">//18</span></span><br><span class="line">        <span class="comment">//19</span></span><br><span class="line">        <span class="comment">//20</span></span><br><span class="line">        System.out.println(<span class="string">&quot;我是个垃圾，呜呜呜!&quot;</span>);</span><br><span class="line">        <span class="comment">//21</span></span><br><span class="line">        <span class="comment">//22</span></span><br><span class="line">        <span class="comment">//23</span></span><br><span class="line">        <span class="comment">//24</span></span><br><span class="line">        <span class="comment">//25</span></span><br><span class="line">        <span class="comment">//26</span></span><br><span class="line">        <span class="comment">//27</span></span><br><span class="line">        <span class="comment">//28</span></span><br><span class="line">        <span class="comment">//29</span></span><br><span class="line">        <span class="comment">//30</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//嗯嗯，这只是占位用的，测试用的</span></span><br></pre></td></tr></table></figure>
+    <title>C++指针 2021.4.20</title>
+    <url>/2022/05/02/C++%E6%8C%87%E9%92%88%202021.4.20/</url>
+    <content><![CDATA[<ul>
+<li>指针变量里面存储了一个地址，可以是常量、全局变量、局部变量、堆变量（new）的地址，还可以是函数（代码）的地址</li>
+</ul>
+<h4 id="空指针">空指针</h4>
+<p>空指针又称万能指针，可以指向任何带类型的指针（地址）<br>
+p=&amp;x; x可以是基本数据类型，也可是对象/结构体类型。<br>
+p=&amp;table;<br>
+p=&amp;book;</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">3</span>;</span><br><span class="line"><span class="type">void</span> *p1;</span><br><span class="line">p1 = &amp;a;<span class="comment">//p1指向a的纯地址，但并不理解成int</span></span><br><span class="line"><span class="type">int</span> *pi = (<span class="type">int</span>*)p1;</span><br><span class="line"><span class="comment">//强制类型转换，将p1理解成pi，语法逻辑都正确</span></span><br><span class="line"><span class="type">float</span> *pf = (<span class="type">float</span>*)p1;</span><br><span class="line"><span class="comment">//强制类型转换，将p1理解成pf，语法正确，逻辑错误</span></span><br></pre></td></tr></table></figure>
+<p>eg.C语言库函数qsort，快速排序，可以对任意类型的数组数据进行排序</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">qsort</span><span class="params">(<span class="type">void</span> *base, <span class="type">int</span> nelem, unigned <span class="type">int</span> width, <span class="type">int</span>(*pfCompare)(<span class="type">const</span> <span class="type">void</span>*, <span class="type">const</span> <span class="type">void</span>*))</span></span></span><br><span class="line"><span class="function">   <span class="comment">//数组起始地址，数组元素的个数，每个元素的大小（字节为单位）</span></span></span><br></pre></td></tr></table></figure>
+<p><code>int函数名(const void *d1, const void *d2);</code>比较元素大小的指针函数，实参是程序员自定义的函数<br>
+<a href="https://blog.csdn.net/yapingxin/article/details/22990579">虽然这个也没写具体原理，，，但是从此我知道了会用就行</a></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">cmp1</span><span class="params">(<span class="type">const</span> <span class="type">void</span> *a, <span class="type">const</span> <span class="type">void</span> *b)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> *(<span class="type">unsigned</span> <span class="type">int</span> *)a - *(<span class="type">unsigned</span> <span class="type">int</span> *)b;<span class="comment">//从小到大排序</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">cmp2</span><span class="params">(<span class="type">const</span> <span class="type">void</span> *a, <span class="type">const</span> <span class="type">void</span> *b)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> *(<span class="type">unsigned</span> <span class="type">int</span> *)b - *(<span class="type">unsigned</span> <span class="type">int</span> *)a;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">cmp3</span><span class="params">(<span class="type">const</span> <span class="type">void</span> *a, <span class="type">const</span> <span class="type">void</span> *b)</span></span>&#123;</span><br><span class="line">	<span class="type">const</span> <span class="type">unsigned</span> <span class="type">int</span> *p1, *p2;</span><br><span class="line">	p1 = (<span class="type">const</span> <span class="type">unsigned</span> <span class="type">int</span>*)a;<span class="comment">//把void*转化成int* </span></span><br><span class="line">	p2 = (<span class="type">const</span> <span class="type">unsigned</span> <span class="type">int</span>*)b;<span class="comment">//把void*转化成int* </span></span><br><span class="line">	<span class="keyword">return</span> (*p1%<span class="number">10</span>)-(*p2%<span class="number">10</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="返回指针值的函数">返回指针值的函数</h4>
+<p>被调函数的返回结果是一个地址，函数的类型是指针类型</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> *<span class="title">max</span><span class="params">(<span class="type">int</span> *x, <span class="type">int</span> *y)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> *pt;</span><br><span class="line">	<span class="keyword">if</span>(*x &gt; *y)</span><br><span class="line">		px = x;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		pt = y;</span><br><span class="line">	<span class="keyword">return</span> pt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不要试图返回局部变量的地址。。。它被释放了<br>
+下面为错误示例：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> *<span class="title">max</span><span class="params">(<span class="type">int</span> *x, <span class="type">int</span> *y)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> *pt;</span><br><span class="line">	<span class="keyword">if</span>(*x &gt; *y)</span><br><span class="line">		px = x;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		pt = y;</span><br><span class="line">	<span class="keyword">return</span> &amp;pt;</span><br><span class="line">&#125;</span><br><span class="line">局部变量地址</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> *<span class="title">max</span><span class="params">(<span class="type">int</span> *x, <span class="type">int</span> *y)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> *pt;</span><br><span class="line">	<span class="keyword">if</span>(*x &gt; *y)</span><br><span class="line">		px = x;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		pt = &amp;y;</span><br><span class="line">	<span class="keyword">return</span> pt;</span><br><span class="line">&#125;</span><br><span class="line">局部变量（形参）的地址</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20210420193133188.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h4 id="指针数组">指针数组</h4>
+<p>每一个元素可以存放地址<br>
+<code>int *p[4];</code></p>
+<ul>
+<li><code>[]</code>比<code>*</code>优先级高，所以等价于<code>int *(p[4])</code></li>
+<li><code>p[]</code>是数组，<code>p[4]</code>存放四个元素</li>
+<li>每个元素<code>p[i]</code>是一个<code>int*</code>，即整数数据的地址，或者一个int数组的首地址<br>
+<img src="https://img-blog.csdnimg.cn/20210420193729667.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>
+直观上，每个指针都可以指向一段内存空间，可以理解为二维数组，说是任意维度更恰当。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> a[<span class="number">12</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,...,<span class="number">11</span>,<span class="number">12</span>&#125;;</span><br><span class="line">	<span class="type">int</span> *p[<span class="number">4</span>]；<span class="comment">//指向四段内存</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++)</span><br><span class="line">		p[i] = &amp;a[i * <span class="number">3</span>];</span><br><span class="line">	cout &lt;&lt; p[<span class="number">3</span>][<span class="number">2</span>] &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>p[3][2] = *(p[3] + 2) = *(*(p + 3) + 2);</code></p>
+<ul>
+<li>指针数组与二维数组的比较<br>
+<img src="https://img-blog.csdnimg.cn/20210420194656656.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>
+//要注意最后一个不是<code>*(p+3+2)</code>而是<code>*(*(p + 3) + 2)</code></li>
+<li>常见应用场景：实现字符串数组，数组中的每个字符串长度不一</li>
+<li><code>char *str[] = &#123;&quot;China&quot;, &quot;Japan&quot;, &quot;America&quot;&#125;;</code></li>
+</ul>
+<h4 id="指向指针的指针">指向指针的指针</h4>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> i, *p;</span><br><span class="line">p = &amp;i;</span><br><span class="line"><span class="type">int</span> **pp;</span><br><span class="line">pp = &amp;p;</span><br></pre></td></tr></table></figure>
+<p><s>pp=&amp;&amp;i;</s>//不能连续取地址，第一次取出来的那个地址其实是个值，无法据此取到第二个地址<br>
+<s>pp = &amp; i;</s>  //一看就不对，pp为只想指针的指针变量，其基类型是指向整型数据的指针变量，而非整形数据</p>
+<ul>
+<li>经典用途：字符串数组（<s>好像不能直接赋值全部，只能分开单独赋值。</s> 能 ）<br>
+<img src="https://img-blog.csdnimg.cn/20210420201545700.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+</ul>
+<h4 id="其他说明：">其他说明：</h4>
+<ol>
+<li>指针变量可以有空值，不指向任何地址。（虽然有#define NULL 0）（p=NULL相当于p=0但不建议写p=0)</li>
+<li>两指针可以相减，不可以相加。若要进行相减运算，则两指针必须指向同一数组，结果为相距的数组元素个数</li>
+<li>指向同一数组的两个指针可以比较大小：p2&gt;p1指p2在p1的后面</li>
+</ol>
+<h4 id="动态分配内存">动态分配内存</h4>
+<p>静态开辟的内存（栈）会存在不足或者浪费。一i那次在程序中要根据实际需要动态开辟空间——<br>
+利用new运算符开辟空间，空间的地址必须用个指针保存下来，才不会丢失<br>
+ps1. 当内存中没有足够的内存给予分配时，new运算符返回空值NULL；<br>
+ps2. new出来的空间，不能在分配空间时进行初始化，且除非重新开机，要手动用delete收回（二者配套，delete无其他使用）</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> *p;</span><br><span class="line">p = <span class="keyword">new</span> <span class="type">int</span>;</span><br><span class="line">p = <span class="keyword">new</span> <span class="built_in">int</span>(<span class="number">6</span>);<span class="comment">//赋初值6</span></span><br><span class="line">p = <span class="keyword">new</span> <span class="type">int</span>[<span class="number">6</span>];<span class="comment">//申请一个数组，首地址送给p</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//开辟一个数组，每个元素都是一个int*</span></span><br><span class="line"><span class="type">int</span> **pp;</span><br><span class="line">pp = <span class="keyword">new</span> <span class="type">int</span>*[<span class="number">100</span>];<span class="comment">//int*[rows]</span></span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++)</span><br><span class="line">	pp[i] = <span class="keyword">new</span> <span class="type">int</span>[<span class="number">5</span>];</span><br></pre></td></tr></table></figure>
+<p>关于delete：<br>
+<img src="https://img-blog.csdnimg.cn/20210420203043501.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>
+这一个示例是为了表示不要重复删除一块内存空间</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> *q = <span class="keyword">new</span> <span class="built_in">int</span>(<span class="number">5</span>);</span><br><span class="line">p = q;</span><br><span class="line"><span class="keyword">delete</span> p;</span><br><span class="line">cout &lt;&lt; *q &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+<p>这一个示例是为了避免野指针出现，保证删除后这个成为空指针</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> *p = <span class="keyword">new</span> <span class="type">int</span>;</span><br><span class="line">*p = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">if</span>(p)&#123;</span><br><span class="line">	<span class="keyword">delete</span> p;</span><br><span class="line">	p = <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="指针数组和指向指针的指针">指针数组和指向指针的指针</h4>
+<ul>
+<li><code>int a[3][4];</code>连续存放3行4列整数，自动分配空间</li>
+<li><code>int(*p)[4];</code>连续存放未知（n）行4列整数的第一行，可以<code>p=a;</code> ,<code>p = &amp;a[i]</code>p是a上按行游走的指针<br>
+（ <code>int(*p)[4]</code>相当于指向有四个元素的一维数组，比如说<code>a[1]</code>）</li>
+<li><code>int **a</code> 等价于 <code>int *a[]</code></li>
+</ul>
+<p><code>int *p[3];</code>3行整数，可以不连续，每行整数个数未知<br>
+<code>int **p;</code>n行整数，可以不连续，每行整数个数未知</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">p = <span class="keyword">new</span> <span class="type">int</span>*[<span class="number">3</span>];</span><br><span class="line">p[<span class="number">0</span>] = <span class="keyword">new</span> <span class="type">int</span> [<span class="number">4</span>];</span><br><span class="line">p[<span class="number">1</span>] = <span class="keyword">new</span> <span class="type">int</span> [<span class="number">4</span>];</span><br><span class="line">以上都是合法的</span><br><span class="line">下面非法：(因为连续性不同）</span><br><span class="line">p = a;</span><br><span class="line">a = p;</span><br></pre></td></tr></table></figure>
+<h4 id="const指针">const指针</h4>
+<p>记得const要在定义同时必须赋值</p>
+<ul>
+<li>
+<p>const 修饰指针：1-常指针<br>
+<code>int r = 6; </code><br>
+<code>int * const pr = &amp;r;</code><br>
+<code>数据类型 * const 指针变量名</code><br>
+<strong>这样仅仅表明指向这个地址不变，不能再访问其他的内存单元了，但是仍然可以更改这个内存单元的值</strong><br>
+用途：1. <strong>数组名</strong>为常指针（禁写指针），int a[10]，不能a++;   2.考试</p>
+</li>
+<li>
+<p>const型指针2-指向常量的指针变量（<strong>不允许通过指针间接更改单元内容，但是可以直接更改</strong>）<br>
+<code>const 数据类型 * 指针变量名</code><br>
+用途：日常常用</p>
+</li>
+<li>
+<p>const型指针3-指向常量的常指针变量<br>
+<code>const 数据类型 * const 指针变量名</code><br>
+定义后没不允许通过指针变量改变所指向的对象的值，也不允许改变指针变量的值，特少见</p>
+</li>
+</ul>
+<p>const char *str3; str3 = “qwq”;是正确的，因为“qwq”是一个常量，是不能修改的，必须要有const，这玩意儿不是拷贝的，是把变量地址送给指针。<br>
+char str[80] = {“qaq”};这才是拷贝的<br>
+char str[80]； str = “qwq”；是错的</p>
 ]]></content>
+      <categories>
+        <category>yxt</category>
+      </categories>
       <tags>
-        <tag>垃圾</tag>
+        <tag>c++</tag>
       </tags>
   </entry>
   <entry>
@@ -310,6 +300,16 @@ b=*++p;等价于p=p+1;b=*p;</li>
       </categories>
       <tags>
         <tag>c++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello</title>
+    <url>/2022/04/27/Hello/</url>
+    <content><![CDATA[<p>大家都围过来啊，都围过来啊。我宣布个事：我是个有趣的垃圾！</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Hello</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">//1</span></span><br><span class="line">        <span class="comment">//2</span></span><br><span class="line">        <span class="comment">//3</span></span><br><span class="line">        <span class="comment">//4</span></span><br><span class="line">        <span class="comment">//5</span></span><br><span class="line">        <span class="comment">//6</span></span><br><span class="line">        <span class="comment">//7</span></span><br><span class="line">        <span class="comment">//8</span></span><br><span class="line">        <span class="comment">//9</span></span><br><span class="line">        <span class="comment">//10</span></span><br><span class="line">        <span class="comment">//11</span></span><br><span class="line">        <span class="comment">//12</span></span><br><span class="line">        <span class="comment">//13</span></span><br><span class="line">        <span class="comment">//14</span></span><br><span class="line">        <span class="comment">//15</span></span><br><span class="line">        <span class="comment">//16</span></span><br><span class="line">        <span class="comment">//17</span></span><br><span class="line">        <span class="comment">//18</span></span><br><span class="line">        <span class="comment">//19</span></span><br><span class="line">        <span class="comment">//20</span></span><br><span class="line">        System.out.println(<span class="string">&quot;我是个垃圾，呜呜呜!&quot;</span>);</span><br><span class="line">        <span class="comment">//21</span></span><br><span class="line">        <span class="comment">//22</span></span><br><span class="line">        <span class="comment">//23</span></span><br><span class="line">        <span class="comment">//24</span></span><br><span class="line">        <span class="comment">//25</span></span><br><span class="line">        <span class="comment">//26</span></span><br><span class="line">        <span class="comment">//27</span></span><br><span class="line">        <span class="comment">//28</span></span><br><span class="line">        <span class="comment">//29</span></span><br><span class="line">        <span class="comment">//30</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//嗯嗯，这只是占位用的，测试用的</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>垃圾</tag>
       </tags>
   </entry>
   <entry>
@@ -1147,6 +1147,34 @@ p(\overrightarrow{w}|d_m)=\prod_{i=1}^n\sum_{z=1}^Kp(w_i|z)p(z|d_m)=\prod_{i=1}^
       </tags>
   </entry>
   <entry>
+    <title>关于写DMF时发生的小事情</title>
+    <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E5%86%99DMF%E6%97%B6%E5%8F%91%E7%94%9F%E7%9A%84%E5%B0%8F%E4%BA%8B%E6%83%85/</url>
+    <content><![CDATA[<h1>事实上，以下内容都是我中途才开始考虑的</h1>
+<ul>
+<li>报错反应模型nn.linear参数不匹配无法matmaul，瞅了半天模型参数没问题，一看取出传入参数时传错了。</li>
+<li>tensor索引说是只能为byte,long,bool，然后一开始改成float也不行，后来发现其实可以在autograd.Variable的过程中将tensor先转化为byte类型的再转化为Variable——不是很确定，原来刚刚是通过直接取消了variable，把array类型传入了</li>
+<li>确定了，上面的方法不行，说mask[256]和什么什么不匹配</li>
+<li>“float() argument must be a string or a number, not ‘NoneType’”<br>
+这一点是我在重写loss的过程中产生的。然后我试图强转float结果报错，强转tensor也失败了。然后发现：NoneType表示这里没有参数，所以我的结果没有传进去？？</li>
+<li>然后发现实际上我的model没有产生结果：就是这句话：（output直接是None）<img src="https://img-blog.csdnimg.cn/c9b8b53a3eef4d9396e896ea701e759c.png" alt="在这里插入图片描述"></li>
+<li>原来是我的model里面forward忘记返回值了</li>
+<li>感觉这个output有点问题但是不知道怎么解决，毕竟我返回的是一个别的值，但是输入的是另外的两个值。看后续结果吧，如果不行的话，就只拿出output中的第三个tensor。果然，loss都是nan</li>
+<li>忽然发现没有三个tensor？？？另外关于loss都是nan的问题——妈呀梯度消失了loss函数应该是出了问题，直接第一次就-inf了<br>
+<img src="https://img-blog.csdnimg.cn/5702863d9840404b80701e0499be659d.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_17,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></li>
+<li>看了一下，x和y写反了<s>mdzz</s></li>
+<li>啊第一次训练就遇到了梯度消失，不知道为什么这个矩阵它同增同减，我决定试一试归一化操作再分布给0~5</li>
+<li>发现不可，那个loss函数设计的就是给0~1之间的x分布的，不能给放大。另外，我发现即使进行了最大最小值归一化，也没什么效果。</li>
+<li>训练一下试试吧，这个loss太大了。我知道为什么大了，loss函数抄错了，没写符号，肯定越练越小</li>
+</ul>
+]]></content>
+      <categories>
+        <category>yxt</category>
+      </categories>
+      <tags>
+        <tag>推荐系统</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于学习transformer那些事</title>
     <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0transformer%E9%82%A3%E4%BA%9B%E4%BA%8B/</url>
     <content><![CDATA[<h1>论文阅读：</h1>
@@ -1180,34 +1208,6 @@ A：<a href="https://www.zhihu.com/question/325839123">知乎传送门。</a><br
       </tags>
   </entry>
   <entry>
-    <title>关于写DMF时发生的小事情</title>
-    <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E5%86%99DMF%E6%97%B6%E5%8F%91%E7%94%9F%E7%9A%84%E5%B0%8F%E4%BA%8B%E6%83%85/</url>
-    <content><![CDATA[<h1>事实上，以下内容都是我中途才开始考虑的</h1>
-<ul>
-<li>报错反应模型nn.linear参数不匹配无法matmaul，瞅了半天模型参数没问题，一看取出传入参数时传错了。</li>
-<li>tensor索引说是只能为byte,long,bool，然后一开始改成float也不行，后来发现其实可以在autograd.Variable的过程中将tensor先转化为byte类型的再转化为Variable——不是很确定，原来刚刚是通过直接取消了variable，把array类型传入了</li>
-<li>确定了，上面的方法不行，说mask[256]和什么什么不匹配</li>
-<li>“float() argument must be a string or a number, not ‘NoneType’”<br>
-这一点是我在重写loss的过程中产生的。然后我试图强转float结果报错，强转tensor也失败了。然后发现：NoneType表示这里没有参数，所以我的结果没有传进去？？</li>
-<li>然后发现实际上我的model没有产生结果：就是这句话：（output直接是None）<img src="https://img-blog.csdnimg.cn/c9b8b53a3eef4d9396e896ea701e759c.png" alt="在这里插入图片描述"></li>
-<li>原来是我的model里面forward忘记返回值了</li>
-<li>感觉这个output有点问题但是不知道怎么解决，毕竟我返回的是一个别的值，但是输入的是另外的两个值。看后续结果吧，如果不行的话，就只拿出output中的第三个tensor。果然，loss都是nan</li>
-<li>忽然发现没有三个tensor？？？另外关于loss都是nan的问题——妈呀梯度消失了loss函数应该是出了问题，直接第一次就-inf了<br>
-<img src="https://img-blog.csdnimg.cn/5702863d9840404b80701e0499be659d.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_17,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></li>
-<li>看了一下，x和y写反了<s>mdzz</s></li>
-<li>啊第一次训练就遇到了梯度消失，不知道为什么这个矩阵它同增同减，我决定试一试归一化操作再分布给0~5</li>
-<li>发现不可，那个loss函数设计的就是给0~1之间的x分布的，不能给放大。另外，我发现即使进行了最大最小值归一化，也没什么效果。</li>
-<li>训练一下试试吧，这个loss太大了。我知道为什么大了，loss函数抄错了，没写符号，肯定越练越小</li>
-</ul>
-]]></content>
-      <categories>
-        <category>yxt</category>
-      </categories>
-      <tags>
-        <tag>推荐系统</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>关于更改默认安装路径这件事</title>
     <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AE%89%E8%A3%85%E8%B7%AF%E5%BE%84%E8%BF%99%E4%BB%B6%E4%BA%8B/</url>
     <content><![CDATA[<p><img src="https://img-blog.csdnimg.cn/20210219224405814.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
@@ -1217,6 +1217,24 @@ A：<a href="https://www.zhihu.com/question/325839123">知乎传送门。</a><br
       </categories>
       <tags>
         <tag>整治电脑</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于深度学习画图这件事</title>
+    <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%94%BB%E5%9B%BE%E8%BF%99%E4%BB%B6%E4%BA%8B/</url>
+    <content><![CDATA[<p>以下是在搜集过程中看到的几个画模型图可能需要的便捷网站：</p>
+<ul>
+<li><a href="https://blog.csdn.net/weixin_42802447/article/details/117033275">CSDN指路0</a></li>
+<li><a href="https://guoleida.blog.csdn.net/article/details/88769405?spm=1001.2101.3001.6650.2&amp;utm_medium=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-2.pc_relevant_default&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-2.pc_relevant_default&amp;utm_relevant_index=5">CSDN指路1</a></li>
+<li><a href="https://blog.csdn.net/weixin_42137700/article/details/107538350?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-4.pc_relevant_default&amp;spm=1001.2101.3001.4242.3&amp;utm_relevant_index=7">CSDN指路2（这个是ppt素材库）</a></li>
+</ul>
+<p>当然还是PPT yyds</p>
+]]></content>
+      <categories>
+        <category>yxt</category>
+      </categories>
+      <tags>
+        <tag>Paper</tag>
       </tags>
   </entry>
   <entry>
@@ -1254,21 +1272,24 @@ A：<a href="https://www.zhihu.com/question/325839123">知乎传送门。</a><br
       </tags>
   </entry>
   <entry>
-    <title>关于深度学习画图这件事</title>
-    <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%94%BB%E5%9B%BE%E8%BF%99%E4%BB%B6%E4%BA%8B/</url>
-    <content><![CDATA[<p>以下是在搜集过程中看到的几个画模型图可能需要的便捷网站：</p>
+    <title>细数近日犯的错误</title>
+    <url>/2022/05/02/%E7%BB%86%E6%95%B0%E8%BF%91%E6%97%A5%E7%8A%AF%E7%9A%84%E9%94%99%E8%AF%AF/</url>
+    <content><![CDATA[<p>关于第七次数据结构实验</p>
 <ul>
-<li><a href="https://blog.csdn.net/weixin_42802447/article/details/117033275">CSDN指路0</a></li>
-<li><a href="https://guoleida.blog.csdn.net/article/details/88769405?spm=1001.2101.3001.6650.2&amp;utm_medium=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-2.pc_relevant_default&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-2.pc_relevant_default&amp;utm_relevant_index=5">CSDN指路1</a></li>
-<li><a href="https://blog.csdn.net/weixin_42137700/article/details/107538350?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-4.pc_relevant_default&amp;spm=1001.2101.3001.4242.3&amp;utm_relevant_index=7">CSDN指路2（这个是ppt素材库）</a></li>
+<li>注意数组在函数内部和外部定义的区别，虽然我现在依然不知道原理为什么拿出去就不行了可能和另一个错误相关</li>
+<li>注意数组分配对象是new int []而不是new int（），第二个是分配一个单int对象</li>
+<li>注意分配范围与自己使用，数组在使用过程中是否发生变化，下一次是用变化过的还是没变换的ap</li>
 </ul>
-<p>当然还是PPT yyds</p>
+<p>关于第八次数据结构实验</p>
+<ul>
+<li>注意初始化，可能改了数组名之后又忘记初始化啦！</li>
+</ul>
 ]]></content>
       <categories>
         <category>yxt</category>
       </categories>
       <tags>
-        <tag>Paper</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -1329,27 +1350,6 @@ Dism++（小管家）</p>
       </categories>
       <tags>
         <tag>整治电脑</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>细数近日犯的错误</title>
-    <url>/2022/05/02/%E7%BB%86%E6%95%B0%E8%BF%91%E6%97%A5%E7%8A%AF%E7%9A%84%E9%94%99%E8%AF%AF/</url>
-    <content><![CDATA[<p>关于第七次数据结构实验</p>
-<ul>
-<li>注意数组在函数内部和外部定义的区别，虽然我现在依然不知道原理为什么拿出去就不行了可能和另一个错误相关</li>
-<li>注意数组分配对象是new int []而不是new int（），第二个是分配一个单int对象</li>
-<li>注意分配范围与自己使用，数组在使用过程中是否发生变化，下一次是用变化过的还是没变换的ap</li>
-</ul>
-<p>关于第八次数据结构实验</p>
-<ul>
-<li>注意初始化，可能改了数组名之后又忘记初始化啦！</li>
-</ul>
-]]></content>
-      <categories>
-        <category>yxt</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -1419,6 +1419,32 @@ pip XX（XX指要安装的包）【中途断开得重安】<br>
       </tags>
   </entry>
   <entry>
+    <title>补充re</title>
+    <url>/2022/05/02/%E8%A1%A5%E5%85%85re/</url>
+    <content><![CDATA[<h3 id="关于正则表达式">关于正则表达式</h3>
+<p>算了我决定看别人的博客：<a href="https://www.cnblogs.com/fozero/p/7868687.html">史上最全常用正则表达式大全</a><br>
+<img src="https://img-blog.csdnimg.cn/20210216201914612.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>
+<img src="https://img-blog.csdnimg.cn/20210216202124148.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>
+注意其中的<code>\w</code>代表全部大写小写字母、数字和下划线，而不包括汉字</p>
+<h3 id="关于相关函数">关于相关函数</h3>
+<p><img src="https://img-blog.csdnimg.cn/2021021620242885.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>
+目前需要掌握<code>findall</code>, 	<code>match</code>, <code>sub</code><br>
+<img src="https://img-blog.csdnimg.cn/20210216202701134.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>
+带模式对象玩的：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#创建模式对象</span></span><br><span class="line">pat = re.<span class="built_in">compile</span>(<span class="string">&quot;AA&quot;</span>)<span class="comment">#此处的AA是正则表达式,用来去验证其他的字符串</span></span><br><span class="line">m = pat.search(<span class="string">&quot;SBA&quot;</span>)<span class="comment">#search字符串被校验的内容</span></span><br><span class="line"><span class="built_in">print</span>(m)<span class="comment">#Output: None因为SBA里面没有AA</span></span><br><span class="line">m = pat.search(<span class="string">&quot;ABSAA&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(m)<span class="comment">#Output:  &lt;re.Match object; span=(3, 5), match=&#x27;AA&#x27;&gt;</span></span><br><span class="line">m = pat.search(<span class="string">&quot;AASAA&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(m)<span class="comment">#Output:  &lt;re.Match object; span=(0, 2), match=&#x27;AA&#x27;&gt;</span></span><br></pre></td></tr></table></figure>
+<p>不带模式对象玩的：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#没有模式对象</span></span><br><span class="line">m = re.search(<span class="string">&quot;ad&quot;</span>, <span class="string">&quot;sad&quot;</span>)</span><br><span class="line"><span class="comment">#前面的字符串是规则（模板），后面是被校验的对象</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(m)</span><br><span class="line"><span class="comment">#Output:&lt;re.Match object; span=(1, 3), match=&#x27;ad&#x27;&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(re.findall(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;asDadfGQ&quot;</span>))</span><br><span class="line"><span class="comment">#前面的字符串是规则（正则表达式），后面是被校验的对象</span></span><br><span class="line"><span class="comment">#Output:[&#x27;a&#x27;, &#x27;a&#x27;]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(re.findall(<span class="string">&quot;[A-Z]&quot;</span>, <span class="string">&quot;asDadfGQ&quot;</span>))</span><br><span class="line"><span class="comment">#Output:[&#x27;D&#x27;, &#x27;G&#x27;, &#x27;Q&#x27;]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(re.findall(<span class="string">&quot;[A-Z]+&quot;</span>, <span class="string">&quot;asDadfGQ&quot;</span>))</span><br><span class="line"><span class="comment">#Output:[&#x27;D&#x27;, &#x27;GQ&#x27;]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(re.sub(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;A&quot;</span>, <span class="string">&quot;abcdcasd&quot;</span>))</span><br><span class="line"><span class="comment">#找到a用A来替换  </span></span><br><span class="line"><span class="comment">#Output:AbcdcAsd</span></span><br></pre></td></tr></table></figure>
+<p>另，针对转义字符有：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#建议在正则表达式中，被比较的字符串前面加上r（不用担心转义字符的问题）</span></span><br><span class="line">a = <span class="string">r&quot;\aabd-\&#x27;&quot;</span></span><br><span class="line"><span class="comment">#注意下面这种还是不可以哦</span></span><br><span class="line"><span class="comment">#a = r&quot;\aabd-\&quot;</span></span><br><span class="line"><span class="built_in">print</span>(a)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>yxt</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>补充beautifulSoup</title>
     <url>/2022/05/02/%E8%A1%A5%E5%85%85beautifulSoup/</url>
     <content><![CDATA[<p>学习视频链接：<a href="https://www.bilibili.com/video/BV12E411A7ZQ?p=20&amp;spm_id_from=pageDriver">Python爬虫基础5天速成</a></p>
@@ -1463,32 +1489,6 @@ pip XX（XX指要安装的包）【中途断开得重安】<br>
       <tags>
         <tag>Python</tag>
         <tag>爬虫</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>补充re</title>
-    <url>/2022/05/02/%E8%A1%A5%E5%85%85re/</url>
-    <content><![CDATA[<h3 id="关于正则表达式">关于正则表达式</h3>
-<p>算了我决定看别人的博客：<a href="https://www.cnblogs.com/fozero/p/7868687.html">史上最全常用正则表达式大全</a><br>
-<img src="https://img-blog.csdnimg.cn/20210216201914612.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>
-<img src="https://img-blog.csdnimg.cn/20210216202124148.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>
-注意其中的<code>\w</code>代表全部大写小写字母、数字和下划线，而不包括汉字</p>
-<h3 id="关于相关函数">关于相关函数</h3>
-<p><img src="https://img-blog.csdnimg.cn/2021021620242885.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>
-目前需要掌握<code>findall</code>, 	<code>match</code>, <code>sub</code><br>
-<img src="https://img-blog.csdnimg.cn/20210216202701134.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>
-带模式对象玩的：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#创建模式对象</span></span><br><span class="line">pat = re.<span class="built_in">compile</span>(<span class="string">&quot;AA&quot;</span>)<span class="comment">#此处的AA是正则表达式,用来去验证其他的字符串</span></span><br><span class="line">m = pat.search(<span class="string">&quot;SBA&quot;</span>)<span class="comment">#search字符串被校验的内容</span></span><br><span class="line"><span class="built_in">print</span>(m)<span class="comment">#Output: None因为SBA里面没有AA</span></span><br><span class="line">m = pat.search(<span class="string">&quot;ABSAA&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(m)<span class="comment">#Output:  &lt;re.Match object; span=(3, 5), match=&#x27;AA&#x27;&gt;</span></span><br><span class="line">m = pat.search(<span class="string">&quot;AASAA&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(m)<span class="comment">#Output:  &lt;re.Match object; span=(0, 2), match=&#x27;AA&#x27;&gt;</span></span><br></pre></td></tr></table></figure>
-<p>不带模式对象玩的：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#没有模式对象</span></span><br><span class="line">m = re.search(<span class="string">&quot;ad&quot;</span>, <span class="string">&quot;sad&quot;</span>)</span><br><span class="line"><span class="comment">#前面的字符串是规则（模板），后面是被校验的对象</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(m)</span><br><span class="line"><span class="comment">#Output:&lt;re.Match object; span=(1, 3), match=&#x27;ad&#x27;&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(re.findall(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;asDadfGQ&quot;</span>))</span><br><span class="line"><span class="comment">#前面的字符串是规则（正则表达式），后面是被校验的对象</span></span><br><span class="line"><span class="comment">#Output:[&#x27;a&#x27;, &#x27;a&#x27;]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(re.findall(<span class="string">&quot;[A-Z]&quot;</span>, <span class="string">&quot;asDadfGQ&quot;</span>))</span><br><span class="line"><span class="comment">#Output:[&#x27;D&#x27;, &#x27;G&#x27;, &#x27;Q&#x27;]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(re.findall(<span class="string">&quot;[A-Z]+&quot;</span>, <span class="string">&quot;asDadfGQ&quot;</span>))</span><br><span class="line"><span class="comment">#Output:[&#x27;D&#x27;, &#x27;GQ&#x27;]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(re.sub(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;A&quot;</span>, <span class="string">&quot;abcdcasd&quot;</span>))</span><br><span class="line"><span class="comment">#找到a用A来替换  </span></span><br><span class="line"><span class="comment">#Output:AbcdcAsd</span></span><br></pre></td></tr></table></figure>
-<p>另，针对转义字符有：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#建议在正则表达式中，被比较的字符串前面加上r（不用担心转义字符的问题）</span></span><br><span class="line">a = <span class="string">r&quot;\aabd-\&#x27;&quot;</span></span><br><span class="line"><span class="comment">#注意下面这种还是不可以哦</span></span><br><span class="line"><span class="comment">#a = r&quot;\aabd-\&quot;</span></span><br><span class="line"><span class="built_in">print</span>(a)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>yxt</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
