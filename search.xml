@@ -121,57 +121,6 @@ b=*++p;等价于p=p+1;b=*p;</li>
       </tags>
   </entry>
   <entry>
-    <title>PCA及其实战学习</title>
-    <url>/2022/05/02/PCA%E5%8F%8A%E5%85%B6%E5%AE%9E%E6%88%98%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<h1>知识学习</h1>
-<p>整体思想就是根据重要特征（为主）附加其他特征（为辅）生成新的维度的特征<br>
-<img src="https://img-blog.csdnimg.cn/ea1b84d040ed46a9b2f9308178b494f6.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
-<h1>代码实战</h1>
-<p>学习视频链接：<a href="https://www.bilibili.com/video/BV1vs411M7Kz?from=search&amp;seid=17527404163809794491&amp;spm_id_from=333.337.0.0">b站传送门</a><br>
-这里使用了来自视频教程的数据集：<a href="https://github.com/lq1990/Bilibili-WenDao.git">github传送门</a><br>
-数据集下载方式：<a href="https://blog.csdn.net/weixin_42259631/article/details/82495611?spm=1001.2101.3001.6650.1&amp;utm_medium=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-1.pc_relevant_default&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-1.pc_relevant_default&amp;utm_relevant_index=2">CSDN传送门</a></p>
-<h2 id="首先是数据预处理部分：">首先是数据预处理部分：</h2>
-<p>过程中所需要使用的所有包</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br></pre></td></tr></table></figure>
-<p>获得原始数据并进行简要查看，可以借助info和head工具</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#数据集处理部分</span></span><br><span class="line">traindata_0 = pd.read_csv(<span class="string">r&#x27;C:\Users\Administrator\Desktop\train_titanic.csv&#x27;</span>, index_col = <span class="string">&#x27;PassengerId&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;Pandas dataframe.info()函数用于获取 DataFrame 的简要摘要。在对数据进行探索性分析时，它非常方便。为了快速浏览数据集，我们使用dataframe.info()功能。</span></span><br><span class="line"><span class="string">用法： DataFrame.info(verbose=None, buf=None, max_cols=None, memory_usage=None, null_counts=None)</span></span><br><span class="line"><span class="string">参数：verbose:是否打印完整的摘要。屏幕上将不显示任何内容。max_info_columns设置。 True或False会覆盖显示。max_info_columns设置。buf:可写缓冲区，默认为sys.stdoutmax_cols:确定是打印完整摘要还是简短摘要。屏幕上将不显示任何内容。max_info_columns设置。memory_usage:指定是否应显示DataFrame元素(包括索引)的总内存使用情况。屏幕上将不显示任何内容。memory_usage设置。 True或False会覆盖显示。memory_usage设置。 “ deep”的值与True相同，具有自省性。内存使用情况以人类可读的单位(以2为基数的表示形式)显示。null_counts：是否显示非空计数。如果为None，则仅显示框架是否小于max_info_rows和max_info_columns。如果为True，则始终显示计数。如果为False，则从不显示计数。&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(traindata_0.info())</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;Pandas DataFrame head()方法返回DataFrame或Series的前n行，其中n是用户输入值。 head()函数用于获取前n行。这对于快速测试对象中的数据类型是否正确非常有用。对于n的负值，head()函数返回除最后n行之外的所有行，等效于df[:-n]。</span></span><br><span class="line"><span class="string">句法:DataFrame.head(n=5) (n=5 is default we can set any value)</span></span><br><span class="line"><span class="string">参量:python中的head()方法仅包含一个参数，即n。它是一个可选参数。通过设置它，我们固定了想要从DataFrame获得的行数。</span></span><br><span class="line"><span class="string">返回值:head()函数从DataFrame返回n行。&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># print(traindata_0.head())</span></span><br><span class="line">traindata_0.head()</span><br><span class="line"><span class="comment">#对缺失数据的声明，Age，Embarked，Cabin，可以看出，它们的数据量小</span></span><br><span class="line"><span class="comment">#先使用常规方法处理缺失数据，本期重点在PCA</span></span><br></pre></td></tr></table></figure>
-<p>处理缺失数据</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">traindata = traindata_0.copy()</span><br><span class="line"><span class="comment">#replace</span></span><br><span class="line"><span class="comment">#其实这里最好使用one-hot形式，但是最终使用的类似于是查表法</span></span><br><span class="line">traindata.Sex = traindata.Sex.replace(&#123;<span class="string">&#x27;female&#x27;</span>:<span class="number">0</span>, <span class="string">&#x27;male&#x27;</span>:<span class="number">1</span>&#125;)</span><br><span class="line">traindata.Embarked = traindata_0.Embarked.replace(&#123;<span class="string">&#x27;C&#x27;</span>:<span class="number">0</span>, <span class="string">&#x27;Q&#x27;</span>:<span class="number">1</span>, <span class="string">&#x27;S&#x27;</span>:<span class="number">2</span>&#125;)</span><br><span class="line"><span class="comment">#fillna</span></span><br><span class="line">traindata.Age.fillna(traindata.Age.mean(), inplace = <span class="literal">True</span>)</span><br><span class="line">traindata.Embarked.fillna(method = <span class="string">&#x27;ffill&#x27;</span>, inplace = <span class="literal">True</span>)</span><br><span class="line"><span class="comment">#drop</span></span><br><span class="line">traindata.drop(columns = [<span class="string">&#x27;Survived&#x27;</span>, <span class="string">&#x27;Name&#x27;</span>, <span class="string">&#x27;Ticket&#x27;</span>, <span class="string">&#x27;Cabin&#x27;</span>], inplace = <span class="literal">True</span>)</span><br><span class="line">traindata.info()</span><br><span class="line"><span class="built_in">print</span>(traindata.head())</span><br><span class="line"></span><br><span class="line">traindata.to_csv(<span class="string">r&#x27;C:\Users\Administrator\Desktop\data_pca.csv&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="然后是pca部分：">然后是pca部分：</h2>
-<h3 id="读入数据，得有一个矩阵x，维度为-m-n-，m个采样数据，每个数据有n个feature">读入数据，得有一个矩阵x，维度为(m,n)，m个采样数据，每个数据有n个feature</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">data = pd.read_csv(<span class="string">r&#x27;C:\Users\Administrator\Desktop\data_pca.csv&#x27;</span>)</span><br><span class="line">data.describe()</span><br><span class="line"><span class="comment">#可以看出量纲差别还是比较大的。</span></span><br></pre></td></tr></table></figure>
-<h3 id="对x去均值、标准化">对x去均值、标准化</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">norm_</span>(<span class="params">x</span>):<span class="comment">#做normalization标准化</span></span><br><span class="line">    xmean = np.mean(x, <span class="number">0</span>)</span><br><span class="line">    std = np.std(x,<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> (x - xmean)/std</span><br><span class="line">data_ = norm_(data)</span><br><span class="line">data_.describe()</span><br><span class="line"><span class="comment">#这里能够看出明显区别。标准化了嘛，均值变成0，量纲差异也没有了</span></span><br></pre></td></tr></table></figure>
-<h3 id="求-X-TX-或-Cov-X-T-的特征值-ew-和特征向量-ev-，其中维度：ew-1-n-，ev-n-n">求 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mi>T</mi></msup><mi>X</mi></mrow><annotation encoding="application/x-tex">X^TX</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8413em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span></span></span></span> 或 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>o</mi><mi>v</mi><mo stretchy="false">(</mo><msup><mi>X</mi><mi>T</mi></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Cov(X^T)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0913em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> 的特征值 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>e</mi><mi>w</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(ew)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mclose">)</span></span></span></span> 和特征向量 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>e</mi><mi>v</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(ev)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">)</span></span></span></span>，其中维度：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>w</mi><mo stretchy="false">(</mo><mn>1</mn><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo><mtext>，</mtext><mi>e</mi><mi>v</mi><mo stretchy="false">(</mo><mi>n</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">ew(1,n)，ev(n,n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mopen">(</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mord cjk_fallback">，</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></h3>
-<p>借助numpy工具提取特征值</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#提取特征值</span></span><br><span class="line"><span class="comment">#第一种方式Xt*X(agin value是下面的m-1倍)</span></span><br><span class="line">ew, ev = np.linalg.eig(data_.T.dot(data_))<span class="comment">#原始数据的格式不合适</span></span><br><span class="line"><span class="built_in">print</span>(ew)</span><br><span class="line"><span class="built_in">print</span>(ev)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"><span class="comment">#第二种方式，方便起见采用了这一种</span></span><br><span class="line">ew, ev = np.linalg.eig(np.cov(data_.T))</span><br><span class="line"><span class="built_in">print</span>(ew)</span><br><span class="line"><span class="built_in">print</span>(ev)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="按照ew从大到小的顺序，取ev的对应的列。ev取前k列得到矩阵V，维度-n-k">按照<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>w</mi></mrow><annotation encoding="application/x-tex">ew</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span></span></span></span>从大到小的顺序，取<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>v</mi></mrow><annotation encoding="application/x-tex">ev</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span>的对应的列。<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>v</mi></mrow><annotation encoding="application/x-tex">ev</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span>取前k列得到矩阵<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span>，维度<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>n</mi><mo separator="true">,</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(n,k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></h3>
-<p>将特征值进行排序</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#将特征值进行排序</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;在输出数据中可以看出有七个特征值（分别对应七个特征，但是没有按照顺序排布）&#x27;&#x27;&#x27;</span></span><br><span class="line">ew_order = np.argsort(ew)[::-<span class="number">1</span>]<span class="comment">#[::-1]可以令其从大到小排序，去掉就是从小到大排序</span></span><br><span class="line">    <span class="comment">#注意argsort是获得标号的，不是获得值的</span></span><br><span class="line"><span class="built_in">print</span>(ew_order)</span><br><span class="line">ew_sort = ew[ew_order]</span><br><span class="line">ev_sort = ev[:,ew_order]</span><br><span class="line"><span class="built_in">print</span>(ew_sort)</span><br><span class="line"><span class="built_in">print</span>(ev_sort)</span><br></pre></td></tr></table></figure>
-<p>画图来直观认识一下特征向量:</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.DataFrame(ew_sort).plot(kind=<span class="string">&#x27;bar&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p>得到图片如下：<br>
-<img src="https://img-blog.csdnimg.cn/0187705f73c6488b891d06dab55d8c72.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="请添加图片描述"></p>
-<pre><code>我们希望使得前k个的核远大于后几个，能达到总核的95%就是最理想的，这样的话主成分提取就会效果比较好。
-因为我们需要将原始的7个feature降到几个feature去代表观察，这里的话前两个可以近似代表观察。
-</code></pre>
-<p>于是我们提取关键特征</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">V = ev_sort[:,:<span class="number">2</span>]<span class="comment">#这里就是应上面所说的取前两列</span></span><br></pre></td></tr></table></figure>
-<h3 id="有X-new-X-V，-维度：X-new-m-k">有<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><mi>X</mi><mo>∗</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">X_{new}=X * V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span>， 维度：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">X_{new}(m,k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X_new = data_.dot(V)<span class="comment">#原始数据和V内积</span></span><br><span class="line"><span class="built_in">print</span>(x_new.shape)<span class="comment">#可以看到由（891，7）降到了（891，2）</span></span><br></pre></td></tr></table></figure>
-<h3 id="前k个ev即主成分（主方向）。因为前k个很重要，就实现了从n维到k维的降维">前k个<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>v</mi></mrow><annotation encoding="application/x-tex">ev</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span>即主成分（主方向）。因为前k个很重要，就实现了从n维到k维的降维</h3>
-<p>此时可以画图查看一下（不知道为什么我画的图和教程不是特别一致）</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#scatter</span></span><br><span class="line"><span class="comment">#先确认一下X_new的格式</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(X_new))<span class="comment">#可以看出是DataFrame</span></span><br><span class="line">%matplotlib notebook</span><br><span class="line"><span class="comment">#由于X_new的格式是DataFrame而不是array所以这里不能这么用</span></span><br><span class="line"><span class="comment"># plt.scatter(X_new[:,0], X_new[:,1],s=5, c = traindata_0.Survived,cmap = plt.cm.coolwarm)</span></span><br><span class="line">sc = plt.scatter(X_new.iloc[:,<span class="number">0</span>], X_new.iloc[:,<span class="number">1</span>],s=<span class="number">5</span>, c = traindata_0.Survived,cmap = plt.cm.coolwarm)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;PC 0&#x27;</span>)<span class="comment">#第一组特征</span></span><br><span class="line">plt.ylabel(<span class="string">&#x27;PC 1&#x27;</span>)<span class="comment">#第二组特征</span></span><br><span class="line">plt.colorbar(sc)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>yxt</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-        <tag>数据处理</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>C艹3.30</title>
     <url>/2022/05/02/C%E8%89%B93.30/</url>
     <content><![CDATA[<p>内容：<br>
@@ -237,16 +186,6 @@ b=*++p;等价于p=p+1;b=*p;</li>
       </categories>
       <tags>
         <tag>c++</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello</title>
-    <url>/2022/04/27/Hello/</url>
-    <content><![CDATA[<p>大家都围过来啊，都围过来啊。我宣布个事：我是个有趣的垃圾！</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Hello</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">//1</span></span><br><span class="line">        <span class="comment">//2</span></span><br><span class="line">        <span class="comment">//3</span></span><br><span class="line">        <span class="comment">//4</span></span><br><span class="line">        <span class="comment">//5</span></span><br><span class="line">        <span class="comment">//6</span></span><br><span class="line">        <span class="comment">//7</span></span><br><span class="line">        <span class="comment">//8</span></span><br><span class="line">        <span class="comment">//9</span></span><br><span class="line">        <span class="comment">//10</span></span><br><span class="line">        <span class="comment">//11</span></span><br><span class="line">        <span class="comment">//12</span></span><br><span class="line">        <span class="comment">//13</span></span><br><span class="line">        <span class="comment">//14</span></span><br><span class="line">        <span class="comment">//15</span></span><br><span class="line">        <span class="comment">//16</span></span><br><span class="line">        <span class="comment">//17</span></span><br><span class="line">        <span class="comment">//18</span></span><br><span class="line">        <span class="comment">//19</span></span><br><span class="line">        <span class="comment">//20</span></span><br><span class="line">        System.out.println(<span class="string">&quot;我是个垃圾，呜呜呜!&quot;</span>);</span><br><span class="line">        <span class="comment">//21</span></span><br><span class="line">        <span class="comment">//22</span></span><br><span class="line">        <span class="comment">//23</span></span><br><span class="line">        <span class="comment">//24</span></span><br><span class="line">        <span class="comment">//25</span></span><br><span class="line">        <span class="comment">//26</span></span><br><span class="line">        <span class="comment">//27</span></span><br><span class="line">        <span class="comment">//28</span></span><br><span class="line">        <span class="comment">//29</span></span><br><span class="line">        <span class="comment">//30</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//嗯嗯，这只是占位用的，测试用的</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>垃圾</tag>
       </tags>
   </entry>
   <entry>
@@ -361,6 +300,16 @@ char str[80]； str = “qwq”；是错的</p>
       </categories>
       <tags>
         <tag>c++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello</title>
+    <url>/2022/04/27/Hello/</url>
+    <content><![CDATA[<p>大家都围过来啊，都围过来啊。我宣布个事：我是个有趣的垃圾！</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Hello</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">//1</span></span><br><span class="line">        <span class="comment">//2</span></span><br><span class="line">        <span class="comment">//3</span></span><br><span class="line">        <span class="comment">//4</span></span><br><span class="line">        <span class="comment">//5</span></span><br><span class="line">        <span class="comment">//6</span></span><br><span class="line">        <span class="comment">//7</span></span><br><span class="line">        <span class="comment">//8</span></span><br><span class="line">        <span class="comment">//9</span></span><br><span class="line">        <span class="comment">//10</span></span><br><span class="line">        <span class="comment">//11</span></span><br><span class="line">        <span class="comment">//12</span></span><br><span class="line">        <span class="comment">//13</span></span><br><span class="line">        <span class="comment">//14</span></span><br><span class="line">        <span class="comment">//15</span></span><br><span class="line">        <span class="comment">//16</span></span><br><span class="line">        <span class="comment">//17</span></span><br><span class="line">        <span class="comment">//18</span></span><br><span class="line">        <span class="comment">//19</span></span><br><span class="line">        <span class="comment">//20</span></span><br><span class="line">        System.out.println(<span class="string">&quot;我是个垃圾，呜呜呜!&quot;</span>);</span><br><span class="line">        <span class="comment">//21</span></span><br><span class="line">        <span class="comment">//22</span></span><br><span class="line">        <span class="comment">//23</span></span><br><span class="line">        <span class="comment">//24</span></span><br><span class="line">        <span class="comment">//25</span></span><br><span class="line">        <span class="comment">//26</span></span><br><span class="line">        <span class="comment">//27</span></span><br><span class="line">        <span class="comment">//28</span></span><br><span class="line">        <span class="comment">//29</span></span><br><span class="line">        <span class="comment">//30</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">        <span class="comment">//占位</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//嗯嗯，这只是占位用的，测试用的</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>垃圾</tag>
       </tags>
   </entry>
   <entry>
@@ -493,6 +442,57 @@ Right<br>
       </tags>
   </entry>
   <entry>
+    <title>PCA及其实战学习</title>
+    <url>/2022/05/02/PCA%E5%8F%8A%E5%85%B6%E5%AE%9E%E6%88%98%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<h1>知识学习</h1>
+<p>整体思想就是根据重要特征（为主）附加其他特征（为辅）生成新的维度的特征<br>
+<img src="https://img-blog.csdnimg.cn/ea1b84d040ed46a9b2f9308178b494f6.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<h1>代码实战</h1>
+<p>学习视频链接：<a href="https://www.bilibili.com/video/BV1vs411M7Kz?from=search&amp;seid=17527404163809794491&amp;spm_id_from=333.337.0.0">b站传送门</a><br>
+这里使用了来自视频教程的数据集：<a href="https://github.com/lq1990/Bilibili-WenDao.git">github传送门</a><br>
+数据集下载方式：<a href="https://blog.csdn.net/weixin_42259631/article/details/82495611?spm=1001.2101.3001.6650.1&amp;utm_medium=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-1.pc_relevant_default&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~Rate-1.pc_relevant_default&amp;utm_relevant_index=2">CSDN传送门</a></p>
+<h2 id="首先是数据预处理部分：">首先是数据预处理部分：</h2>
+<p>过程中所需要使用的所有包</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br></pre></td></tr></table></figure>
+<p>获得原始数据并进行简要查看，可以借助info和head工具</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#数据集处理部分</span></span><br><span class="line">traindata_0 = pd.read_csv(<span class="string">r&#x27;C:\Users\Administrator\Desktop\train_titanic.csv&#x27;</span>, index_col = <span class="string">&#x27;PassengerId&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;Pandas dataframe.info()函数用于获取 DataFrame 的简要摘要。在对数据进行探索性分析时，它非常方便。为了快速浏览数据集，我们使用dataframe.info()功能。</span></span><br><span class="line"><span class="string">用法： DataFrame.info(verbose=None, buf=None, max_cols=None, memory_usage=None, null_counts=None)</span></span><br><span class="line"><span class="string">参数：verbose:是否打印完整的摘要。屏幕上将不显示任何内容。max_info_columns设置。 True或False会覆盖显示。max_info_columns设置。buf:可写缓冲区，默认为sys.stdoutmax_cols:确定是打印完整摘要还是简短摘要。屏幕上将不显示任何内容。max_info_columns设置。memory_usage:指定是否应显示DataFrame元素(包括索引)的总内存使用情况。屏幕上将不显示任何内容。memory_usage设置。 True或False会覆盖显示。memory_usage设置。 “ deep”的值与True相同，具有自省性。内存使用情况以人类可读的单位(以2为基数的表示形式)显示。null_counts：是否显示非空计数。如果为None，则仅显示框架是否小于max_info_rows和max_info_columns。如果为True，则始终显示计数。如果为False，则从不显示计数。&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(traindata_0.info())</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;Pandas DataFrame head()方法返回DataFrame或Series的前n行，其中n是用户输入值。 head()函数用于获取前n行。这对于快速测试对象中的数据类型是否正确非常有用。对于n的负值，head()函数返回除最后n行之外的所有行，等效于df[:-n]。</span></span><br><span class="line"><span class="string">句法:DataFrame.head(n=5) (n=5 is default we can set any value)</span></span><br><span class="line"><span class="string">参量:python中的head()方法仅包含一个参数，即n。它是一个可选参数。通过设置它，我们固定了想要从DataFrame获得的行数。</span></span><br><span class="line"><span class="string">返回值:head()函数从DataFrame返回n行。&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># print(traindata_0.head())</span></span><br><span class="line">traindata_0.head()</span><br><span class="line"><span class="comment">#对缺失数据的声明，Age，Embarked，Cabin，可以看出，它们的数据量小</span></span><br><span class="line"><span class="comment">#先使用常规方法处理缺失数据，本期重点在PCA</span></span><br></pre></td></tr></table></figure>
+<p>处理缺失数据</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">traindata = traindata_0.copy()</span><br><span class="line"><span class="comment">#replace</span></span><br><span class="line"><span class="comment">#其实这里最好使用one-hot形式，但是最终使用的类似于是查表法</span></span><br><span class="line">traindata.Sex = traindata.Sex.replace(&#123;<span class="string">&#x27;female&#x27;</span>:<span class="number">0</span>, <span class="string">&#x27;male&#x27;</span>:<span class="number">1</span>&#125;)</span><br><span class="line">traindata.Embarked = traindata_0.Embarked.replace(&#123;<span class="string">&#x27;C&#x27;</span>:<span class="number">0</span>, <span class="string">&#x27;Q&#x27;</span>:<span class="number">1</span>, <span class="string">&#x27;S&#x27;</span>:<span class="number">2</span>&#125;)</span><br><span class="line"><span class="comment">#fillna</span></span><br><span class="line">traindata.Age.fillna(traindata.Age.mean(), inplace = <span class="literal">True</span>)</span><br><span class="line">traindata.Embarked.fillna(method = <span class="string">&#x27;ffill&#x27;</span>, inplace = <span class="literal">True</span>)</span><br><span class="line"><span class="comment">#drop</span></span><br><span class="line">traindata.drop(columns = [<span class="string">&#x27;Survived&#x27;</span>, <span class="string">&#x27;Name&#x27;</span>, <span class="string">&#x27;Ticket&#x27;</span>, <span class="string">&#x27;Cabin&#x27;</span>], inplace = <span class="literal">True</span>)</span><br><span class="line">traindata.info()</span><br><span class="line"><span class="built_in">print</span>(traindata.head())</span><br><span class="line"></span><br><span class="line">traindata.to_csv(<span class="string">r&#x27;C:\Users\Administrator\Desktop\data_pca.csv&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="然后是pca部分：">然后是pca部分：</h2>
+<h3 id="读入数据，得有一个矩阵x，维度为-m-n-，m个采样数据，每个数据有n个feature">读入数据，得有一个矩阵x，维度为(m,n)，m个采样数据，每个数据有n个feature</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">data = pd.read_csv(<span class="string">r&#x27;C:\Users\Administrator\Desktop\data_pca.csv&#x27;</span>)</span><br><span class="line">data.describe()</span><br><span class="line"><span class="comment">#可以看出量纲差别还是比较大的。</span></span><br></pre></td></tr></table></figure>
+<h3 id="对x去均值、标准化">对x去均值、标准化</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">norm_</span>(<span class="params">x</span>):<span class="comment">#做normalization标准化</span></span><br><span class="line">    xmean = np.mean(x, <span class="number">0</span>)</span><br><span class="line">    std = np.std(x,<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> (x - xmean)/std</span><br><span class="line">data_ = norm_(data)</span><br><span class="line">data_.describe()</span><br><span class="line"><span class="comment">#这里能够看出明显区别。标准化了嘛，均值变成0，量纲差异也没有了</span></span><br></pre></td></tr></table></figure>
+<h3 id="求-X-TX-或-Cov-X-T-的特征值-ew-和特征向量-ev-，其中维度：ew-1-n-，ev-n-n">求 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mi>T</mi></msup><mi>X</mi></mrow><annotation encoding="application/x-tex">X^TX</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8413em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span></span></span></span> 或 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>o</mi><mi>v</mi><mo stretchy="false">(</mo><msup><mi>X</mi><mi>T</mi></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Cov(X^T)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0913em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> 的特征值 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>e</mi><mi>w</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(ew)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mclose">)</span></span></span></span> 和特征向量 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>e</mi><mi>v</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(ev)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">)</span></span></span></span>，其中维度：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>w</mi><mo stretchy="false">(</mo><mn>1</mn><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo><mtext>，</mtext><mi>e</mi><mi>v</mi><mo stretchy="false">(</mo><mi>n</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">ew(1,n)，ev(n,n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mopen">(</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mord cjk_fallback">，</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></h3>
+<p>借助numpy工具提取特征值</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#提取特征值</span></span><br><span class="line"><span class="comment">#第一种方式Xt*X(agin value是下面的m-1倍)</span></span><br><span class="line">ew, ev = np.linalg.eig(data_.T.dot(data_))<span class="comment">#原始数据的格式不合适</span></span><br><span class="line"><span class="built_in">print</span>(ew)</span><br><span class="line"><span class="built_in">print</span>(ev)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"><span class="comment">#第二种方式，方便起见采用了这一种</span></span><br><span class="line">ew, ev = np.linalg.eig(np.cov(data_.T))</span><br><span class="line"><span class="built_in">print</span>(ew)</span><br><span class="line"><span class="built_in">print</span>(ev)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="按照ew从大到小的顺序，取ev的对应的列。ev取前k列得到矩阵V，维度-n-k">按照<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>w</mi></mrow><annotation encoding="application/x-tex">ew</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span></span></span></span>从大到小的顺序，取<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>v</mi></mrow><annotation encoding="application/x-tex">ev</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span>的对应的列。<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>v</mi></mrow><annotation encoding="application/x-tex">ev</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span>取前k列得到矩阵<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span>，维度<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>n</mi><mo separator="true">,</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(n,k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></h3>
+<p>将特征值进行排序</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#将特征值进行排序</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;在输出数据中可以看出有七个特征值（分别对应七个特征，但是没有按照顺序排布）&#x27;&#x27;&#x27;</span></span><br><span class="line">ew_order = np.argsort(ew)[::-<span class="number">1</span>]<span class="comment">#[::-1]可以令其从大到小排序，去掉就是从小到大排序</span></span><br><span class="line">    <span class="comment">#注意argsort是获得标号的，不是获得值的</span></span><br><span class="line"><span class="built_in">print</span>(ew_order)</span><br><span class="line">ew_sort = ew[ew_order]</span><br><span class="line">ev_sort = ev[:,ew_order]</span><br><span class="line"><span class="built_in">print</span>(ew_sort)</span><br><span class="line"><span class="built_in">print</span>(ev_sort)</span><br></pre></td></tr></table></figure>
+<p>画图来直观认识一下特征向量:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.DataFrame(ew_sort).plot(kind=<span class="string">&#x27;bar&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>得到图片如下：<br>
+<img src="https://img-blog.csdnimg.cn/0187705f73c6488b891d06dab55d8c72.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="请添加图片描述"></p>
+<pre><code>我们希望使得前k个的核远大于后几个，能达到总核的95%就是最理想的，这样的话主成分提取就会效果比较好。
+因为我们需要将原始的7个feature降到几个feature去代表观察，这里的话前两个可以近似代表观察。
+</code></pre>
+<p>于是我们提取关键特征</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">V = ev_sort[:,:<span class="number">2</span>]<span class="comment">#这里就是应上面所说的取前两列</span></span><br></pre></td></tr></table></figure>
+<h3 id="有X-new-X-V，-维度：X-new-m-k">有<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><mi>X</mi><mo>∗</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">X_{new}=X * V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span>， 维度：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">X_{new}(m,k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span></h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">X_new = data_.dot(V)<span class="comment">#原始数据和V内积</span></span><br><span class="line"><span class="built_in">print</span>(x_new.shape)<span class="comment">#可以看到由（891，7）降到了（891，2）</span></span><br></pre></td></tr></table></figure>
+<h3 id="前k个ev即主成分（主方向）。因为前k个很重要，就实现了从n维到k维的降维">前k个<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>v</mi></mrow><annotation encoding="application/x-tex">ev</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span>即主成分（主方向）。因为前k个很重要，就实现了从n维到k维的降维</h3>
+<p>此时可以画图查看一下（不知道为什么我画的图和教程不是特别一致）</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#scatter</span></span><br><span class="line"><span class="comment">#先确认一下X_new的格式</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">type</span>(X_new))<span class="comment">#可以看出是DataFrame</span></span><br><span class="line">%matplotlib notebook</span><br><span class="line"><span class="comment">#由于X_new的格式是DataFrame而不是array所以这里不能这么用</span></span><br><span class="line"><span class="comment"># plt.scatter(X_new[:,0], X_new[:,1],s=5, c = traindata_0.Survived,cmap = plt.cm.coolwarm)</span></span><br><span class="line">sc = plt.scatter(X_new.iloc[:,<span class="number">0</span>], X_new.iloc[:,<span class="number">1</span>],s=<span class="number">5</span>, c = traindata_0.Survived,cmap = plt.cm.coolwarm)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;PC 0&#x27;</span>)<span class="comment">#第一组特征</span></span><br><span class="line">plt.ylabel(<span class="string">&#x27;PC 1&#x27;</span>)<span class="comment">#第二组特征</span></span><br><span class="line">plt.colorbar(sc)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>yxt</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>数据处理</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/2022/04/26/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -510,34 +510,6 @@ Right<br>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>关于写DMF时发生的小事情</title>
-    <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E5%86%99DMF%E6%97%B6%E5%8F%91%E7%94%9F%E7%9A%84%E5%B0%8F%E4%BA%8B%E6%83%85/</url>
-    <content><![CDATA[<h1>事实上，以下内容都是我中途才开始考虑的</h1>
-<ul>
-<li>报错反应模型nn.linear参数不匹配无法matmaul，瞅了半天模型参数没问题，一看取出传入参数时传错了。</li>
-<li>tensor索引说是只能为byte,long,bool，然后一开始改成float也不行，后来发现其实可以在autograd.Variable的过程中将tensor先转化为byte类型的再转化为Variable——不是很确定，原来刚刚是通过直接取消了variable，把array类型传入了</li>
-<li>确定了，上面的方法不行，说mask[256]和什么什么不匹配</li>
-<li>“float() argument must be a string or a number, not ‘NoneType’”<br>
-这一点是我在重写loss的过程中产生的。然后我试图强转float结果报错，强转tensor也失败了。然后发现：NoneType表示这里没有参数，所以我的结果没有传进去？？</li>
-<li>然后发现实际上我的model没有产生结果：就是这句话：（output直接是None）<img src="https://img-blog.csdnimg.cn/c9b8b53a3eef4d9396e896ea701e759c.png" alt="在这里插入图片描述"></li>
-<li>原来是我的model里面forward忘记返回值了</li>
-<li>感觉这个output有点问题但是不知道怎么解决，毕竟我返回的是一个别的值，但是输入的是另外的两个值。看后续结果吧，如果不行的话，就只拿出output中的第三个tensor。果然，loss都是nan</li>
-<li>忽然发现没有三个tensor？？？另外关于loss都是nan的问题——妈呀梯度消失了loss函数应该是出了问题，直接第一次就-inf了<br>
-<img src="https://img-blog.csdnimg.cn/5702863d9840404b80701e0499be659d.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_17,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></li>
-<li>看了一下，x和y写反了<s>mdzz</s></li>
-<li>啊第一次训练就遇到了梯度消失，不知道为什么这个矩阵它同增同减，我决定试一试归一化操作再分布给0~5</li>
-<li>发现不可，那个loss函数设计的就是给0~1之间的x分布的，不能给放大。另外，我发现即使进行了最大最小值归一化，也没什么效果。</li>
-<li>训练一下试试吧，这个loss太大了。我知道为什么大了，loss函数抄错了，没写符号，肯定越练越小</li>
-</ul>
-]]></content>
-      <categories>
-        <category>yxt</category>
-      </categories>
-      <tags>
-        <tag>推荐系统</tag>
-      </tags>
   </entry>
   <entry>
     <title>web前端的一些用法</title>
@@ -562,6 +534,36 @@ Right<br>
 </li>
 <li>
 <p><code>type</code> 为 <code>text</code> 的表单可通过 <code>placeholder</code> 属性设置默认提示信息，<code>maxlength</code> 属性来限制最大输入长度。</p>
+</li>
+<li>
+<p>自定义弹窗：主要原理便是将一个 <code>div</code> 块覆盖到其它的元素上面，且该 <code>div</code> 块的 <code>position</code> 样式一般为 <code>absolute</code> 。</p>
+<blockquote>
+<p><code>position: absolute;</code> 的元素相对于最近的定位祖先元素进行定位（而不是相对于视口定位，如 fixed）。</p>
+<p>然而，如果绝对定位的元素没有祖先，它将使用文档主体（body），并随页面滚动一起移动。</p>
+<p><font color="#dd0000"><strong>注意：</strong></font>“被定位的”元素是其位置除 <code>static</code> 以外的任何元素。</p>
+</blockquote>
+<p>要实现将 <code>div</code> 块放到最顶层，也就是覆盖住其他元素，需要我们设置其 CSS 中的 <code>z-index</code> 属性。</p>
+<p><code>z-index</code> 属性的定义和用法：</p>
+<blockquote>
+<p><code>z-index</code> 属性设置元素的堆叠顺序。拥有更高堆叠顺序的元素总是会处于堆叠顺序较低的元素的前面。</p>
+<p>**注释：**元素可拥有负的 <code>z-index</code> 属性值。</p>
+<p><strong>注释：</strong><code>z-index</code> 仅能在定位元素上奏效（例如 <code>position:absolute;</code>）！</p>
+</blockquote>
+<p>而我们在实际使用中，可以先将该 <code>div</code> 块的 <code>display</code> 属性设置为 <code>none</code>，然后在需要弹出的时候，将其设置为 <code>block</code>。</p>
+<p>通常为了增强效果，还有可能需要一个覆盖层，一般也是一个 <code>div</code> 块。这个覆盖层的位置位于我们这个自定义弹窗的下面，但是位于其它元素的上面。也就是说它的 <code>z-index</code> 属性值只小于我们的自定义弹窗的 <code>z-index</code> 值。它的作用就是当弹窗弹出的时候，防止用户点击弹窗以外的部分。因为我们想要的效果是用户只有在点击完弹窗之后，才可以继续其他的操作。当然，如果你不想要这个效果，就可以不用做这个覆盖层。我们也可以将这个覆盖层的背景设一个颜色和透明度，来加强 UI 效果。</p>
+<blockquote>
+<p><code>opacity</code> <strong>属性指定元素的不透明度/透明度。</strong></p>
+<p><code>opacity</code> 属性的取值范围为 0.0-1.0。值越低，越透明。</p>
+</blockquote>
+<p>以下为部分代码：</p>
+<p>html代码：</p>
+ <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;message-mask&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span>  <span class="comment">&lt;!--这是覆盖层--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;message-div&quot;</span>&gt;</span>  <span class="comment">&lt;!--这是自定义弹窗--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;message-content&quot;</span>&gt;</span>恭喜你已猜对，数字已经刷新，请点击确定继续猜数字<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;confirm-button-div&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;confirm-button&quot;</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">onclick</span>=<span class="string">&quot;nextRound()&quot;</span>&gt;</span>确定<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>css样式：</p>
+ <figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-id">#message-mask</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: fixed;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">z-index</span>: <span class="number">9988</span>;</span><br><span class="line">    <span class="attribute">display</span>: none;</span><br><span class="line">    <span class="comment">/*background: lightgrey;*/</span></span><br><span class="line">    <span class="comment">/*opacity: 0.15;*/</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-id">#message-div</span> &#123;</span><br><span class="line">    <span class="attribute">text-align</span>: center;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">180px</span>;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">6px</span> solid chocolate;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">3px</span>;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">display</span>: none;</span><br><span class="line">    <span class="attribute">z-index</span>: <span class="number">9999</span>;</span><br><span class="line">    <span class="attribute">background</span>: burlywood;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">500px</span>;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">200px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>JavaScript代码：</p>
+ <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;!--在以下的代码中，我们之间调用jQuery库来实现功能--&gt;</span><br><span class="line"><span class="keyword">const</span> mesDiv = $(<span class="string">&#x27;#message-div&#x27;</span>);</span><br><span class="line">mesDiv.<span class="title function_">css</span>(<span class="string">&#x27;top&#x27;</span>,</span><br><span class="line">          (<span class="variable language_">document</span>.<span class="property">body</span>.<span class="property">clientHeight</span> -</span><br><span class="line">              <span class="built_in">parseInt</span>(mesDiv.<span class="title function_">css</span>(<span class="string">&#x27;height&#x27;</span>))) / <span class="number">2</span>);</span><br><span class="line">mesDiv.<span class="title function_">css</span>(<span class="string">&#x27;left&#x27;</span>,</span><br><span class="line">          (<span class="variable language_">document</span>.<span class="property">body</span>.<span class="property">clientWidth</span> -</span><br><span class="line">              <span class="built_in">parseInt</span>(mesDiv.<span class="title function_">css</span>(<span class="string">&#x27;width&#x27;</span>))) / <span class="number">2</span>);</span><br><span class="line">mesDiv.<span class="title function_">show</span>();</span><br><span class="line">$(<span class="string">&#x27;#message-mask&#x27;</span>).<span class="title function_">show</span>();</span><br></pre></td></tr></table></figure>
+<p>最后效果图：</p>
+<p><img src="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/20220505204849.png" alt=""></p>
 </li>
 </ol>
 ]]></content>
@@ -1208,18 +1210,6 @@ p(\overrightarrow{w}|d_m)=\prod_{i=1}^n\sum_{z=1}^Kp(w_i|z)p(z|d_m)=\prod_{i=1}^
       </tags>
   </entry>
   <entry>
-    <title>关于更改默认安装路径这件事</title>
-    <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AE%89%E8%A3%85%E8%B7%AF%E5%BE%84%E8%BF%99%E4%BB%B6%E4%BA%8B/</url>
-    <content><![CDATA[<p><img src="https://img-blog.csdnimg.cn/20210219224405814.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-]]></content>
-      <categories>
-        <category>yxt</category>
-      </categories>
-      <tags>
-        <tag>整治电脑</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>关于学习transformer那些事</title>
     <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0transformer%E9%82%A3%E4%BA%9B%E4%BA%8B/</url>
     <content><![CDATA[<h1>论文阅读：</h1>
@@ -1253,6 +1243,46 @@ A：<a href="https://www.zhihu.com/question/325839123">知乎传送门。</a><br
       </tags>
   </entry>
   <entry>
+    <title>关于写DMF时发生的小事情</title>
+    <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E5%86%99DMF%E6%97%B6%E5%8F%91%E7%94%9F%E7%9A%84%E5%B0%8F%E4%BA%8B%E6%83%85/</url>
+    <content><![CDATA[<h1>事实上，以下内容都是我中途才开始考虑的</h1>
+<ul>
+<li>报错反应模型nn.linear参数不匹配无法matmaul，瞅了半天模型参数没问题，一看取出传入参数时传错了。</li>
+<li>tensor索引说是只能为byte,long,bool，然后一开始改成float也不行，后来发现其实可以在autograd.Variable的过程中将tensor先转化为byte类型的再转化为Variable——不是很确定，原来刚刚是通过直接取消了variable，把array类型传入了</li>
+<li>确定了，上面的方法不行，说mask[256]和什么什么不匹配</li>
+<li>“float() argument must be a string or a number, not ‘NoneType’”<br>
+这一点是我在重写loss的过程中产生的。然后我试图强转float结果报错，强转tensor也失败了。然后发现：NoneType表示这里没有参数，所以我的结果没有传进去？？</li>
+<li>然后发现实际上我的model没有产生结果：就是这句话：（output直接是None）<img src="https://img-blog.csdnimg.cn/c9b8b53a3eef4d9396e896ea701e759c.png" alt="在这里插入图片描述"></li>
+<li>原来是我的model里面forward忘记返回值了</li>
+<li>感觉这个output有点问题但是不知道怎么解决，毕竟我返回的是一个别的值，但是输入的是另外的两个值。看后续结果吧，如果不行的话，就只拿出output中的第三个tensor。果然，loss都是nan</li>
+<li>忽然发现没有三个tensor？？？另外关于loss都是nan的问题——妈呀梯度消失了loss函数应该是出了问题，直接第一次就-inf了<br>
+<img src="https://img-blog.csdnimg.cn/5702863d9840404b80701e0499be659d.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_17,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></li>
+<li>看了一下，x和y写反了<s>mdzz</s></li>
+<li>啊第一次训练就遇到了梯度消失，不知道为什么这个矩阵它同增同减，我决定试一试归一化操作再分布给0~5</li>
+<li>发现不可，那个loss函数设计的就是给0~1之间的x分布的，不能给放大。另外，我发现即使进行了最大最小值归一化，也没什么效果。</li>
+<li>训练一下试试吧，这个loss太大了。我知道为什么大了，loss函数抄错了，没写符号，肯定越练越小</li>
+</ul>
+]]></content>
+      <categories>
+        <category>yxt</category>
+      </categories>
+      <tags>
+        <tag>推荐系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于更改默认安装路径这件事</title>
+    <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AE%89%E8%A3%85%E8%B7%AF%E5%BE%84%E8%BF%99%E4%BB%B6%E4%BA%8B/</url>
+    <content><![CDATA[<p><img src="https://img-blog.csdnimg.cn/20210219224405814.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+]]></content>
+      <categories>
+        <category>yxt</category>
+      </categories>
+      <tags>
+        <tag>整治电脑</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于深度学习画图这件事</title>
     <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%94%BB%E5%9B%BE%E8%BF%99%E4%BB%B6%E4%BA%8B/</url>
     <content><![CDATA[<p>以下是在搜集过程中看到的几个画模型图可能需要的便捷网站：</p>
@@ -1268,6 +1298,66 @@ A：<a href="https://www.zhihu.com/question/325839123">知乎传送门。</a><br
       </categories>
       <tags>
         <tag>Paper</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在学习和使用SQL中遇到的一些知识</title>
+    <url>/2022/04/29/%E5%9C%A8%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8SQL%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86/</url>
+    <content><![CDATA[<p><font color=#900 size="7">注意：使用的数据库为 <strong>Oracle</strong> </font></p>
+<ol>
+<li>
+<p>做 union 运算的表之间不可以相互引用</p>
+</li>
+<li>
+<p><code>nvl</code> 函数可以将输入参数为空时转换为一特定值，如：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">nvl(data, argu)</span><br></pre></td></tr></table></figure>
+<p>表示当 <code>data</code> 为 <code>NULL</code> 时则返回 <code>argu</code>，如果不为 <code>NULL</code> 则返回 <code>data</code>。</p>
+</li>
+<li>
+<p>SELECT 中的涉及到子查询的列或者用了函数的列之间不可以直接相互引用（这里说的可能不是很清楚），比如：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> score, <span class="built_in">COUNT</span>(<span class="operator">*</span>) count1,  <span class="comment">--注意：oracle 中别名是不用 as 的</span></span><br><span class="line">(<span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="operator">*</span>)</span><br><span class="line"><span class="keyword">FROM</span> student_score</span><br><span class="line">   <span class="keyword">WHERE</span> score <span class="operator">&gt;=</span> <span class="number">60</span>) count0,</span><br><span class="line">(count1 <span class="operator">/</span> count0) percentage</span><br><span class="line"><span class="keyword">FROM</span> student_score</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> score;</span><br></pre></td></tr></table></figure>
+<p>在这种情况下，是会报错的。若想在 percentage 列用到 count1 和 count0 的一个解决办法是，直接把 count1 和 count0 的定义复制过去（代码如下）。虽然这样比较繁琐，但是目前没有发现其他解决方法。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> score, <span class="built_in">COUNT</span>(<span class="operator">*</span>) count1,</span><br><span class="line"> 	(<span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="operator">*</span>)</span><br><span class="line">	<span class="keyword">FROM</span> student_score</span><br><span class="line">	<span class="keyword">WHERE</span> score <span class="operator">&gt;=</span> <span class="number">60</span>) count0,</span><br><span class="line">    <span class="built_in">COUNT</span>(<span class="operator">*</span>) <span class="operator">/</span></span><br><span class="line">    (<span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="operator">*</span>)</span><br><span class="line">     <span class="keyword">FROM</span> student_score</span><br><span class="line">     <span class="keyword">WHERE</span> score <span class="operator">&gt;=</span> <span class="number">60</span>) <span class="operator">*</span> <span class="number">100</span> percentage</span><br><span class="line"><span class="keyword">FROM</span> student_score</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> score;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>两个表 <code>NATURAL JOIN</code> 后得到的  表是不能起别名的，而且参与自然连接的两个表也无法被引用。（其它的连接行不行，我并没有尝试，不够我猜应该也是不行的）<br>
+示例代码：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> c.id</span><br><span class="line"><span class="keyword">FROM</span> (a <span class="keyword">NATURAL</span> <span class="keyword">JOIN</span> b) c;</span><br><span class="line"><span class="comment">--会报错</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> a.id</span><br><span class="line"><span class="keyword">FROM</span> a <span class="keyword">NATURAL</span> <span class="keyword">JOIN</span> b</span><br><span class="line"><span class="comment">--会报错</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><code>WHERE</code> 子句中的子查询的 <code>FROM</code> 处无法引用主查询 <code>FROM</code> 子句中的表结构。</p>
+<p>示例代码：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> sid,</span><br><span class="line">       name</span><br><span class="line"><span class="keyword">FROM</span> pub.student stu</span><br><span class="line"><span class="keyword">WHERE</span> sid <span class="keyword">NOT</span> <span class="keyword">IN</span></span><br><span class="line">    (<span class="keyword">SELECT</span> sid</span><br><span class="line">     <span class="keyword">FROM</span> pub.course, stu);</span><br><span class="line">#以上语句会报错</span><br><span class="line"></span><br><span class="line">#可修改为以下语句</span><br><span class="line"><span class="keyword">SELECT</span> sid,</span><br><span class="line">       name</span><br><span class="line"><span class="keyword">FROM</span> pub.student stu</span><br><span class="line"><span class="keyword">WHERE</span> sid <span class="keyword">NOT</span> <span class="keyword">IN</span></span><br><span class="line">    (<span class="keyword">SELECT</span> sid</span><br><span class="line">     <span class="keyword">FROM</span> pub.course, pub.student);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/oracle_logo.webp" alt="logo"></p>
+]]></content>
+      <categories>
+        <category>编程</category>
+      </categories>
+      <tags>
+        <tag>SQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>细数近日犯的错误</title>
+    <url>/2022/05/02/%E7%BB%86%E6%95%B0%E8%BF%91%E6%97%A5%E7%8A%AF%E7%9A%84%E9%94%99%E8%AF%AF/</url>
+    <content><![CDATA[<p>关于第七次数据结构实验</p>
+<ul>
+<li>注意数组在函数内部和外部定义的区别，虽然我现在依然不知道原理为什么拿出去就不行了可能和另一个错误相关</li>
+<li>注意数组分配对象是new int []而不是new int（），第二个是分配一个单int对象</li>
+<li>注意分配范围与自己使用，数组在使用过程中是否发生变化，下一次是用变化过的还是没变换的ap</li>
+</ul>
+<p>关于第八次数据结构实验</p>
+<ul>
+<li>注意初始化，可能改了数组名之后又忘记初始化啦！</li>
+</ul>
+]]></content>
+      <categories>
+        <category>yxt</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -1328,66 +1418,6 @@ Dism++（小管家）</p>
       </categories>
       <tags>
         <tag>整治电脑</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>细数近日犯的错误</title>
-    <url>/2022/05/02/%E7%BB%86%E6%95%B0%E8%BF%91%E6%97%A5%E7%8A%AF%E7%9A%84%E9%94%99%E8%AF%AF/</url>
-    <content><![CDATA[<p>关于第七次数据结构实验</p>
-<ul>
-<li>注意数组在函数内部和外部定义的区别，虽然我现在依然不知道原理为什么拿出去就不行了可能和另一个错误相关</li>
-<li>注意数组分配对象是new int []而不是new int（），第二个是分配一个单int对象</li>
-<li>注意分配范围与自己使用，数组在使用过程中是否发生变化，下一次是用变化过的还是没变换的ap</li>
-</ul>
-<p>关于第八次数据结构实验</p>
-<ul>
-<li>注意初始化，可能改了数组名之后又忘记初始化啦！</li>
-</ul>
-]]></content>
-      <categories>
-        <category>yxt</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>在学习和使用SQL中遇到的一些知识</title>
-    <url>/2022/04/29/%E5%9C%A8%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8SQL%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86/</url>
-    <content><![CDATA[<p><font color=#900 size="7">注意：使用的数据库为 <strong>Oracle</strong> </font></p>
-<ol>
-<li>
-<p>做 union 运算的表之间不可以相互引用</p>
-</li>
-<li>
-<p><code>nvl</code> 函数可以将输入参数为空时转换为一特定值，如：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">nvl(data, argu)</span><br></pre></td></tr></table></figure>
-<p>表示当 <code>data</code> 为 <code>NULL</code> 时则返回 <code>argu</code>，如果不为 <code>NULL</code> 则返回 <code>data</code>。</p>
-</li>
-<li>
-<p>SELECT 中的涉及到子查询的列或者用了函数的列之间不可以直接相互引用（这里说的可能不是很清楚），比如：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> score, <span class="built_in">COUNT</span>(<span class="operator">*</span>) count1,  <span class="comment">--注意：oracle 中别名是不用 as 的</span></span><br><span class="line">(<span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="operator">*</span>)</span><br><span class="line"><span class="keyword">FROM</span> student_score</span><br><span class="line">   <span class="keyword">WHERE</span> score <span class="operator">&gt;=</span> <span class="number">60</span>) count0,</span><br><span class="line">(count1 <span class="operator">/</span> count0) percentage</span><br><span class="line"><span class="keyword">FROM</span> student_score</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> score;</span><br></pre></td></tr></table></figure>
-<p>在这种情况下，是会报错的。若想在 percentage 列用到 count1 和 count0 的一个解决办法是，直接把 count1 和 count0 的定义复制过去（代码如下）。虽然这样比较繁琐，但是目前没有发现其他解决方法。</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> score, <span class="built_in">COUNT</span>(<span class="operator">*</span>) count1,</span><br><span class="line"> 	(<span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="operator">*</span>)</span><br><span class="line">	<span class="keyword">FROM</span> student_score</span><br><span class="line">	<span class="keyword">WHERE</span> score <span class="operator">&gt;=</span> <span class="number">60</span>) count0,</span><br><span class="line">    <span class="built_in">COUNT</span>(<span class="operator">*</span>) <span class="operator">/</span></span><br><span class="line">    (<span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="operator">*</span>)</span><br><span class="line">     <span class="keyword">FROM</span> student_score</span><br><span class="line">     <span class="keyword">WHERE</span> score <span class="operator">&gt;=</span> <span class="number">60</span>) <span class="operator">*</span> <span class="number">100</span> percentage</span><br><span class="line"><span class="keyword">FROM</span> student_score</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> score;</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>两个表 <code>NATURAL JOIN</code> 后得到的  表是不能起别名的，而且参与自然连接的两个表也无法被引用。（其它的连接行不行，我并没有尝试，不够我猜应该也是不行的）<br>
-示例代码：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> c.id</span><br><span class="line"><span class="keyword">FROM</span> (a <span class="keyword">NATURAL</span> <span class="keyword">JOIN</span> b) c;</span><br><span class="line"><span class="comment">--会报错</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> a.id</span><br><span class="line"><span class="keyword">FROM</span> a <span class="keyword">NATURAL</span> <span class="keyword">JOIN</span> b</span><br><span class="line"><span class="comment">--会报错</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><code>WHERE</code> 子句中的子查询的 <code>FROM</code> 处无法引用主查询 <code>FROM</code> 子句中的表结构。</p>
-<p>示例代码：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> sid,</span><br><span class="line">       name</span><br><span class="line"><span class="keyword">FROM</span> pub.student stu</span><br><span class="line"><span class="keyword">WHERE</span> sid <span class="keyword">NOT</span> <span class="keyword">IN</span></span><br><span class="line">    (<span class="keyword">SELECT</span> sid</span><br><span class="line">     <span class="keyword">FROM</span> pub.course, stu);</span><br><span class="line">#以上语句会报错</span><br><span class="line"></span><br><span class="line">#可修改为以下语句</span><br><span class="line"><span class="keyword">SELECT</span> sid,</span><br><span class="line">       name</span><br><span class="line"><span class="keyword">FROM</span> pub.student stu</span><br><span class="line"><span class="keyword">WHERE</span> sid <span class="keyword">NOT</span> <span class="keyword">IN</span></span><br><span class="line">    (<span class="keyword">SELECT</span> sid</span><br><span class="line">     <span class="keyword">FROM</span> pub.course, pub.student);</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p><img src="https://github-blogger-1311607435.cos.ap-nanjing.myqcloud.com/blogger-picture/oracle_logo.webp" alt="logo"></p>
-]]></content>
-      <categories>
-        <category>编程</category>
-      </categories>
-      <tags>
-        <tag>SQL</tag>
       </tags>
   </entry>
   <entry>
