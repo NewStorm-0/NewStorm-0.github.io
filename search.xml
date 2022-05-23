@@ -1,6 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>C艹3.30</title>
+    <url>/2022/05/02/C%E8%89%B93.30/</url>
+    <content><![CDATA[<p>内容：<br>
+1、 static静态变量，局部可见，只赋一次初值<br>
+2、对于全局变量的利害（尽量克制使用）<br>
+3、全局变量与局部变量重名时，局部变量优先，可以使用域作用符<code>::</code>区分两者</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> i = <span class="number">100</span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> i, j = <span class="number">50</span>;</span><br><span class="line">	i = <span class="number">18</span>;<span class="comment">//访问局部变量</span></span><br><span class="line">	::i = ::i + <span class="number">4</span>;<span class="comment">//访问全局变量</span></span><br><span class="line">	j = ::i + <span class="number">1</span>;<span class="comment">//访问全局变量i和局部变量j</span></span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;::i=&quot;</span> &lt;&lt; ::i &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;i=&quot;</span> &lt;&lt; i &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;j=&quot;</span> &lt;&lt; j &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+<p>4、 extern做提前引用声明，后面的全局变量在前面使用时要用extern。注意使用extern是不可以extern double bb = 1.0的，否则相当于定义，extern失去作用，编译错误</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">(</span></span><br><span class="line"><span class="params">&#123;</span></span><br><span class="line"><span class="params">	<span class="keyword">extern</span> <span class="type">int</span> a, b;</span></span><br><span class="line"><span class="params">	...</span></span><br><span class="line"><span class="params">	<span class="keyword">return</span> <span class="number">0</span>;</span></span><br><span class="line"><span class="params">&#125;</span></span><br><span class="line"><span class="params"><span class="type">int</span> a = <span class="number">15</span>, b = <span class="number">-7</span>;</span></span><br><span class="line"><span class="params"><span class="type">int</span> max(<span class="type">int</span> x, <span class="type">int</span> y)&#123;</span></span><br><span class="line"><span class="params">	<span class="type">int</span> z;</span></span><br><span class="line"><span class="params">	 z = x &gt; y ? x : y</span></span><br><span class="line"><span class="params">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>5、如果函数要访问另一个文件中定义的全局变量，需要添加extern声明。注意编译正确未必能链接成功<br>
+6、<br>
+· static全局变量：存储在静态存储区，在函数外部定义，只在本文件中使用<br>
+· static局部变量：存储在静态存储区，在函数内部定义，只限在函数内部使用<br>
+· extern全局变量：存储在静态存储区，在其他文件中定义，在本文件中可以使用<br>
+7、 static也可以修饰函数（static描述其为内部函数）。extern同。<br>
+8、 程序的多文件组织🌈</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;mathx.h&quot;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="comment">//可以直接使用max， pi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">double</span> PI = <span class="number">3.14</span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">max</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="type">double</span> <span class="title">pow</span><span class="params">(<span class="type">double</span>, <span class="type">double</span>)</span></span>;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;mathx.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">max</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> z;</span><br><span class="line">	z = x &gt; y ? x : y;</span><br><span class="line">	<span class="keyword">return</span> z;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>C/C++标准：<br>
+头文件：实现者与使用者之间的桥梁，包括函数声明，常量定义<br>
+函数库：包含头文件，提供函数的实现/定义，发布头文件源代码以及库函数的二进制代码<br>
+使用者：通过#include包含头文件，知道如何使用，不关心具体实现</p>
+</blockquote>
+<blockquote>
+<p>头文件（.h/.hpp header）一般包括以下几类内容：<br>
+1.对类型的声明<br>
+2.函数声明<br>
+3.内置（inline）函数的定义<br>
+4.宏定义。用#define定义的符号常量和用const声明的常变量<br>
+5.外部变量声明，如extern int a；<br>
+6.根据需要包含其他头文件<br>
+（注意不能有double dd = 1.0之类的；不然会认为重定义）</p>
+</blockquote>
+<ol>
+<li>通常#include头文件，很少#include源文件</li>
+<li>对于系统提供的头文件用尖括号形式，如果要包含的是用户自己编写的文件，用双撇号形式（先到当前cpp所在目录定位， 再到系统目录中定位XX.h）</li>
+<li>找不到会发生编译错误，找多了更糟糕，如果好多地方都有xx.h，你需要搞清楚到底是谁被找到了</li>
+<li>文件名可以包含目录名，例如#include&lt;GL/GL.h&gt;，到系统include目录的GL目录中找GL.h</li>
+<li>C++标准库中一般不再包括.h，保留的兼容C的头文件有，尽量用符合C++标准的形式</li>
+<li>用户自己编写的头文件，一般用.h做后缀</li>
+</ol>
+<p>9、函数</p>
+<ul>
+<li>链接问题： <code>&gt;</code>依赖于<br>
+- A &gt; B, A &gt; C<br>
+- B &gt; D, C &gt; D</li>
+<li>静态链接：得到A.exe包括A(B(D))(C(D))<br>
+- 运行速度快，不需要运行时加载定位<br>
+- 缺点：会生成多个副本（如果多个文件对同一个目标文件目标都有依赖），浪费空间，</li>
+<li>动态链接（是主流）（跟上一个优缺点基本反着）</li>
+<li>#include是一种预处理编译</li>
+<li>预处理编译：（源代码到目标代码的编译之前的编译，对源代码的处理）（预处理，编译，链接）（功能包括：文件包含#include，宏定义#define，条件编译#ifdef）</li>
+<li><img src="https://img-blog.csdnimg.cn/20210330203708996.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></li>
+<li>宏定义函数要注意对每一个变量都加上（）以防止调用时有奇怪的行为</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> S(r) PI * r * r<span class="comment">//最好是PI*(r)*(r)</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> a = <span class="number">1</span>, b = <span class="number">2</span>;</span><br><span class="line">	<span class="built_in">S</span>(a + b);</span><br><span class="line">	<span class="comment">//会按照PI*a + b*a + b来算</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20210330205110476.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+]]></content>
+      <categories>
+        <category>yxt</category>
+      </categories>
+      <tags>
+        <tag>c++</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>c++指针 2021.4.13</title>
     <url>/2022/05/02/C++%E6%8C%87%E9%92%88%202021.4.13/</url>
     <content><![CDATA[<p>· 指针的概念</p>
@@ -245,74 +313,6 @@ char str[80]； str = “qwq”；是错的</p>
       </tags>
   </entry>
   <entry>
-    <title>C艹3.30</title>
-    <url>/2022/05/02/C%E8%89%B93.30/</url>
-    <content><![CDATA[<p>内容：<br>
-1、 static静态变量，局部可见，只赋一次初值<br>
-2、对于全局变量的利害（尽量克制使用）<br>
-3、全局变量与局部变量重名时，局部变量优先，可以使用域作用符<code>::</code>区分两者</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> i = <span class="number">100</span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> i, j = <span class="number">50</span>;</span><br><span class="line">	i = <span class="number">18</span>;<span class="comment">//访问局部变量</span></span><br><span class="line">	::i = ::i + <span class="number">4</span>;<span class="comment">//访问全局变量</span></span><br><span class="line">	j = ::i + <span class="number">1</span>;<span class="comment">//访问全局变量i和局部变量j</span></span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;::i=&quot;</span> &lt;&lt; ::i &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;i=&quot;</span> &lt;&lt; i &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;j=&quot;</span> &lt;&lt; j &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
-<p>4、 extern做提前引用声明，后面的全局变量在前面使用时要用extern。注意使用extern是不可以extern double bb = 1.0的，否则相当于定义，extern失去作用，编译错误</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">(</span></span><br><span class="line"><span class="params">&#123;</span></span><br><span class="line"><span class="params">	<span class="keyword">extern</span> <span class="type">int</span> a, b;</span></span><br><span class="line"><span class="params">	...</span></span><br><span class="line"><span class="params">	<span class="keyword">return</span> <span class="number">0</span>;</span></span><br><span class="line"><span class="params">&#125;</span></span><br><span class="line"><span class="params"><span class="type">int</span> a = <span class="number">15</span>, b = <span class="number">-7</span>;</span></span><br><span class="line"><span class="params"><span class="type">int</span> max(<span class="type">int</span> x, <span class="type">int</span> y)&#123;</span></span><br><span class="line"><span class="params">	<span class="type">int</span> z;</span></span><br><span class="line"><span class="params">	 z = x &gt; y ? x : y</span></span><br><span class="line"><span class="params">&#125;</span></span><br></pre></td></tr></table></figure>
-<p>5、如果函数要访问另一个文件中定义的全局变量，需要添加extern声明。注意编译正确未必能链接成功<br>
-6、<br>
-· static全局变量：存储在静态存储区，在函数外部定义，只在本文件中使用<br>
-· static局部变量：存储在静态存储区，在函数内部定义，只限在函数内部使用<br>
-· extern全局变量：存储在静态存储区，在其他文件中定义，在本文件中可以使用<br>
-7、 static也可以修饰函数（static描述其为内部函数）。extern同。<br>
-8、 程序的多文件组织🌈</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;mathx.h&quot;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="comment">//可以直接使用max， pi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">double</span> PI = <span class="number">3.14</span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">max</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="type">double</span> <span class="title">pow</span><span class="params">(<span class="type">double</span>, <span class="type">double</span>)</span></span>;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;mathx.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">max</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> z;</span><br><span class="line">	z = x &gt; y ? x : y;</span><br><span class="line">	<span class="keyword">return</span> z;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>C/C++标准：<br>
-头文件：实现者与使用者之间的桥梁，包括函数声明，常量定义<br>
-函数库：包含头文件，提供函数的实现/定义，发布头文件源代码以及库函数的二进制代码<br>
-使用者：通过#include包含头文件，知道如何使用，不关心具体实现</p>
-</blockquote>
-<blockquote>
-<p>头文件（.h/.hpp header）一般包括以下几类内容：<br>
-1.对类型的声明<br>
-2.函数声明<br>
-3.内置（inline）函数的定义<br>
-4.宏定义。用#define定义的符号常量和用const声明的常变量<br>
-5.外部变量声明，如extern int a；<br>
-6.根据需要包含其他头文件<br>
-（注意不能有double dd = 1.0之类的；不然会认为重定义）</p>
-</blockquote>
-<ol>
-<li>通常#include头文件，很少#include源文件</li>
-<li>对于系统提供的头文件用尖括号形式，如果要包含的是用户自己编写的文件，用双撇号形式（先到当前cpp所在目录定位， 再到系统目录中定位XX.h）</li>
-<li>找不到会发生编译错误，找多了更糟糕，如果好多地方都有xx.h，你需要搞清楚到底是谁被找到了</li>
-<li>文件名可以包含目录名，例如#include&lt;GL/GL.h&gt;，到系统include目录的GL目录中找GL.h</li>
-<li>C++标准库中一般不再包括.h，保留的兼容C的头文件有，尽量用符合C++标准的形式</li>
-<li>用户自己编写的头文件，一般用.h做后缀</li>
-</ol>
-<p>9、函数</p>
-<ul>
-<li>链接问题： <code>&gt;</code>依赖于<br>
-- A &gt; B, A &gt; C<br>
-- B &gt; D, C &gt; D</li>
-<li>静态链接：得到A.exe包括A(B(D))(C(D))<br>
-- 运行速度快，不需要运行时加载定位<br>
-- 缺点：会生成多个副本（如果多个文件对同一个目标文件目标都有依赖），浪费空间，</li>
-<li>动态链接（是主流）（跟上一个优缺点基本反着）</li>
-<li>#include是一种预处理编译</li>
-<li>预处理编译：（源代码到目标代码的编译之前的编译，对源代码的处理）（预处理，编译，链接）（功能包括：文件包含#include，宏定义#define，条件编译#ifdef）</li>
-<li><img src="https://img-blog.csdnimg.cn/20210330203708996.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></li>
-<li>宏定义函数要注意对每一个变量都加上（）以防止调用时有奇怪的行为</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> S(r) PI * r * r<span class="comment">//最好是PI*(r)*(r)</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> a = <span class="number">1</span>, b = <span class="number">2</span>;</span><br><span class="line">	<span class="built_in">S</span>(a + b);</span><br><span class="line">	<span class="comment">//会按照PI*a + b*a + b来算</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20210330205110476.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-]]></content>
-      <categories>
-        <category>yxt</category>
-      </categories>
-      <tags>
-        <tag>c++</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>PCA及其实战学习</title>
     <url>/2022/05/02/PCA%E5%8F%8A%E5%85%B6%E5%AE%9E%E6%88%98%E5%AD%A6%E4%B9%A0/</url>
     <content><![CDATA[<h1>知识学习</h1>
@@ -362,6 +362,25 @@ char str[80]； str = “qwq”；是错的</p>
         <tag>Python</tag>
         <tag>数据处理</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2022/04/26/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start">Quick Start</h2>
+<h3 id="Create-a-new-post">Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server">Run server</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files">Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites">Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>ccf-csp2013.12</title>
@@ -493,23 +512,65 @@ Right<br>
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2022/04/26/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start">Quick Start</h2>
-<h3 id="Create-a-new-post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+    <title>关于写DMF时发生的小事情</title>
+    <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E5%86%99DMF%E6%97%B6%E5%8F%91%E7%94%9F%E7%9A%84%E5%B0%8F%E4%BA%8B%E6%83%85/</url>
+    <content><![CDATA[<h1>事实上，以下内容都是我中途才开始考虑的</h1>
+<ul>
+<li>报错反应模型nn.linear参数不匹配无法matmaul，瞅了半天模型参数没问题，一看取出传入参数时传错了。</li>
+<li>tensor索引说是只能为byte,long,bool，然后一开始改成float也不行，后来发现其实可以在autograd.Variable的过程中将tensor先转化为byte类型的再转化为Variable——不是很确定，原来刚刚是通过直接取消了variable，把array类型传入了</li>
+<li>确定了，上面的方法不行，说mask[256]和什么什么不匹配</li>
+<li>“float() argument must be a string or a number, not ‘NoneType’”<br>
+这一点是我在重写loss的过程中产生的。然后我试图强转float结果报错，强转tensor也失败了。然后发现：NoneType表示这里没有参数，所以我的结果没有传进去？？</li>
+<li>然后发现实际上我的model没有产生结果：就是这句话：（output直接是None）<img src="https://img-blog.csdnimg.cn/c9b8b53a3eef4d9396e896ea701e759c.png" alt="在这里插入图片描述"></li>
+<li>原来是我的model里面forward忘记返回值了</li>
+<li>感觉这个output有点问题但是不知道怎么解决，毕竟我返回的是一个别的值，但是输入的是另外的两个值。看后续结果吧，如果不行的话，就只拿出output中的第三个tensor。果然，loss都是nan</li>
+<li>忽然发现没有三个tensor？？？另外关于loss都是nan的问题——妈呀梯度消失了loss函数应该是出了问题，直接第一次就-inf了<br>
+<img src="https://img-blog.csdnimg.cn/5702863d9840404b80701e0499be659d.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_17,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></li>
+<li>看了一下，x和y写反了<s>mdzz</s></li>
+<li>啊第一次训练就遇到了梯度消失，不知道为什么这个矩阵它同增同减，我决定试一试归一化操作再分布给0~5</li>
+<li>发现不可，那个loss函数设计的就是给0~1之间的x分布的，不能给放大。另外，我发现即使进行了最大最小值归一化，也没什么效果。</li>
+<li>训练一下试试吧，这个loss太大了。我知道为什么大了，loss函数抄错了，没写符号，肯定越练越小</li>
+</ul>
 ]]></content>
+      <categories>
+        <category>yxt</category>
+      </categories>
+      <tags>
+        <tag>推荐系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于学习transformer那些事</title>
+    <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0transformer%E9%82%A3%E4%BA%9B%E4%BA%8B/</url>
+    <content><![CDATA[<h1>论文阅读：</h1>
+<p>（有些自己忘记的知识就顺便回忆了一遍）<br>
+<img src="https://img-blog.csdnimg.cn/cdbdb44d3e0b4f7abc86ccf213332f16.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="请添加图片描述"><br>
+<img src="https://img-blog.csdnimg.cn/639eff95a83d47778d4b178147e2370c.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="请添加图片描述"><br>
+<img src="https://img-blog.csdnimg.cn/8f61827aae5243d995b7babb30a7411b.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="请添加图片描述"><br>
+<img src="https://img-blog.csdnimg.cn/18b7ca064693422c8aaf1f5b8280bb9a.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="请添加图片描述"><br>
+<img src="https://img-blog.csdnimg.cn/422f1edd4ee34c3680315b2f3459e442.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="请添加图片描述"><br>
+<img src="https://img-blog.csdnimg.cn/7bd66d140a014be991fa0f47690af1e8.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="请添加图片描述"><br>
+<img src="https://img-blog.csdnimg.cn/65faa3b0bf054510b5532ae0f986d5ec.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="请添加图片描述"></p>
+<h1>结合理论，代码实践</h1>
+<p><a href="https://wmathor.com/index.php/archives/1438/">Transformer详解</a></p>
+<h1>个人疑问：</h1>
+<ul>
+<li>
+<p>Q：弄这么多Q、V、K干嘛？确实有提到query，value，key，但是到底怎么提取的呢？怎么就有这个含义了<br>
+A：<a href="https://www.zhihu.com/question/325839123">知乎传送门。</a><br>
+大致意思就是，这三个权重矩阵作为分别提取的产物，是有不同的用途的，这样的话可以实现：<strong>q你可以理解为代表自己用的，用q去和别的输入找关系；k理解为给别人用的，专门对付来跟你找关系的输入。</strong> 另外有，<strong>定义了个v大概等于又对a加了一层可以学习的参数</strong>。</p>
+<p>另外，有人提出了它的<strong>来源：《Memory Networks》</strong>。</p>
+<p>当时聚焦于question answering，先用输入的问题query检索key-value memories，找到和问题相似地memory的key，计算相关性分数，然后对value embedding进行加权求和，得到一个输出向量。</p>
+<p>在Transformer中，Q，V，K是分别用X与Wq，Wv，Wk相乘得到的（Q，V，K由embedding的结果通过<strong>不同的线性变换</strong>得到），因为<strong>直接用X参数太少，影响模型容量</strong>。</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>yxt</category>
+      </categories>
+      <tags>
+        <tag>阅读</tag>
+      </tags>
   </entry>
   <entry>
     <title>web前端的一些用法</title>
@@ -581,6 +642,18 @@ Right<br>
       </categories>
       <tags>
         <tag>web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于更改默认安装路径这件事</title>
+    <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AE%89%E8%A3%85%E8%B7%AF%E5%BE%84%E8%BF%99%E4%BB%B6%E4%BA%8B/</url>
+    <content><![CDATA[<p><img src="https://img-blog.csdnimg.cn/20210219224405814.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+]]></content>
+      <categories>
+        <category>yxt</category>
+      </categories>
+      <tags>
+        <tag>整治电脑</tag>
       </tags>
   </entry>
   <entry>
@@ -1219,79 +1292,6 @@ p(\overrightarrow{w}|d_m)=\prod_{i=1}^n\sum_{z=1}^Kp(w_i|z)p(z|d_m)=\prod_{i=1}^
       </tags>
   </entry>
   <entry>
-    <title>关于写DMF时发生的小事情</title>
-    <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E5%86%99DMF%E6%97%B6%E5%8F%91%E7%94%9F%E7%9A%84%E5%B0%8F%E4%BA%8B%E6%83%85/</url>
-    <content><![CDATA[<h1>事实上，以下内容都是我中途才开始考虑的</h1>
-<ul>
-<li>报错反应模型nn.linear参数不匹配无法matmaul，瞅了半天模型参数没问题，一看取出传入参数时传错了。</li>
-<li>tensor索引说是只能为byte,long,bool，然后一开始改成float也不行，后来发现其实可以在autograd.Variable的过程中将tensor先转化为byte类型的再转化为Variable——不是很确定，原来刚刚是通过直接取消了variable，把array类型传入了</li>
-<li>确定了，上面的方法不行，说mask[256]和什么什么不匹配</li>
-<li>“float() argument must be a string or a number, not ‘NoneType’”<br>
-这一点是我在重写loss的过程中产生的。然后我试图强转float结果报错，强转tensor也失败了。然后发现：NoneType表示这里没有参数，所以我的结果没有传进去？？</li>
-<li>然后发现实际上我的model没有产生结果：就是这句话：（output直接是None）<img src="https://img-blog.csdnimg.cn/c9b8b53a3eef4d9396e896ea701e759c.png" alt="在这里插入图片描述"></li>
-<li>原来是我的model里面forward忘记返回值了</li>
-<li>感觉这个output有点问题但是不知道怎么解决，毕竟我返回的是一个别的值，但是输入的是另外的两个值。看后续结果吧，如果不行的话，就只拿出output中的第三个tensor。果然，loss都是nan</li>
-<li>忽然发现没有三个tensor？？？另外关于loss都是nan的问题——妈呀梯度消失了loss函数应该是出了问题，直接第一次就-inf了<br>
-<img src="https://img-blog.csdnimg.cn/5702863d9840404b80701e0499be659d.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_17,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></li>
-<li>看了一下，x和y写反了<s>mdzz</s></li>
-<li>啊第一次训练就遇到了梯度消失，不知道为什么这个矩阵它同增同减，我决定试一试归一化操作再分布给0~5</li>
-<li>发现不可，那个loss函数设计的就是给0~1之间的x分布的，不能给放大。另外，我发现即使进行了最大最小值归一化，也没什么效果。</li>
-<li>训练一下试试吧，这个loss太大了。我知道为什么大了，loss函数抄错了，没写符号，肯定越练越小</li>
-</ul>
-]]></content>
-      <categories>
-        <category>yxt</category>
-      </categories>
-      <tags>
-        <tag>推荐系统</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于更改默认安装路径这件事</title>
-    <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AE%89%E8%A3%85%E8%B7%AF%E5%BE%84%E8%BF%99%E4%BB%B6%E4%BA%8B/</url>
-    <content><![CDATA[<p><img src="https://img-blog.csdnimg.cn/20210219224405814.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUyNDE0NzI3,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-]]></content>
-      <categories>
-        <category>yxt</category>
-      </categories>
-      <tags>
-        <tag>整治电脑</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于学习transformer那些事</title>
-    <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E5%AD%A6%E4%B9%A0transformer%E9%82%A3%E4%BA%9B%E4%BA%8B/</url>
-    <content><![CDATA[<h1>论文阅读：</h1>
-<p>（有些自己忘记的知识就顺便回忆了一遍）<br>
-<img src="https://img-blog.csdnimg.cn/cdbdb44d3e0b4f7abc86ccf213332f16.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="请添加图片描述"><br>
-<img src="https://img-blog.csdnimg.cn/639eff95a83d47778d4b178147e2370c.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="请添加图片描述"><br>
-<img src="https://img-blog.csdnimg.cn/8f61827aae5243d995b7babb30a7411b.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="请添加图片描述"><br>
-<img src="https://img-blog.csdnimg.cn/18b7ca064693422c8aaf1f5b8280bb9a.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="请添加图片描述"><br>
-<img src="https://img-blog.csdnimg.cn/422f1edd4ee34c3680315b2f3459e442.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="请添加图片描述"><br>
-<img src="https://img-blog.csdnimg.cn/7bd66d140a014be991fa0f47690af1e8.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="请添加图片描述"><br>
-<img src="https://img-blog.csdnimg.cn/65faa3b0bf054510b5532ae0f986d5ec.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbTBfNTI0MTQ3Mjc=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="请添加图片描述"></p>
-<h1>结合理论，代码实践</h1>
-<p><a href="https://wmathor.com/index.php/archives/1438/">Transformer详解</a></p>
-<h1>个人疑问：</h1>
-<ul>
-<li>
-<p>Q：弄这么多Q、V、K干嘛？确实有提到query，value，key，但是到底怎么提取的呢？怎么就有这个含义了<br>
-A：<a href="https://www.zhihu.com/question/325839123">知乎传送门。</a><br>
-大致意思就是，这三个权重矩阵作为分别提取的产物，是有不同的用途的，这样的话可以实现：<strong>q你可以理解为代表自己用的，用q去和别的输入找关系；k理解为给别人用的，专门对付来跟你找关系的输入。</strong> 另外有，<strong>定义了个v大概等于又对a加了一层可以学习的参数</strong>。</p>
-<p>另外，有人提出了它的<strong>来源：《Memory Networks》</strong>。</p>
-<p>当时聚焦于question answering，先用输入的问题query检索key-value memories，找到和问题相似地memory的key，计算相关性分数，然后对value embedding进行加权求和，得到一个输出向量。</p>
-<p>在Transformer中，Q，V，K是分别用X与Wq，Wv，Wk相乘得到的（Q，V，K由embedding的结果通过<strong>不同的线性变换</strong>得到），因为<strong>直接用X参数太少，影响模型容量</strong>。</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>yxt</category>
-      </categories>
-      <tags>
-        <tag>阅读</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>关于深度学习画图这件事</title>
     <url>/2022/05/02/%E5%85%B3%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%94%BB%E5%9B%BE%E8%BF%99%E4%BB%B6%E4%BA%8B/</url>
     <content><![CDATA[<p>以下是在搜集过程中看到的几个画模型图可能需要的便捷网站：</p>
@@ -1409,27 +1409,6 @@ Dism++（小管家）</p>
       </tags>
   </entry>
   <entry>
-    <title>细数近日犯的错误</title>
-    <url>/2022/05/02/%E7%BB%86%E6%95%B0%E8%BF%91%E6%97%A5%E7%8A%AF%E7%9A%84%E9%94%99%E8%AF%AF/</url>
-    <content><![CDATA[<p>关于第七次数据结构实验</p>
-<ul>
-<li>注意数组在函数内部和外部定义的区别，虽然我现在依然不知道原理为什么拿出去就不行了可能和另一个错误相关</li>
-<li>注意数组分配对象是new int []而不是new int（），第二个是分配一个单int对象</li>
-<li>注意分配范围与自己使用，数组在使用过程中是否发生变化，下一次是用变化过的还是没变换的ap</li>
-</ul>
-<p>关于第八次数据结构实验</p>
-<ul>
-<li>注意初始化，可能改了数组名之后又忘记初始化啦！</li>
-</ul>
-]]></content>
-      <categories>
-        <category>yxt</category>
-      </categories>
-      <tags>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>给爷爬!</title>
     <url>/2022/05/01/%E7%BB%99%E7%88%B7%E7%88%AC/</url>
     <content><![CDATA[<blockquote>
@@ -1493,6 +1472,27 @@ pip XX（XX指要安装的包）【中途断开得重安】<br>
       <tags>
         <tag>Python</tag>
         <tag>爬虫</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>细数近日犯的错误</title>
+    <url>/2022/05/02/%E7%BB%86%E6%95%B0%E8%BF%91%E6%97%A5%E7%8A%AF%E7%9A%84%E9%94%99%E8%AF%AF/</url>
+    <content><![CDATA[<p>关于第七次数据结构实验</p>
+<ul>
+<li>注意数组在函数内部和外部定义的区别，虽然我现在依然不知道原理为什么拿出去就不行了可能和另一个错误相关</li>
+<li>注意数组分配对象是new int []而不是new int（），第二个是分配一个单int对象</li>
+<li>注意分配范围与自己使用，数组在使用过程中是否发生变化，下一次是用变化过的还是没变换的ap</li>
+</ul>
+<p>关于第八次数据结构实验</p>
+<ul>
+<li>注意初始化，可能改了数组名之后又忘记初始化啦！</li>
+</ul>
+]]></content>
+      <categories>
+        <category>yxt</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
